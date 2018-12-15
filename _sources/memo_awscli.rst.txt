@@ -1,0 +1,87 @@
+=======
+AWS-CLI
+=======
+
+引数
+====
+
+ファイル
+--------
+
+`file:///path/to/file` でファイルからパラメータを渡すことができる。 [#REF_AWS_CLI_USING_PARAM_FILE]_
+引数が JSON 文字列を受けるケースなどで使える
+
+.. code-block:: console
+
+  $ aws cloudformation update-stack \
+    --parameters=file://./parameters.json \
+    --stack-name=unk-stack \
+    --template-body=file:///path/to/template.yaml
+
+MFA
+====
+
+MFA が必須な IAM ユーザーで AWS-CLI を使うには、
+`sts get-session-token` を使って取得したクレデンシャルを利用する。 [#REF_AWS_CLI_MFA]_
+
+`--serial-number` には MFA の ARN を、
+`--token-code` には MFA から取得したワンタイムトークンを渡す。
+MFA の ARN は IAM のコンソールから取得できる。
+
+.. code-block:: console
+
+  $ aws \
+    --profile=profile-to-get-token \
+    sts \
+    get-session-token \
+    --serial-number=arn:aws:iam::************:mfa/xxxuser \
+    --token-code=12345678
+
+雑に下のようなシェルスクリプトを書いて `~/.local/bin/get-token` などに置いておいている。
+`eval $(get-token -p profile-to-get-token -m arn:aws:.../xxuser -t 12345678)` として使う。
+
+.. code-block:: bash
+
+  #!/bin/bash -e
+  # ~/.local/bin/get-token
+
+  while getopts 'p:m:t:' OPTNAME
+  do
+      case "${OPTNAME}" in
+          p)
+              profile="${OPTARG}"
+              ;;
+          m)
+              mfa_arn="${OPTARG}"
+              ;;
+          t)
+              token="${OPTARG}"
+              ;;
+          *)
+              echo "${0} unrecognized option '${OPTNAME}'"
+      esac
+  done
+
+  if \
+      [[ -z "${profile}" ]] || \
+      [[ -z "${mfa_arn}" ]] || \
+      [[ -z "${token}" ]]
+  then
+      exit 1
+  fi
+
+  credential=$( \
+      aws \
+          --profile=${profile} \
+          sts \
+          get-session-token \
+          --serial-number=${mfa_arn} \
+          --token-code=${token}
+  )
+
+  echo "export AWS_SESSION_TOKEN=$(echo "${credential}" | grep -oP '(?<="SessionToken": ")[^"]+')"
+  echo "export AWS_ACCESS_KEY_ID=$(echo "${credential}" | grep -oP '(?<="AccessKeyId": ")[^"]+')"
+  echo "export AWS_SECRET_ACCESS_KEY=$(echo "${credential}" | grep -oP '(?<="SecretAccessKey": ")[^"]+')"
+
+.. [#REF_AWS_CLI_USING_PARAM_FILE] https://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-file
+.. [#REF_AWS_CLI_MFA] https://aws.amazon.com/jp/premiumsupport/knowledge-center/authenticate-mfa-cli/

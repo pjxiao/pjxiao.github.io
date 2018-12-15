@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Open API Specification &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="覚え書き" href="memo.html"/>
+        <link rel="next" title="Microsoft Flow" href="memo_ms_flow.html"/>
+        <link rel="prev" title="AWS-CLI" href="memo_awscli.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="memo.html">覚え書き</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="memo_binarization.html">画像の二値化二値化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_imagemagick.html">ImageMagick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_powershell.html">PowerShell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_awscli.html">AWS-CLI</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Open API Specification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#swagger-ui">Swagger UI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connexion">connexion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="memo_ms_flow.html">Microsoft Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#id3">メモ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#mathjax">MathJax チートシート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#linux-gyazo">Linux 版 gyazo のスクリーンキャプチャコマンドを変更する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#pca">PCA に関する覚え書き</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#nginx-ssh">ファイヤーウォール内のサイトへの接続に Nginx と SSH を組み合わせる</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#systemctl-user">systemctl –user 実行時のエラーへの対処方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#memo-ephemeral-port">一時ポート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#ssh-systemd-user">SSH トンネルを Systemd/User のサービスとして登録する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#systemd">Systemd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#bash">Bash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#vim">Vim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#docker">Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#git">Git</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="memo.html">覚え書き</a> &raquo;</li>
+        
+      <li>Open API Specification</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/memo_oas.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="open-api-specification">
+<h1>Open API Specification<a class="headerlink" href="#open-api-specification" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>aka Swagger</p>
+<div class="section" id="swagger-ui">
+<h2>Swagger UI<a class="headerlink" href="#swagger-ui" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>雑に <cite>docker run</cite> して起動するのが楽。
+リクエストを送る、モックサーバーやモッククライアントを生成するなどができるが、
+壊れていたり、エラーメッセージが不親切だったりで、使い勝手は良くない。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run <span class="se">\</span>
+  --rm -v /path/to/dir:/io <span class="se">\</span>
+  -e <span class="nv">SWAGGER_JSON</span><span class="o">=</span>/io/oas-spec.yml <span class="se">\</span>
+  -p <span class="m">8080</span>:8080 <span class="se">\</span>
+  swaggerapi/swagger-ui:v3.19.2
+</pre></div>
+</div>
+</div>
+<div class="section" id="connexion">
+<h2>connexion<a class="headerlink" href="#connexion" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>connexion を使ってモックサーバーを起動することができる。 <a class="footnote-reference" href="#ref-connexion-cli" id="id1">[1]</a>
+connexion は 2.0 で OAS 3 に対応している。
+引数はヘルプや公式ドキュメントの通り。
+OpenAPI ドキュメント内で <cite>security</cite>/<cite>securitySchemes</cite> を使っている場合は、
+公式ドキュメントに無い環境変数を指定する必要がある。
+たとえば <cite>securitySchemes.type</cite> が <cite>apiKey</cite> の場合、
+環境変数 <cite>APIKEYINFO_FUNC</cite> で認証を行う関数を指定する。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">APIKEYINFO_FUNC</span><span class="o">=</span>auth.passthrough connexion run -v --port<span class="o">=</span><span class="m">8000</span> --mock<span class="o">=</span>all oas-spec.yml
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># auth.py</span>
+<span class="k">def</span> <span class="nf">passthrough</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ダミーの認証関数&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="ref-connexion-cli" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://connexion.readthedocs.io/en/latest/cli.html">https://connexion.readthedocs.io/en/latest/cli.html</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="memo_ms_flow.html" class="btn btn-neutral float-right" title="Microsoft Flow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="memo_awscli.html" class="btn btn-neutral" title="AWS-CLI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

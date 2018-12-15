@@ -1,0 +1,595 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>行レベルのアクセス制御 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Articles" href="feed.html"/>
+        <link rel="next" title="欠測データの統計科学受講ノート" href="articles_missing_values.html"/>
+        <link rel="prev" title="日記 2017-W12" href="weeklyreport_2017w12.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="feed.html">Articles</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="articles_design_2017.html">分析・設計本所感</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w15.html">日記 2017-W15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w14.html">日記 2017-W14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w13.html">日記 2017-W13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w12.html">日記 2017-W12</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">行レベルのアクセス制御</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">はじめに</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">注意</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">愚直な方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">アプリケーション側での実装</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#orm">ORM やクエリビルダを用いる</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">オンメモリでのフィルタリング</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">ビューを用いた方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cte">CTE を用いた方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">結論</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-reading">Further reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">参照</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="articles_missing_values.html">欠測データの統計科学受講ノート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w02.html">日記 2017-W02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w01.html">日記 2017-W01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_setup-debian-8-on-mbp-11-5.html">Debian jessie (8) を Mac Book Pro 11,5 にセットアップする</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_sphinxcontrib-newsfeed.html">sphinxcontrib-newsfeed</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="feed.html">Articles</a> &raquo;</li>
+        
+      <li>行レベルのアクセス制御</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/articles_row_level_ac.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1><a class="toc-backref" href="#id17">行レベルのアクセス制御</a><a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>2017-03-03 09:00:00</p>
+<div class="contents topic" id="id2">
+<p class="topic-title first">目次</p>
+<ul class="simple">
+<li><a class="reference internal" href="#id1" id="id17">行レベルのアクセス制御</a><ul>
+<li><a class="reference internal" href="#id3" id="id18">はじめに</a></li>
+<li><a class="reference internal" href="#id6" id="id19">注意</a></li>
+<li><a class="reference internal" href="#id7" id="id20">例</a></li>
+<li><a class="reference internal" href="#id8" id="id21">愚直な方法</a></li>
+<li><a class="reference internal" href="#id9" id="id22">アプリケーション側での実装</a></li>
+<li><a class="reference internal" href="#id12" id="id23">ビューを用いた方法</a></li>
+<li><a class="reference internal" href="#cte" id="id24">CTE を用いた方法</a></li>
+<li><a class="reference internal" href="#id14" id="id25">結論</a></li>
+<li><a class="reference internal" href="#further-reading" id="id26">Further reading</a></li>
+<li><a class="reference internal" href="#id15" id="id27">参照</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id18">はじめに</a><a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>RDBMS を使っていると、行レベルのアクセス制御を必要となるケースがある。</p>
+<p>たとえば、複数の組織が利用するシステムで、
+ある組織にはその組織が関与した行のみを利用可能にしたいといったケースが考えられる。</p>
+<p>一部データベース製品は行レベルのアクセス制御を機能として提供している <a class="footnote-reference" href="#ref-sqlserver" id="id4">[1]</a> <a class="footnote-reference" href="#ref-db2" id="id5">[2]</a> が、
+そうではないデータベース製品を用いる場合には、独自に実装を行う必要がある。</p>
+<p>行レベルのアクセス制御の実装方法について、
+ビューを用いた方法やアプリケーション側で実装する方法について検討する。</p>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id19">注意</a><a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>機械的なアクセス制御の実施は、パフォーマンスに影響を及ぼすことが懸念される。</p>
+<p>また、行レベルのアクセス制御に限った話ではないが、
+SQL を動的に組み立てるという都合上、適切にプレースホルダを用いるなど、セキュリティには十分な配慮をする必要がある。</p>
+<p>簡単のため本記事では、これらの懸念点については考慮せず、各手法の検討を行う。</p>
+</div>
+<div class="section" id="id7">
+<h2><a class="toc-backref" href="#id20">例</a><a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>以下のような売上データ (<code class="docutils literal"><span class="pre">sales</span></code>) が存在し、
+販売事業者 (<code class="docutils literal"><span class="pre">seller</span></code>) ごとに行レベルのアクセス制限を行う必要があるとする。</p>
+<p>システムは、販売事業者へ次の機能を提供する</p>
+<ul class="simple">
+<li>販売事業者は、自身の売上データを全件抽出できる</li>
+<li>販売事業者は、自身の売上金額の集計結果を取得できる</li>
+</ul>
+<table border="1" class="docutils" id="id16">
+<caption><span class="caption-text">sales</span><a class="headerlink" href="#id16" title="このテーブルへのパーマリンク">¶</a></caption>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">item</th>
+<th class="head">amount</th>
+<th class="head">seller</th>
+<th class="head">created_at</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>apple</td>
+<td>398</td>
+<td>acme_store</td>
+<td>2017-02-23</td>
+</tr>
+<tr class="row-odd"><td>banana</td>
+<td>200</td>
+<td>my_shop</td>
+<td>2017-02-24</td>
+</tr>
+<tr class="row-even"><td>avocado</td>
+<td>100</td>
+<td>hoge_mart</td>
+<td>2017-02-25</td>
+</tr>
+<tr class="row-odd"><td>tofu</td>
+<td>120</td>
+<td>acme_store</td>
+<td>2017-02-27</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id8">
+<h2><a class="toc-backref" href="#id21">愚直な方法</a><a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>もっとも愚直な方法として、各クエリ内にアクセス制御のコードを実装する方法がある。</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="c1">-- 全件取得</span>
+<span class="k">SELECT</span> <span class="n">item</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">created_at</span> <span class="k">FROM</span> <span class="n">sales</span> <span class="k">WHERE</span> <span class="n">seller</span> <span class="o">=</span> <span class="o">?</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="c1">-- 集計</span>
+<span class="k">SELECT</span> <span class="n">item</span><span class="p">,</span> <span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">sales</span> <span class="k">WHERE</span> <span class="n">seller</span> <span class="o">=</span> <span class="o">?</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">item</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>この方法は最初はうまく行くし、プロジェクトが小さく寿命が短ければ、十分である。</p>
+<p>しかしながら、実装すべきコードが増えだし場合途端、アクセス制御のコードが四散することになる。</p>
+<p>コードを追加する際にアクセス制御を再度実装しなければならないのはもちろんであるが、
+アクセス制御のロジックに変更が入った場合などには、すべてのコードを変更する必要が発生する。</p>
+</div>
+<div class="section" id="id9">
+<h2><a class="toc-backref" href="#id22">アプリケーション側での実装</a><a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="orm">
+<h3>ORM やクエリビルダを用いる<a class="headerlink" href="#orm" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クエリを ORM やクエリビルダで生成している場合は、
+それらを駆使することでもしかするとうまく行くかもしれない。</p>
+<p>SQLAlchemy を使った例を示す。
+行単位でのアクセス制御を行った <code class="docutils literal"><span class="pre">Select</span></code> オブジェクトを返す関数を実装し、
+クエリの組み立てにはこの関数から取得した <code class="docutils literal"><span class="pre">Select</span></code> オブジェクトを用いる。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># SQLAlchemy での例</span>
+<span class="c1"># sales を使ったクエリを組み立てる際は、</span>
+<span class="c1"># sales をこの関数から取得する</span>
+<span class="k">def</span> <span class="nf">get_restricted_sales</span><span class="p">(</span><span class="n">seller</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">select</span><span class="p">([</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">item</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+    <span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">seller</span><span class="o">==</span><span class="n">seller</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">list_all</span><span class="p">(</span><span class="n">seller</span><span class="p">):</span>
+    <span class="n">sales</span> <span class="o">=</span> <span class="n">get_restricted_sales</span><span class="p">(</span><span class="n">seller</span><span class="p">)</span>
+    <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">item</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+    <span class="p">])</span>
+    <span class="c1"># クエリの実行など</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h3>オンメモリでのフィルタリング<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>もちろん、最初に権限のないデータも含めて取得し、
+メモリ上で必要におうじて集計を行うという手段も考えられる。</p>
+<p>たとえば、仕様パターン <a class="footnote-reference" href="#ref-ddd" id="id11">[3]</a> を用いた実装を示す。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SellerSpec</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seller</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seller</span> <span class="o">=</span> <span class="n">seller</span>
+
+    <span class="k">def</span> <span class="nf">is_satisfied_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+        <span class="c1"># (Dict[str, Any]) -&gt; bool</span>
+        <span class="k">return</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;seller&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">seller</span>
+
+
+<span class="k">def</span> <span class="nf">list_all</span><span class="p">(</span><span class="n">seller</span><span class="p">):</span>
+    <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">item</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">seller</span><span class="p">,</span>
+    <span class="p">])</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># クエリの実行など</span>
+
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">SellerSpec</span><span class="p">(</span><span class="n">seller</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">record</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">is_satisfied_by</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">aggregate</span><span class="p">(</span><span class="n">seller</span><span class="p">):</span>
+    <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">item</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span>
+      <span class="n">sales</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">seller</span><span class="p">,</span>
+    <span class="p">])</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># クエリの実行など</span>
+
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">SellerSpec</span><span class="p">(</span><span class="n">seller</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">record</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">is_satisfied_by</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>この手法の場合、メモリ容量やネットワーク転送による遅延を考慮する必要がある。</p>
+<p>ローカルでフィルタリングを行うと、
+フィルタリング中にアプリケーション側のロジックを割りこませることが可能になるという利点がある。</p>
+<p>また、 SQL のみを用いた場合に比べ、幾分複雑なフィルタリングを実装することもできる可能性がある。</p>
+</div>
+</div>
+<div class="section" id="id12">
+<h2><a class="toc-backref" href="#id23">ビューを用いた方法</a><a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ビューを用いてアクセスを実装することもできる。</p>
+<p>各権限ごとに予めビューを予め作成しておき、アプリケーション側で対象のテーブルを参照する際には、
+適切なビューを使うようにルーティングしてやればよい。</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">VIEW</span> <span class="n">sales_for_acme_store</span>  <span class="k">AS</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sales</span> <span class="k">WHERE</span> <span class="n">seller</span> <span class="o">=</span> <span class="s1">&#39;acme_store&#39;</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">VIEW</span> <span class="n">sales_for_my_shop</span>     <span class="k">AS</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sales</span> <span class="k">WHERE</span> <span class="n">seller</span> <span class="o">=</span> <span class="s1">&#39;my_shop&#39;</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">VIEW</span> <span class="n">sales_for_hoge_mart</span>   <span class="k">AS</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sales</span> <span class="k">WHERE</span> <span class="n">seller</span> <span class="o">=</span> <span class="s1">&#39;hoge_mart&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>ただし、権限の種類が多い場合は、予めビューを用意しておくことは難しいという難点がある。
+また、パラメタ依存のアクセス制御は実装出来ない。</p>
+<p>一部のテータベースエンジンでは、一時ビューを作成する拡張をサポートしている。 <a class="footnote-reference" href="#ref-create-view" id="id13">[4]</a>
+一時ビューは拡張であり汎用的な手段ではないが、セッション毎に一時ビューを作成することで、
+多少複雑な権限にも対応できることが見込める。</p>
+</div>
+<div class="section" id="cte">
+<h2><a class="toc-backref" href="#id24">CTE を用いた方法</a><a class="headerlink" href="#cte" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ビューと似たアプローチとして、 CTE (Common Table Expression) を使う方法が考えられる。</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">WITH</span> <span class="n">restricted_sales</span> <span class="k">AS</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sales</span> <span class="k">WHERE</span> <span class="n">seller</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">item</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">created_at</span> <span class="k">FROM</span> <span class="n">restricted_sales</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>アプリケーションの SQL はテーブルではなく、アクセス制御された CTE 側を参照するように実装し、
+クエリ実行時に WITH 句を付加する。</p>
+<p>つまり、アプリケーションは、アクセス制御を行う WITH 句と問い合わせを行うメインの SQL を別々に保持し、
+実行時に両者を合体させる。</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="c1">-- 共通のアクセス制御のコード</span>
+<span class="k">WITH</span> <span class="n">restricted_sales</span> <span class="k">AS</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sales</span> <span class="k">WHERE</span> <span class="n">seller</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="c1">-- 開発すべき問い合わせ</span>
+<span class="k">SELECT</span> <span class="n">item</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">created_at</span> <span class="k">FROM</span> <span class="n">restricted_sales</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>開発時にはビューを用い、稼働時には CTE に差し替えるということもできる。
+したがって開発者は、開発時には開発用のビューを作成し、問い合わせを行うメインの SQL のみを開発すればよい。</p>
+<p>CTE を用いれば、ビューを予め作成するという手続きも必要なくなる。</p>
+</div>
+<div class="section" id="id14">
+<h2><a class="toc-backref" href="#id25">結論</a><a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>いくつかの方法を検討したが、取るべき方法は、プロジェクトの規模やアクセス制御の複雑性に依存する。</p>
+<p>また、いくつかの手法はデータベースエンジンによっては実装が存在しないため、
+アプリケーション側での愚直なアプローチを取らざるを得ないかもしれない。</p>
+<p>加えて、 Django ORM のような ORM で複雑なクエリを組み立てることは現実的ではなく、
+CTE やビューを用いた手法は適用できないと考えて然るべきだろう。</p>
+<p>しかしながら、複雑な問い合わせが必要なワークロードでは、
+アクセス制御のコードと問い合わせを行うコードが分離できることは、
+コードの見通しが改善されることによる開発の効率化や、確実なアクセス制御の実施ができると考えられる。
+したがって、 CTE やビューを用いたアクセス制御も一考の余地があるだろう。</p>
+</div>
+<div class="section" id="further-reading">
+<h2><a class="toc-backref" href="#id26">Further reading</a><a class="headerlink" href="#further-reading" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://technet.microsoft.com/en-us/library/cc966395.aspx">https://technet.microsoft.com/en-us/library/cc966395.aspx</a></li>
+<li><a class="reference external" href="https://www.ibm.com/developerworks/community/wikis/form/anonymous/api/wiki/0fc2f498-7b3e-4285-8881-2b6c0490ceb9/page/c037e901-acf0-45b7-b648-a697deb6d5a1/attachment/83d95b5d-2f91-4c6f-bbcf-20cde722ba98/media/DB2BP_Security_RCAC_0412.pdf">https://www.ibm.com/developerworks/community/wikis/form/anonymous/api/wiki/0fc2f498-7b3e-4285-8881-2b6c0490ceb9/page/c037e901-acf0-45b7-b648-a697deb6d5a1/attachment/83d95b5d-2f91-4c6f-bbcf-20cde722ba98/media/DB2BP_Security_RCAC_0412.pdf</a></li>
+</ul>
+</div>
+<div class="section" id="id15">
+<h2><a class="toc-backref" href="#id27">参照</a><a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table class="docutils footnote" frame="void" id="ref-sqlserver" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[1]</a></td><td><a class="reference external" href="https://msdn.microsoft.com/en-us/library/dn765131.aspx">https://msdn.microsoft.com/en-us/library/dn765131.aspx</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ref-db2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[2]</a></td><td><a class="reference external" href="https://www.ibm.com/support/knowledgecenter/SSEPEK_10.0.0/intro/src/tpc/db2z_rowandcolumnaccess.html">https://www.ibm.com/support/knowledgecenter/SSEPEK_10.0.0/intro/src/tpc/db2z_rowandcolumnaccess.html</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ref-ddd" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id11">[3]</a></td><td><a class="reference external" href="https://www.amazon.co.j/dp/B00GRKD6XU/">https://www.amazon.co.j/dp/B00GRKD6XU/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ref-create-view" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13">[4]</a></td><td><a class="reference external" href="https://www.postgresql.jp/document/8.2/html/sql-createview.html">https://www.postgresql.jp/document/8.2/html/sql-createview.html</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="articles_missing_values.html" class="btn btn-neutral float-right" title="欠測データの統計科学受講ノート" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="weeklyreport_2017w12.html" class="btn btn-neutral" title="日記 2017-W12" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

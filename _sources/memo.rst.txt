@@ -1,0 +1,688 @@
+========
+覚え書き
+========
+
+.. お約束
+.. - アンカーは ``.. _memo-spam_ham:`` のように書く
+.. - ``memo-`` をプレフィックスにして ``_`` 区切りにする
+
+.. contents::
+   :depth: 2
+
+.. toctree::
+   :maxdepth: 1
+
+   memo_binarization
+   memo_imagemagick
+   memo_powershell
+   memo_awscli
+   memo_oas
+   memo_ms_flow
+
+メモ
+====
+
+- 冪級数展開
+- :math:`\lim_{x \to 0} (1 - x)^{-1/x}`
+- 区分求積法
+- 変曲点
+- ガンマ関数
+
+MathJax チートシート
+====================
+
+WIP
+
+Linux 版 gyazo のスクリーンキャプチャコマンドを変更する
+=======================================================
+
+Linux 版 gyazo は、スクリーンキャプチャに ``import`` コマンドを使っている。
+
+ところが、手元の環境では ``import`` コマンドは不要な罫線が混入したり最前面のウィンドウをキャプチャできなかったりと誤動作が多く見られる。
+
+gyazo コマンドは、 ``~/.gyazo.config.yml`` に設定を記載することでスクリーンキャプチャのコマンドを変更したりすることができるので、
+``import`` の代わりに ``gnome-screenshot`` コマンドを使うように設定する。
+
+~/.gyazo.config.yml::
+
+  command: sleep 3 && /usr/bin/gnome-screenshot -af
+
+``command`` というキーでコマンドとオプションを記載する。なお、コマンドへは引数としてファイル名が渡されるため、 ``-f`` 引数を最後に付加している。
+
+PCA に関する覚え書き
+====================
+
+- 共分散行列の固有ベクトルが主成分のベクトルになる理屈がさっぱりわからん
+- 共分散、絶対値が大きくなるほど傾きが大きくなるっぽい
+- レイリー商
+- なんで :math:`v^TAv` を最大化する :math:`v` が :math:`A` の最大の固有ベクトルに一致するの
+- レイリー商を計算するとでるらしい
+- この :math:`v` はレイリー商で計算できて :math:`\Sigma` の最大の固有ベクトル :math:`v` に一致する
+- :math:`v^T \Sigma v` を最大化する :math:`v` を取りたい
+- :math:`v^TD` 上での分散は :math:`v^T \Sigma v` で表される
+- データ :math:`D` をベクトル :math:`v` へ写像するのに :math:`v^TD` を使う
+- 2 番目に大きいベクトルは常に一番大きいベクトルに直交している
+- 固有ベクトルの大きさは固有値でわかる
+- 言い換えると、ベクトル上でデータの分散が最大となるベクトルである固有ベクトルを探すことになる
+- そういえば固有ベクトルって全部線形独立だった
+- http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/
+- 共分散、 tan の平均では
+- 共分散行列、変換行列と回転行列の積らしい
+- 二次元で、 scaling matrix が :math:`S`, 回転行列が :math:`R` で :math:`SR` が対称行列の場合、何度計算しても :math:`sx = - sy` になる
+- 何度計算しても :math:`cov(X, X) = -cov(Y, Y)` になる
+
+.. _memo-nginx_and_ssh:
+
+ファイヤーウォール内のサイトへの接続に Nginx と SSH を組み合わせる
+===================================================================
+
+ファイアウォール内へのサイトへの接続には、
+OpenSSH を SOCKS プロキシ (``-D`` オプション) として使っていた。
+
+ただ、この場合、システムワイドなプロキシ設定が必要となり、
+不要なトラフィックまで踏み台サーバを経由することになっていた。
+
+この問題を回避するために、プロキシの自動構成スクリプト (PAC) を作成したが、
+PAC ファイルは HTTP でホスティングする必要があり、
+一部のアプリケーションが通信に失敗する現象にも遭遇した。
+
+また、OpenSSH は SOCKS プロキシ (``-D``) としてではなく、
+特定のポートを転送する (``-L``) こともできるが、
+この場合、サイトが HTTPS の場合や ``Host`` をはじめとする HTTP ヘッダが問題になり、
+単体では解決策として使うことができない。
+
+問題
+----
+問題を整理すると次のようになる
+
+- ブラウザからファイアウォール内のサイトへのアクセスにのみ踏み台サーバを経由したい
+- PAC ファイルだといくつかの問題があるので、別の手段を使う必要がある
+
+対応方法
+--------
+
+サイトへの接続には次の構成をとった
+
+- hosts ファイルで、プロキシを通すドメインをプロキシに向ける
+- Nginx は、 HTTPS の対応や HTTP ヘッダの処理を行う
+- OpenSSH は、踏み台サーバを経由してサイトへのポート転送を行う
+
+::
+
+    ブラウザ <-(HTTP)-> Nginx (*.example.local) <-> OpenSSH (-L) <-> 踏み台サーバー (gw.exmaple.com) <-> 目的のサイト (*.example.com)
+
+今回は、 ``site1.example.com`` というサイトがファイアウォール内に存在するとして、
+``site1.example.local`` へアクセスすると、プロキシを通じて ``site1.example.com`` へアクセスされるように構成する
+
+.. csv-table:: 例
+  :header-rows: 1
+
+  プロキシのドメイン, ソケットファイル名, 目的のサイトのドメイン, 目的のサイトのスキーム
+  site1.example.local, site1.example.sock, site1.example.com, http
+  site2.example.local, site2.example.sock, site2.example.com, https
+
+
+hosts ファイルの設定
+~~~~~~~~~~~~~~~~~~~~
+
+hosts ファイルを変更して、
+目的のサイトのドメインがプロキシのアドレスとして解決されるようにする。
+
+hosts::
+
+    192.168.1.123   site1.example.local
+
+OpenSSH の起動
+~~~~~~~~~~~~~~
+
+ポート転送用に OpenSSH を起動する。
+
+.. code-block:: console
+
+   $ # /path/to/site1.example.sock -> site1.example.com:443
+   $ ssh -i /pass/to/key.pem -fN  user@gw.example.com -L/path/to/site1.example.sock:site1.example.com:443
+
+ローカル側は、 ``/path/to/site1.example.sock`` といったように、
+サブドメインを名前に含んだ UNIX ドメインソケットにバインドさせる。
+
+サブドメインをファイル名に含めることで、 Nginx 側の設定を変更せずに複数のホストへの接続を行える。
+
+UNIX ドメインソケットなので、加えて Nginx が利用できるようにパーミッション設定が必要である。
+ディレクトリに対して setgid しておくとよい。
+
+ファイヤーウォール内へ常時接続可能というのも不用心であるし、
+秘密鍵へパスフレーズを設定していることも考慮して、ポート転送のサービス化はさせなかった。
+
+Nginx の設定
+~~~~~~~~~~~~
+
+Nginx の設定は次の通り。
+
+example_proxy.conf::
+
+    server {
+        server_name ~^(?<subdomain>.+)\.example.local$;
+
+        location / {
+            # Scheme の決定
+            set $socket_scheme 'http';
+            set $socket_path /path/to/$subdomain.example.sock;
+
+            # site2 は HTTPS を使う
+            if ($subdomain = 'site2') {
+                set $socket_scheme 'https';
+            }
+
+            proxy_pass $socket_scheme://unix:$socket_path;
+            proxy_read_timeout 600;
+
+            # Cookie のドメイン設定
+            proxy_cookie_domain $subdomain.example.local $subdomain.example.com;
+
+            # リダイレクトの URL 書き換え
+            proxy_redirect $socket_scheme://$subdomain.example.com $socket_scheme://$subdomain.example.local;
+
+            # HTTP ヘッダの設定: Host
+            proxy_set_header Host $subdomain.example.com;
+
+            # HTTP ヘッダの設定: Referer
+            set $referer $http_referer;
+            if ($http_referer ~ '^https?://(?<subdomain>.+)\.example.local(?<path>/.*)$') {
+                set $referer $socket_scheme://$subdomain.example.com$path;
+            }
+            proxy_set_header Referer $referer;
+
+            # HTTP ヘッダの設定: Origin
+            set $origin $http_origin;
+            if ($http_origin ~ '^https?://(?<subdomain>.+)\.example.local(?<suffix>.*)$') {
+                set $origin $socket_scheme://$subdomain.example.com$suffix;
+            }
+            proxy_set_header Origin $origin;
+        }
+    }
+
+サブドメイン名をもとにポート転送を行う UNIX ドメインソケットへ接続し、
+``Host`` や ``Referer`` などを書き換えたうえで、転送を行うように設定した。
+
+目的のサイトが複数あり、 HTTP/HTTPS のサイトが混在している場合に対応するため、
+サブドメインでスキームを切り分けるようにした。
+
+.. note::
+
+  ソケットにスキームを入れて、ソケットの存在確認をすることでスキームを切り替えることを考えたが、
+  ``if (-f /path/to/spam.sock)``, ``if (-e /path/to/spam.sock)`` でソケットの存在を確認できなかったため、
+  断念した。
+
+デバッグ
+--------
+
+``socat`` を使うと書き換えが必要なヘッダを洗い出すのに便利。
+
+Nginx の ``proxy_pass`` が HTTPS になっていると人間にやさしくないので、一度 HTTP に変更してから行う。
+
+.. code-block:: console
+
+  $ socat -u tcp4-listen:1080,reuseaddr,fork exec:cat
+
+.. _memo-systemctl_user_cause_errors:
+
+systemctl --user 実行時のエラーへの対処方法
+===========================================
+
+.. caution:: この現象は、対応方法の公式なソースが未発見である
+
+:OS: Debian 8.5
+:systemd: systemd 215
+
+`libpam-systemd <https://packages.debian.org/ja/sid/libpam-systemd>`_ をインストールし、
+再起動すると問題は解消される。
+
+エラーの発生方法
+----------------
+- ``systemd --user`` サービスが起動していない状態で、 ``systemctl --user`` コマンドをユーザー権限で実行する
+- ``XDG_RUNTIME_DIR`` が設定されていない場合、 "Failed to get D-Bus connection: Connection refused" というエラーが発生する
+- ``XDG_RUNTIME_DIR`` が設定されている場合、 "Failed to get D-Bus connection: No such file or directory" というエラーが発生する
+
+原因
+----
+- ``systemd --user`` が起動していない場合、
+  systemd サービスに接続できないことでエラーが発生する。
+- ``systemd --user`` 自体は ``/lib/systemd/system/user@.service`` から起動されており、
+  *libpam-systemd* とは直接関係はない
+- ただし、 *libpam-systemd* がインストールされていない状態では、
+  ``systemd --user`` は、必要なディレクトリや環境変数が足りず起動できない
+
+  .. code-block:: console
+
+    $ systemctl status user1
+    ● user1.service
+       Loaded: not-found (Reason: No such file or directory)
+          Active: inactive (dead)
+
+- *libpam-systemd* でインストールされる `pam_systemd <https://www.freedesktop.org/software/systemd/man/pam_systemd.html>`_ モジュールは、
+  ``systemd --user`` の起動に必要な環境変数やディレクトリを設定する
+- 結果的に、 *libpam-systemd* をインストールすると、 ``systemd --user`` が起動できるようになり、
+  ``systemctl --user`` からユーザーサービスが起動できるようになる
+
+経緯
+----
+
+1. ``systemctl --user`` すると "Failed to get D-Bus connection: Connection refused" というエラーが発生した。
+2.  どうも ``XDG_RUNTIME_DIR`` 環境変数が設定されている必要があるらしいので、
+    `Arch wiki <https://wiki.archlinuxjp.org/index.php/XDG_Base_Directory_%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88>`_ の
+    記述に従い、 ``XDG_RUNTIME_DIR`` を ``$HOME/.profile`` に設定しディレクトリを作成した。
+3. 再度 ``systemctl --user`` すると、次は "Failed to get D-Bus connection: No such file or directory" というエラーが発生した。
+4. `フォーラム <https://bbs.archlinux.org/viewtopic.php?id=201543>`_ によると再インストールすると
+   everything just worked™ らしいので、それらしいパッケージを探したところ、
+   *libpam-systemd* が見つかったのでインストールし、再起動した
+5. ``systemctl --user`` が動作することが確認できた
+6. *libpam-systemd* を ``purge`` して再起動したところ、再度エラーが発生するようになったので、どうもこのパッケージが必要らしい
+
+参考資料
+--------
+- https://bbs.archlinux.org/viewtopic.php?id=201543 [2016-12-02 閲覧]
+- https://bbs.archlinux.org/viewtopic.php?id=180641 [2016-12-02 閲覧]
+- https://www.centos.org/forums/viewtopic.php?t=59484 [2016-12-02 閲覧]
+
+.. _memo-ephemeral_port:
+
+一時ポート
+==========
+
+Ephemeral port. bind(2) を呼び出す際のポート番号に 0 を指定した際に選ばれるポート。
+
+たとえば、 Python の ``http.server`` で 0 を指定すれば、
+空いているポートが適当に選ばれる。
+
+.. code-block:: console
+
+  $ python3 -mhttp.server 0
+  Serving HTTP on 0.0.0.0 port 45081 ...
+  ^C
+  Keyboard interrupt received, exiting.
+  $ python3 -mhttp.server 0
+  Serving HTTP on 0.0.0.0 port 46937 ...
+
+参考資料
+--------
+- Man page of ip(7)
+
+.. _memo-sshtunnel_service:
+
+SSH トンネルを Systemd/User のサービスとして登録する
+====================================================
+
+- ssh(1) に ``-N`` を渡しているので、何もしない ssh プロセスがフォアグラウンドで立ち上がる
+- このため、 ``Type=`` には ``simple`` を指定している
+- 外部から kill(1) されたり、ネットワークが不安定でプロセスが死んだ際にも復帰するように、 ``Restart=always`` を指定している
+- ``ExecStart=`` にはフルパスを指定する必要がある
+- フルパス指定しないと ``Invalid argument`` というエラーになる（わかりにくい）
+
+  ::
+
+    $ systemctl --user status sshtunnel.service
+    ● sshtunnel.service - SSH tunnel to somewhere.in.firewall.example.com
+       Loaded: error (Reason: Invalid argument)
+          Active: inactive (dead)
+
+::
+
+  [Unit]
+  Description=SSH tunnel to somewhere in firewall
+  Wants=network-online.target
+
+  [Service]
+  Type=simple
+  ExecStart=/usr/bin/ssh -i %h/.ssh/my_key.pem -N  hostname -L 1234:somewhere.in.firewall.example.com:1234
+  Restart=always
+
+  [Install]
+  WantedBy=default.target
+
+.. _memo-systemd:
+
+Systemd
+=======
+
+ディレクティブ
+--------------
+Systemd には種々のディレクティブが存在しドキュメントも充実しているが、
+充実している反面、索引性があまりよくないように見える。
+
+そこで SYSTEMD.DIRECTIVES(7) を参照すると、
+ディレクティブの一覧とドキュメントへのポインタが記載されている。
+
+目的のディレクティブのドキュメントが見つからない場合は、
+SYSTEMD.DIRECTIVES(7) から参照するとよいようだ。
+
+Install セクション
+------------------
+- Install セクションは、 systemd(1) からランタイムには使われない [#REF_MAN_SYSTEMD_UNIT]_
+- Install セクションは、 systemctl(1) の ``enable``, ``disable`` サブコマンドから利用される [#REF_MAN_SYSTEMD_UNIT]_
+
+Alias ディレクティブ
+~~~~~~~~~~~~~~~~~~~~
+``systemctl enable`` コマンドを実行すると、
+*Alias* ディレクティブで指定されたパスにシンボリックリンクを作成する [#REF_MAN_SYSTEMD_UNIT]_
+
+demo-alias.service::
+
+  [Unit]
+  Description=%n
+
+  [Service]
+  Type=oneshot
+  ExecStart=/bin/echo %n
+
+  [Install]
+  Alias=demo-alias-hoge.service
+
+.. code-block:: console
+
+  $ systemctl --user enable demo-alias.service
+  Created symlink /path/to/.config/systemd/user/demo-alias-hoge.service → //path/to/.config/systemd/user/demo-alias.service.
+  $ systemctl --user start demo-alias-hoge
+  $ systemctl --user status demo-alias-hoge
+  ● demo-alias.service
+     Loaded: loaded (/path/to/.config/systemd/user/demo-alias.service; enabled; vendor preset: enabled)
+     Active: inactive (dead)
+
+ただし *WantedBy* ディレクティブからは無視される
+
+demo-alias.service::
+
+  [Unit]
+  Description=%n
+
+  [Service]
+  Type=oneshot
+  ExecStart=/bin/echo %n
+
+  [Install]
+  WantedBy=default.target
+  Alias=demo-alias-hoge.service
+
+.. code-block:: console
+
+  $ systemctl --user disable demo-alias.service
+  Removed /path/to/.config/systemd/user/demo-alias-hoge.service.
+  $ systemctl --user enable demo-alias.service
+  Created symlink /path/to/.config/systemd/user/demo-alias-hoge.service → /path/to/.config/systemd/user/demo-alias.service.
+  Created symlink /path/to/.config/systemd/user/default.target.wants/demo-alias.service → /path/to/.config/systemd/user/demo-alias.service.
+  $ systemctl --user disable demo-alias.service
+  Removed /path/to/.config/systemd/user/demo-alias-hoge.service.
+  Removed /path/to/.config/systemd/user/default.target.wants/demo-alias.service.
+
+WantedBy ディレクティブ
+~~~~~~~~~~~~~~~~~~~~~~~
+
+*WantedBy* ディレクティブで指定されたユニットの ``.wants`` ディレクトリ下へ、
+*Alias* ディレクティブを指定することにほぼ相当する。 [#REF_MAN_SYSTEMD_UNIT]_
+
+具体的には、以下のふたつはほぼ同等
+
+demo-wantedby.service::
+
+  Alias=default.service.wants/demo-wantedby.service
+
+demo-wantedby.service::
+
+  WantedBy=default.service
+
+エスケープ
+----------
+サービス名やインスタンス名などは、適宜エスケープされる。
+
+systemd 233 時点では、 ``systemctl enable`` 時にサービス名は、
+``/`` が ``-`` にエスケープされるほか、
+``:-_.\@`` と半角英数字以外はすべて ``\xXX`` 形式にエスケープされる。 [#LINK_0POINTER_DE_INSTNCES]_ [#REF_MAN_SYSTEMD_UNIT]_
+
+このエスケープは、 systemd-escape(1) に ``-m`` オプションを付けると確認できる。 [#REF_MAN_SYSTEMD_ESCAPE]_
+
+``/`` が ``-`` にエスケープされ、 ``-`` がエスケープされないことからも明らかであるが、
+このエスケープ処理は単射ではないため、アンエスケープ時にもとの文字列へ復元されないことがある。 [#LINK_SYTEMD_V233_UNITNAME_C_L641]_
+
+.. [#LINK_0POINTER_DE_INSTNCES] http://0pointer.de/blog/projects/instances.html 
+.. [#REF_MAN_SYSTEMD_UNIT] man SYSTEMD.UNIT(5)
+.. [#REF_MAN_SYSTEMD_ESCAPE] man SYSTEMD-ESCAPE(1)
+.. [#LINK_SYTEMD_V233_UNITNAME_C_L641] https://github.com/systemd/systemd/blob/v233/src/basic/unit-name.c#L641
+
+.. _memo-onliner:
+
+Bash
+====
+
+キーボード入力を環境変数に入れてコマンドを実行する
+--------------------------------------------------
+
+cat(1), head(1) を組み合わせる。
+
+.. code-block:: bash
+
+  ENV_VAR=$(cat | head -1) /path/to/do_staff
+
+
+.. code-block:: console
+
+  $ a=$(cat | head -1) sh -c 'echo $a'
+  hoge
+
+  hoge
+
+プロンプトを表示したい場合は、 Bash の組み込みコマンド read を使う。
+
+.. code-block:: bash
+
+  ENV_VAR=$(read -p 'INPUT: ' x; echo -n $x) /path/to/do_staff
+
+
+キーボード入力を入力完了後に非表示化する場合は、標準エラー出力でカーソル移動を行い出力を除去する。
+
+.. code-block:: bash
+
+  ENV_VAR=$(read -p 'INPUT: ' x; echo -n $x; echo -e '\033[1A\033[2K' >&2) /path/to/do_staff
+
+cat(1), head(1) でもできるが、この場合はカーソルを 2 行上に移動させる必要がある。
+
+.. code-block:: bash
+
+  ENV_VAR=$(cat | head -1; echo -e '\033[2A\033[2K' >&2) /path/to/do_staff
+
+ユースケース
+
+.. code-block:: console
+
+  $ PGPASSWORD=$(read -p 'PW: ' p; echo -n $p; echo -e '\033[1A\033[2K' >&2) psql mydb
+  PW: my-password  # ユーザ入力。入力後に消される。
+  mydb=#
+
+特殊パラメータの展開
+--------------------
+
+``*``, ``@`` の違いだけでなく、ダブルクオートの有無でも挙動が変化する。
+
+``bash -c '[展開前のコード]' 'a' 'b 1' 'c 2'`` の実行結果
+
+.. csv-table::
+  :header-rows: 1
+
+  "特殊パラメータ", "ダブルクオート", "展開前",             "展開後"
+  "``*``",          "ナシ",           ``echo $*``,          ``echo b 1 c 2``
+  "``*``",          "アリ",           ``echo "$*"``,        ``echo b 1 c 2``
+  "``@``",          "ナシ",           ``echo $@``,          ``echo b 1 c 2``
+  "``@``",          "アリ",           ``echo "$@"``,        ``echo 'b 1' 'c 2'``
+  "``@``",          "アリ",           ``echo "x $@ y"``,    ``echo 'x b 1' 'c 2 y'``
+
+``bash -c 'x=1; [展開前のコード]' '' '$x'`` の実行結果
+
+.. csv-table::
+  :header-rows: 1
+
+  "特殊パラメータ", "ダブルクオート", "展開前",       "展開後"
+  "``*``",          "ナシ",           ``echo $*``,    ``echo '$x'``
+  "``*``",          "アリ",           ``echo "$*"``,  ``echo '$x'``
+  "``@``",          "ナシ",           ``echo $@``,    ``echo '$x'``
+  "``@``",          "アリ",           ``echo "$@"``,  ``echo '$x'``
+
+``bash -c 'IFS=[IFSの値]; [展開前のコード]' '' '$x'`` の実行結果
+
+.. code-block:: console
+
+  $ bash -vxc "IFS=$'\n'; echo --\"\$*\"--" '' 'a b' 'c d'
+  IFS=$'\n'; echo --"$*"--
+  + IFS='
+  '
+  + echo '--a b
+  c d--'
+  --a b
+  c d--
+
+  $ bash -vxc "IFS=$'x\n'; echo --\"\$*\"--" '' 'a b' 'c d'
+  IFS=$'x\n'; echo --"$*"--
+  + IFS='x
+  '
+  + echo '--a bxc d--'
+  --a bxc d--
+
+  $ bash -vxc "IFS=$'x\n'; echo \$*" '' 'a b' 'c d'
+  IFS=$'x\n'; echo $*
+  + IFS='x
+  '
+  + echo 'a b' 'c d'
+  a b c d
+  $ bash -vxc "IFS=; echo \$*" '' 'a b' 'c d'
+  IFS=; echo $*
+  + IFS=
+  + echo 'a b' 'c d'
+  a b c d
+  $ bash -vxc "unset IFS; echo \$*" '' 'a b' 'c d'
+  unset IFS; echo $*
+  + unset IFS
+  + echo a b c d
+  a b c d
+
+.. note:: ``*`` は ``IFS`` の定義の有無で挙動が変化するのでややこしい
+
+read と LANG 環境変数
+---------------------
+Bash 限定
+
+
+.. code-block:: console
+
+  $ echo -n 'あいう' | while IFS= LANG=ja_JP.UTF-8 read -n 1 c; do echo $c; done | wc -l
+  3
+  $ echo -n 'あいう' | while IFS= LANG=us_EN.UTF-8 read -n 1 c; do echo $c; done | wc -l
+  3
+  $ echo -n 'あいう' | while IFS= LANG=C read -n 1 c; do echo $c; done | wc -l
+  9
+
+``LANG=C read -n 1 -r -d '' b`` とかすると標準入力を 1 バイトずつ読める [#REF_SO_13890319]_
+
+
+参考資料
+~~~~~~~~
+- Man page of BASH(1)
+
+.. [#REF_SO_13890319] http://stackoverflow.com/a/13890319
+
+
+YAML を JSON に変換する君
+-------------------------
+JSON を書くのがツライので YAML を JSON に変換する君をワンライナーで書いた。
+
+YAML と JSON が両方とも標準で使えるということで Ruby (>=1.9) を使った。
+
+.. code-block:: console
+
+  $ ruby -e 'require "yaml";require "json";puts JSON.generate(YAML.load(ARGF.read()))'
+
+これを ``yaml2json`` とか適当な名前でエイリアスに突っ込んでおけば、次のように使える。
+
+.. code-block:: console
+
+  $ echo '- a' | yaml2json
+  ["a"]
+
+
+Vim
+===
+
+新規ファイルを開く際に、起動済み Vim の新しいタブで開くためのラッパースクリプト
+
+.. code-block:: bash
+
+    #!/bin/bash
+
+    SERVERNAME=VIMWRAPPER
+
+    if (vim --serverlist | grep -q "${SERVERNAME}") ; then
+       vim --servername ${SERVERNAME} --remote-send "<Esc>:tabe<Space>${1}<CR>"
+       vim --servername ${SERVERNAME} --remote-send '<Esc>:!xdotool<Space>windowactivate<Space>$WINDOWID<CR>'
+    else
+       vim --servername ${SERVERNAME} ${1}
+    fi
+
+
+tmux やらと組み合わせる
+
+.. code-block:: bash
+
+    #!/bin/bash -x
+
+    if (vim --serverlist | grep -q 'VIMWRAPPER') ; then
+        vim --servername VIMWRAPPER --remote-send "<Esc>:vsplit<Space>${1}<CR>"
+    else
+        # If tmux is running, then launch vim in in tmux
+        if (ps -Ctmux) ; then
+            tmux new-window "vim --servername VIMWRAPPER ${1}"
+        else
+            /usr/bin/gnome-terminal -x vim --servername VIMWRAPPER ${1}
+        fi
+
+        for _ in $(seq 10000)  # wait for launch vim
+        do
+            (vim --serverlist | grep -q 'VIMWRAPPER') && break
+            sleep 0.05
+        done
+    fi
+    vim --servername VIMWRAPPER --remote-send '<Esc>:!xdotool<Space>windowactivate<Space>$WINDOWID<CR><CR>'
+
+
+Docker
+======
+
+コンテナの MAC アドレスを変更する
+---------------------------------
+
+``--mac-address`` オプションを指定することで MAC アドレスを指定できる [#DOCKER_17_NETWORKING]_
+
+.. code-block:: console
+
+
+  $ docker run --mac-address="$(tr -dc '0-9a-f' </dev/urandom | head -c 12 | perl -pe 's/([0-9a-f]{2})(?=.)/\1:/g')" --rm -it debian sh -c 'ip addr show eth0; ping hirai.me -c 1'
+  46: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state DOWN group default
+      link/ether 40:a3:a1:d7:da:c7 brd ff:ff:ff:ff:ff:ff
+      inet 172.17.0.2/16 scope global eth0
+         valid_lft forever preferred_lft forever
+      inet6 fe80::42a3:a1ff:fed7:dac7/64 scope link tentative
+         valid_lft forever preferred_lft forever
+  PING hirai.me (160.16.235.236): 56 data bytes
+  64 bytes from 160.16.235.236: icmp_seq=0 ttl=127 time=17.689 ms
+  --- hirai.me ping statistics ---
+  1 packets transmitted, 1 packets received, 0% packet loss
+  round-trip min/avg/max/stddev = 17.689/17.689/17.689/0.000 ms
+
+.. [#DOCKER_17_NETWORKING] https://docs.docker.com/v1.7/articles/networking/
+
+Git
+===
+
+未コミットの変更がないことを確認する
+------------------------------------
+
+.. code-block:: console
+
+  $ git diff-index --quiet HEAD --  # 変更がなければステータスコードは 0 になる
+
+https://stackoverflow.com/a/3879077

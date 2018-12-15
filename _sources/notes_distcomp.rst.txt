@@ -1,0 +1,356 @@
+=====================
+Distributed computing
+=====================
+
+A model of distributed computing
+================================
+
+:`p_i`: :math:`i` th process.
+:`e_i^x`: :math:`x` th event at :math:`p_i`
+:`LS_i^x`: state of :math:`p_i` after :math:`e_i^x` and before :math:`e_i^y` (:math:`x < y`)
+:`SC_{ij}^{x,y}`:
+
+  - state of Channel :math:`C_{ij}`
+  - :math:`SC_{ij}^{x,y} = \{m_{ij}|send(m_{ij}) \leq LS_i^x \wedge rec(m_{ij}) \nleq LS_j^y\}`
+  - :math:`send(m_{ij})` has been occuered but :math:`rec(m_{ij})` has never happend
+  - the channel states cannot be derived from the local states at a certain point
+
+:`GS`:
+
+  - the global state of a Distributed system
+  - :math:`GS = \left\{\cup_i^{x_i}LS_i^x, \cup_{j,k}SC_{jk}^{y_i,z_k}\right\}`
+  - the global state is a collection of the local states and the channel states.
+
+:consitent global state:
+
+  - :math:`{\forall}m_{ij}\left(send(m_{ij}) \nleq LS_i^{x_i} \implies m_{ij} \notin SC_{ij}^{x_i,y_j} \land rec(m_{ij}) \nleq LS_j^{y_j}\right)`
+  - for all messages, if a message has never been recorded its send, then the message is not in any channels and any other processes have never recorded the recept of the message
+
+:strongly consitent:
+
+  - :math:`{\forall}i,{\forall}j\left(1 \leq i,j \leq n :: SC_{ij}^{x,y} = \phi\right)`
+  - all channels are empty
+  - all sent messages have been received
+
+6.7 A nomenclature for multicast
+--------------------------------
+
+- nomenclature: 体系, 用語法
+- 送信元 (source) と送信先 (destination) の関係に基づく 4 つのクラスに分類される
+- SSSG: Single Source, Single destination Group
+- MSSG: Multiple Source, Single destination Group
+- SSMG: Single Source, Multiple destination Group (グループ間の重複 (overlap) を許す)
+- MSMG: Multiple Source, Multiple destination Group (グループ間の重複 (overlap) を許す)
+- SSSG, SSMG は FIFO チャンネルがあれば、 total order, causal order が保証される
+- MSSG は、 Centralized アルゴリズム (6.4) で total order, causal order が保証できる
+- MSMG では propergation tree アプローチと呼ばれる
+
+6.8 Propagation trees for multicast
+-----------------------------------
+
+- メタグループ (metagroup) の特性:
+
+  i. 各プロセスはひとつのメタグループに含まれ、
+     同じグループ (group) に属している他のプロセスも同じメタグループに含まれる
+  ii. 同じグループに属していながら同じメタグループに含まれれないプロセスはない
+
+- メタグループを定義することで、 MSMG をマルチキャストがより簡単な MSSG に変換する
+- 各グループの選ばれたノード (distinguished notde) をマネージャ (manger) とする
+- 各グループ (ユーザグループ, user group) :math:`G_i` について、
+  プライマリメタグループ (PM: Primary metagroup) :math:`PM(G_i)` を選ぶ
+- すべてのメタグループは propergation tree または propergation forest に編成 (organized) される
+- Propagation tree 内での特性:
+
+  1. :math:`PM(G)` は、 :math:`G` のメタグループすべての祖先
+  2. :math:`PM(G)` は、一意に定まる
+  3. :math:`MG` への :math:`MG` がサブセットとなる :math:`PM` からの path は一意
+  4. :math:`PM(G_1), PM(G_1)` は、同じ木の同じ枝 (branch) 上、
+     もしくは、接点の無い (disjoint) 木に存在しなければならない
+
+Key idea:
+
+- :math:`G_i` へのマルチキャスト:
+
+  1. :math:`PM(G_i)` へ送る
+  2. :math:`PM(G_i)` から :math:`PM(G_i)` をルートとするサブツリーへ propagate する
+
+Correctness:
+
+- 各プロセスは、中央で計算された propergation tree を知っている必要がある
+- 各メタグループはマネージャとして機能するプロセスを持っている
+- Total order: 保証される。すべてのプロセス間に FIFO があれば、同じ順序でメッセージが送れられる
+- Causal order: 保証される。 primary metagroups のマネージャが行うチェックで保証される
+
+英語
+^^^^
+:distinguished: 区別された
+:subsume: 含む
+:assumption: 仮定
+:respectively: それぞれ
+:of which: その
+
+6.9 Classification of application-level multicast algorithms
+------------------------------------------------------------
+
+- 任意でかつ変化するグループにマルチキャストするシナリオが一般にある
+- 実際のシステムではより "Centralized" になる
+- 各種プロトコルは 5 種類に分類される
+
+  - Communication history-based algorithms
+
+    - 通信履歴 (Communication history) を順序の保証に使う
+    - アルゴリズム: RST, KS, Lamport's, The NewTop
+
+  - Privilege-based algorithms
+
+    - 送信元プロセス間の円周をトークンが巡る
+    - トークンはシーケンシャルな番号を持っている
+    - トークンを持っているプロセスのみがマルチキャストできる
+    - メッセージを送るとトークンの番号が増える
+    - 送信先のプロセスは、トークンの番号でメッセージを配送 (deliver) する
+
+      - receive ではない
+
+    - TO: 保証される
+    - CO: closed group を構成することで保証される
+    - 同時に複数のマルチキャストができないため、スケーラブルではない
+
+  - Moving sequencer algorithms
+
+    1. 送信元はマルチキャストメッセージをすべての sequencer に送る
+    2. sequencer は間でトークンが巡っていて、
+       トークンにはシーケンシャルな番号と
+       番号が振られたメッセージがピギーバックされている
+    3. i. sequencer がトークンを受け取ると、
+          まだ番号の振られていないメッセージに番号を振る
+       ii. 新たに番号を振ったメッセージをトークンに入れ、
+           メッセージを送信する
+       iii. トークンを次の sequencer に回す
+
+    4. 送信先のプロセスは、番号の順序でメッセージを配送する
+    - TO: 保証される
+
+  - Fixed sequencer algorithms
+
+    - Moving sequencer の簡単版
+    - ひとつの sequencer だけをもつ
+    - centralize される
+    - 6.8 で見てきたのはこのパターン
+
+  - Destination agreement algorithms
+
+    - 送信先プロセスは、メッセージと制限された順序の情報 (limited ordering information) を受け取る
+    - 順序を決めるため、送信先プロセス間で情報を交換する
+    - 2 パターンが存在する
+
+      1. タイムスタンプを用いる (Lamport's three-phase algorithm はこれに含まれる)
+      2. 合意プロトコルを用いる
+
+英語
+^^^^
+:incr: (障害などを) 受ける
+:exhaustive: 網羅的な
+
+6.11 Distributed multicast algorithms at the network layer
+----------------------------------------------------------
+
+6.11.1 Reverse path forwarding (RPF) for constrained flooding
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- flooding を使ってネットワーク :math:`(N, L)` へ
+  データをブロードキャストするには、 :math:`2|L|` のメッセージが必要
+- Distance Vector Routing (DVR)
+
+  - 各ノードは、 :math:`x` へのパスでの次のホップを知っていると考える
+  - :math:`Next_hop(x)`: 「ベスト」なパスでの次のホップを返す関数
+
+- RPF アルゴリズム
+
+  - constrained flooding を実現するため、
+    DVR アルゴリズムを point-to-point のルーティングに利用
+  - メッセージ数は :math:`|N|` に近づく
+
+6.11.2 Steiner trees
+^^^^^^^^^^^^^^^^^^^^
+
+- Steiner tree problem
+
+  - :math:`(N, L), (N', L')` ただし :math:`N' \subseteq N, L' \subseteq L`
+  - :math:`(N', L')` は、すべてのノード :math:`N'` につながっている
+  - *minimal Steiner tree*: 重みが最小 (minimal-weight) の :math:`(N', L')`
+  - Minimal steiner tree problem は NP 完全
+  - 重みが変動すると再計算が必要で、
+    動的に変化するネットワークではさらに利用が困難
+
+- ヒューリスティックな推定方法
+
+  - MST:
+
+    - 不要なエッジを削除する
+    - コストは minimal steiner tree の 2 倍程度
+    - 時間複雑性は :math:`O(|N'|\cdot|N|^2)`
+
+6.11.3 Multicast cost functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- :math:`cost(i)` マルチキャストの送信元 :math:`s` から
+  ルーティングスキーム (routing schme) :math:`R` で :math:`i` へ到達するコスト
+- *destination cost of R*: :math:`\frac{1}{|N'|}\sum_{i \in N'} cost(i)`
+
+  - :math:`N'` へのマルチキャストの平均コストを表す
+
+- *network cost*: :math:`R` でのエッジのコストの和
+
+6.11.4 Delay-bounded Steiner trees
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- マルチメディアネットワークやインタラクティブなアプリケーションでは、
+  Steiner tree は tree のコストだけでなく遅延の最小化が必要
+
+Delay-bounded minimal Steiner tree problem
+""""""""""""""""""""""""""""""""""""""""""
+
+- :math:`l \in L`
+- :math:`{\mathcal{C}}(l)`: 正の実数のコスト関数
+- :math:`{\mathcal{D}}(l)`: 正の整数の遅延関数
+- :math:`\delta`: 遅延の許容範囲 (delay tolerance)
+- :math:`s`: 送信元
+- :math:`Dest`: 送信先の集合
+- ただし :math:`{s}{\cup}Dest = N' \subseteq N`
+- :math:`T`: :math:`N'` をすべてカバーするスパニングツリー
+- :math:`v in T`
+- :math:`path(s, v)`: :math:`T` での、
+  :math:`s` から :math:`v`: へのパス
+- :math:`\sum_{l\inT}{\mathcal{C}}(l)` を最小化する
+
+  ただし、 :math:`{\forall}v \in N', \sum_{l {\in} path(s,v)}{\mathcal{D}(l)} < \delta`
+
+- この問題を解くのは、 Steiner tree を見つけるのと同じくらい困難
+- *constrained cheapest path*: :math:`\delta` より小さく :math:`x, y` 間で最小のコストのパス
+
+6.11.5 Core-based trees
+"""""""""""""""""""""""
+
+- 各グループが中央 (center) またはコア (core) ノードを持つ
+- ツリーへの参加方法:
+
+  1. コアノードへ "join" メッセージをユニキャストする
+  2. join メッセージは、コアノードへ到達するまでのエッジをマークする。
+     join メッセージの通ったパスは、 multicast tree へ追加される
+  3. ツリー上のノードは、
+     コアツリー上へ floolding を使ってメッセージをマルチキャストする
+  4. ツリー上にないノードからのメッセージは、
+     ツリー上のいずれかのノードに到達するとツリー上へ flood される
+
+- 現在広く実装されているのは Steiner tree ではなく、
+  よりシンプルな Core-based tree
+
+
+英語
+^^^^
+:tolerance: 許容範囲
+
+7\. Termination detection
+=========================
+
+7.1 Introduction
+----------------
+
+- 分散システムには分散処理が停止したかを検出するという、
+  根本的 (fundamental) な問題がある
+- 分散システムにはプロセスが正常に停止したかのグローバルな状態 (state) も、
+  グローバルなクロックも存在しないため、
+  termination detection は簡単 (trivial) な問題ではない
+- 分散システムがグローバルに停止したかは、
+  各プロセスのローカルな処理が停止し、かつ、
+  プロセス間の通信が発生しなくなったかで考えられる
+- *underlying computation*
+- *termination detection* (TD)
+- *basic* メッセージ: underlying computation で使われるメッセージ
+- *control* メッセージ: termination detection で使われるメッセージ
+- TD アルゴリズムは以下を保証する
+
+  1. TD アルゴリズムは、 underlying computation を無期限に遅らせることはできない。
+     したがって、 underlying computation をフリーズさせてはならない
+  2. TD アルゴリズムは、プロセス間に新しい通信チャンネルを必要としてはならない
+
+7.2 System model of a distributed computation
+---------------------------------------------
+
+- 分散処理の特徴
+
+  1. 分散処理の実行中、プロセスは次のいずれかの状態をとる
+
+     :active (bussy):
+       ローカルで処理が実行中
+
+     :idle (passive):
+       ローカルの処理が一時的にでも完了している
+
+  2. プロセスはいつでも active から idle に状態遷移できる
+  3. idle なプロセスは、他のプロセスから
+     メッセージを受信するまで active にならず、
+     自発的に active にもならない
+  4. active なプロセスのみがメッセージを送信できる。
+     (分散処理の初期化問題については考慮しない)
+  5. プロセスは idle, active いずれの場合でも
+     メッセージを受信することができ、
+     メッセージを受信した idle なプロセスは
+     active に状態遷移する
+  6. メッセージの送信と受信はアトミック
+
+- プロセスの状態はいずれ idle になるとする
+- プロセスの状態が active であり続けると、 TD アルゴリズムは停止しない
+
+Termination detection
+^^^^^^^^^^^^^^^^^^^^^
+
+- :math:`p_i(t) \in {idle, active}`:
+    時点 :math:`t` における `p_i` の状態
+- :math:`c_{i,j}(t)`:
+    時点 :math:`t` において、
+    プロセス :math:`p_i` から :math:`p_j` へ送られたメッセージ数
+- 時点 :math:`t_0` で分散処理が停止しているか:
+
+  :math:`({\forall}i :: p_i(t_0) = idle) \wedge ({forall}i,j :: c_{i,j}(t_0) = 0)`
+
+
+英語
+^^^^
+:cooperation: 協力、協調
+:ifer: 推測する
+:spontaneously: 自発的に
+
+7.5 A spanning-tree-based termination detection algorithm
+---------------------------------------------------------
+
+- :math:`N` 個のプロセス :math:`P_i ()0 \ge i \ge N)` を fixed connected な
+  無向グラフとしてモデル化する
+- エッジは、コミュニケーションチャンネルを表し、プロセスは隣接するプロセスへ
+  チャンネルを通して通信する
+- :math:`P_0` をグラフの root として、 termination detection の責務を負う
+- リーフノードは、停止した際に親ノードへ報告する
+- 親ノードは、すべてのリーフノードから停止が報告された際に、
+  更に親ノードへ報告する。これを繰り返す
+- root ノードは、すべての子ノードから停止が報告されれば、
+  （システムが）停止したとする
+- 2 つのシグナルの波 (waves of signals):
+
+  - inward: 最初に *token* と呼ばれるシグナルが、リーフノードから root ノードへ、
+    引き寄せる
+  - outward: *token* による inward wave が停止することなく root へ到達した場合、
+    *repeat* シグナルをリーフノードへ送る
+
+  これらが、停止が検出されるまで繰り返される
+
+7.5.1 Definitions
+^^^^^^^^^^^^^^^^^
+
+1. Token: リーフノードからルートノードへの inward なシグナル
+2. Repeat signal: *token* が停止を検出できなければ、
+   :math:`P_0`  が *repeat* シグナルをリーフノードへ送り出すことで、
+   再度 termination detection を開始する
+3. :math:`S`: 1 つ以上の *token* を持つ任意時点のノードの集合
+4. :math:`j` が :math:`S` に含まれず、 root から :math:`j` へのパス上に
+   :math:`S` の要素を含まない場合、 :math:`j` は :math:`S` の outside と呼ばれる
+5. :math:`S`: の outside なノードは idle 状態である

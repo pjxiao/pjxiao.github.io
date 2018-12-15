@@ -1,0 +1,938 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python機械学習プログラミング &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="詰み" href="notes.html"/>
+        <link rel="next" title="分類問題 - 機械学習ライブラリ sckit-learn の活用" href="notes_pyml_03.html"/>
+        <link rel="prev" title="10 Minutes to pandas" href="notes_pandas_10min.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python機械学習プログラミング</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html">分類問題 - 機械学習ライブラリ sckit-learn の活用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html">データ前処理 — よりよいトレーニングセットの構築</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html">次元削減でデータを圧縮する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html">モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_07.html">アンサンブル学習 - 異なるモデルの組み合わせ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html">ニューラルネットワーク - 画像認識トレーニング</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html">ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html">ニューラルネットワーク</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">機械学習アルゴリズムのトレーニングの構成要素</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3. 分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">6 . モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">パイプラインによるワークフローの効率化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#k">k 分割交差検証を使ったモデルの性能の評価</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">学習曲線と検証曲線によるアルゴリズムの診断</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">グリッドサーチによる機械学習モデルのチューニング</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">さまざまな性能評価指標</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+      <li>Python機械学習プログラミング</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_pyml.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="python">
+<h1>Python機械学習プログラミング<a class="headerlink" href="#python" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_03.html">分類問題 - 機械学習ライブラリ sckit-learn の活用</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_03.html#3.1-分類アルゴリズムの選択">3.1 分類アルゴリズムの選択</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_03.html#3.2-scikit-learn-活用へのファーストステップ">3.2 scikit-learn 活用へのファーストステップ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.2.1-scikit-learn-を使ったパーセプトロンのトレーニング">3.2.1 scikit-learn を使ったパーセプトロンのトレーニング</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_03.html#3.3-ロジスティック回帰を使ったクラスの確率のモデリング">3.3 ロジスティック回帰を使ったクラスの確率のモデリング</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.3.1-ロジスティック回帰の直観的知識と条件付き確率">3.3.1 ロジスティック回帰の直観的知識と条件付き確率</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.3.2-ロジスティック関数の重みの学習">3.3.2 ロジスティック関数の重みの学習</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.3.3-scikit-learn-によるロジスティック回帰モデルのトレーニング">3.3.3 scikit-learn によるロジスティック回帰モデルのトレーニング</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.3.4-正則化による過学習への対処">3.3.4 正則化による過学習への対処</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_03.html#3.4-サポートベクトルマシンによる最大マージン分類">3.4 サポートベクトルマシンによる最大マージン分類</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.4.1-最大マージンを直観的に理解する">3.4.1 最大マージンを直観的に理解する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.4.2-スラック変数を使った非線形分離可能なケースへの対処">3.4.2 スラック変数を使った非線形分離可能なケースへの対処</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.4.3-scikit-learn-での代替実装">3.4.3 scikit-learn での代替実装</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_03.html#3.5　カーネルSVM-を使った非線形問題の求解">3.5　カーネルSVM を使った非線形問題の求解</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.5.1　カーネルトリックを使って分離超平面を高次元空間で特定する">3.5.1　カーネルトリックを使って分離超平面を高次元空間で特定する</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_03.html#3.6　決定木学習">3.6　決定木学習</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.6.1　情報利得の最大化：できるだけ高い効果を得る">3.6.1　情報利得の最大化：できるだけ高い効果を得る</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.6.2　決定木の構築">3.6.2　決定木の構築</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html#3.6.3　-ランダムフォレストを使って弱い学習アルゴリズムと強い学習アルゴリズムを結合する">3.6.3　 ランダムフォレストを使って弱い学習アルゴリズムと強い学習アルゴリズムを結合する</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_03.html#3.7　k-近傍法：怠惰学習アルゴリズム">3.7　k 近傍法：怠惰学習アルゴリズム</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_04.html">データ前処理 — よりよいトレーニングセットの構築</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_04.html#4.1　欠測データへの対処">4.1　欠測データへの対処</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.1.1　欠測値を持つサンプル／特徴量を取り除く">4.1.1　欠測値を持つサンプル／特徴量を取り除く</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.1.2　欠測値を補完する">4.1.2　欠測値を補完する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.1.3　scikit-learn-の推定器API">4.1.3　scikit-learn の推定器API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_04.html#4.2-カテゴリデータの処理">4.2 カテゴリデータの処理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.2.1-順序特徴量のマッピング">4.2.1 順序特徴量のマッピング</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.2.2-クラスラベルのエンコーディング">4.2.2 クラスラベルのエンコーディング</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.2.3-名義特徴量での-one-hot-エンコーディング">4.2.3 名義特徴量での one-hot エンコーディング</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_04.html#4.3-データセットをトレーニングデータセットとテストデータセットに分割する">4.3 データセットをトレーニングデータセットとテストデータセットに分割する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_04.html#4.4-特徴量の尺度を揃える">4.4 特徴量の尺度を揃える</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_04.html#4.5　有益な特徴量の選択">4.5　有益な特徴量の選択</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.5.1　L1-正則化による疎な解">4.5.1　L1 正則化による疎な解</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html#4.5.2　逐次特徴選択アルゴリズム">4.5.2　逐次特徴選択アルゴリズム</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_04.html#4.6-ランダムフォレストで特徴量の重要度にアクセスする">4.6 ランダムフォレストで特徴量の重要度にアクセスする</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_05.html">次元削減でデータを圧縮する</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_05.html#5.1　主成分分析による教師なし次元削減">5.1　主成分分析による教師なし次元削減</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.1.1　共分散行列の固有対を求める">5.1.1　共分散行列の固有対を求める</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.1.2　特徴変換">5.1.2　特徴変換</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.1.3　scikit-learn-の主成分分析">5.1.3　scikit-learn の主成分分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_05.html#5.2-線形判別分析による教師ありデータ圧縮">5.2 線形判別分析による教師ありデータ圧縮</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.2.1-変動行列を計算する">5.2.1 変動行列を計算する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.2.2-新しい特徴部分空間の線形判別を選択する">5.2.2 新しい特徴部分空間の線形判別を選択する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.2.3　新しい特徴空間にサンプルを射影する">5.2.3　新しい特徴空間にサンプルを射影する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.2.4　scikit-learn-によるLDA">5.2.4　scikit-learn によるLDA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_05.html#5.3-カーネル主成分分析を使った非線形写像">5.3 カーネル主成分分析を使った非線形写像</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.3.2-Python-でカーネル主成分分析を実装する">5.3.2 Python でカーネル主成分分析を実装する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.3.3-新しいデータ点を射影する">5.3.3 新しいデータ点を射影する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html#5.3.4-scikit-learn-のカーネル主成分分析">5.3.4 scikit-learn のカーネル主成分分析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_06.html">モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_06.html#6.1　パイプラインによるワークフローの効率化">6.1　パイプラインによるワークフローの効率化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.1.1　Breast-Cancer-Wisconsin-データセットを読み込む">6.1.1　Breast Cancer Wisconsin データセットを読み込む</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.1.2　パイプラインで変換器と推定器を結合する">6.1.2　パイプラインで変換器と推定器を結合する</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_06.html#6.2　k-分割交差検証を使ったモデルの性能の評価">6.2　k 分割交差検証を使ったモデルの性能の評価</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.2.1　ホールドアウト法">6.2.1　ホールドアウト法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.2.2　k-分割交差検証">6.2.2　k 分割交差検証</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_06.html#6.3　学習曲線と検証曲線によるアルゴリズムの診断">6.3　学習曲線と検証曲線によるアルゴリズムの診断</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.3.1　学習曲線を使ってバイアスとバリアンスの問題を診断する">6.3.1　学習曲線を使ってバイアスとバリアンスの問題を診断する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.3.2　検証曲線を使って過学習と学習不足を明らかにする">6.3.2　検証曲線を使って過学習と学習不足を明らかにする</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_06.html#6.4　グリッドサーチによる機械学習モデルのチューニング">6.4　グリッドサーチによる機械学習モデルのチューニング</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.4.1　グリッドサーチを使ってハイパーパラメータをチューニングする">6.4.1　グリッドサーチを使ってハイパーパラメータをチューニングする</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.4.2　入れ子式の交差検証によるアルゴリズムの選択">6.4.2　入れ子式の交差検証によるアルゴリズムの選択</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_06.html#6.5　さまざまな性能評価指標">6.5　さまざまな性能評価指標</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.5.1　混同行列を解釈する">6.5.1　混同行列を解釈する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.5.2　分類モデルの適合率と再現率を最適化する">6.5.2　分類モデルの適合率と再現率を最適化する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html#6.5.3　ROC-曲線をプロットする">6.5.3　ROC 曲線をプロットする</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_07.html">アンサンブル学習 - 異なるモデルの組み合わせ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_07.html#7.1-アンサンブルによる学習">7.1 アンサンブルによる学習</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_07.html#7.2-単純な多数決分類器の実装">7.2 単純な多数決分類器の実装</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_07.html#7.2.1-多数決方式の分類アルゴリズムを組み合わせる">7.2.1 多数決方式の分類アルゴリズムを組み合わせる</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_07.html#7.3-アンサンブル分類器の評価とチューニング">7.3 アンサンブル分類器の評価とチューニング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_07.html#7.5　アダブーストによる弱学習器の活用">7.5　アダブーストによる弱学習器の活用</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_12.html">ニューラルネットワーク - 画像認識トレーニング</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_12.html#12.1　人工ニューラルネットワークによる複雑な関数のモデリング">12.1　人工ニューラルネットワークによる複雑な関数のモデリング</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html#12.1.1　単層ニューラルネットワークのまとめ">12.1.1　単層ニューラルネットワークのまとめ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html#12.1.2　多層ニューラルネットワークアーキテクチャ">12.1.2　多層ニューラルネットワークアーキテクチャ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html#12.1.3　フォワードプロパゲーションによるニューラルネットワークの活性化">12.1.3　フォワードプロパゲーションによるニューラルネットワークの活性化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_12.html#12.2　手書きの数字を分類する">12.2　手書きの数字を分類する</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html#12.2.1　MNIST-データセットを取得する">12.2.1　MNIST データセットを取得する</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_13.html">ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_13.html#13.1-Theano-を使った式の構築、コンパイル、実行">13.1 Theano を使った式の構築、コンパイル、実行</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html#13.1.2-はじめての-Theano">13.1.2 はじめての Theano</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notes_pyml_13.html#Theano-での実装">Theano での実装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notes_pyml_13.html#スカラ計算の例">スカラ計算の例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html#13.1.3-Theano-を設定する">13.1.3 Theano を設定する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html#13.1.4-配列構造を操作する">13.1.4 配列構造を操作する</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notes_pyml_13.html#共有変数">共有変数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html#13.1.5-線形回帰の例">13.1.5 線形回帰の例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_13.html#13.2-フィードフォワードニューラルネットワークでの活性化関数の選択">13.2 フィードフォワードニューラルネットワークでの活性化関数の選択</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html#13.2.1-ロジスティック関数のまとめ">13.2.1 ロジスティック関数のまとめ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html#13.2.2-ソフトマックス関数を使って多クラス分類の確率を推定する">13.2.2 ソフトマックス関数を使って多クラス分類の確率を推定する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html#13.2.3-双曲線正接関数を使って出力範囲を拡大する">13.2.3 双曲線正接関数を使って出力範囲を拡大する</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_13.html#13.3-Keras-を使ったニューラルネットワークの効率的なトレーニング">13.3 Keras を使ったニューラルネットワークの効率的なトレーニング</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml_12.old.html">ニューラルネットワーク</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_12.old.html#12.1-人工ニューラルネットワークによる複雑な関数のモデリング">12.1 人工ニューラルネットワークによる複雑な関数のモデリング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_12.old.html#12.2-手書きの数字を分類する">12.2 手書きの数字を分類する</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html#12.2.1-MNIST-データセットを取得する">12.2.1 MNIST データセットを取得する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html#12.2.2-多層パーセプトロンを実装する">12.2.2 多層パーセプトロンを実装する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html#コスト関数の可視化">コスト関数の可視化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notes_pyml_12.old.html#予測の正解率を計算する">予測の正解率を計算する</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml_12.old.html#12.3-人工ニューラルネットワークをトレーニングする">12.3 人工ニューラルネットワークをトレーニングする</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html#12.3.1-ロジスティック関数を計算する">12.3.1 ロジスティック関数を計算する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html#12.3.2-バックプロパゲーションを使ってニューラルネットワークをトレーニングする">12.3.2 バックプロパゲーションを使ってニューラルネットワークをトレーニングする</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>機械学習アルゴリズムのトレーニングの構成要素<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ol class="arabic simple">
+<li>特徴量の選択</li>
+<li>性能指標の選択</li>
+<li>分類器と最適化アルゴリズムの選択</li>
+<li>モデル性能の評価</li>
+<li>アルゴリズムの調整</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h2>2.分類問題<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">3.</span> <span class="n">分類器と最適化アルゴリズムの選択</span> <span class="o">&lt;-</span> <span class="n">イマココ</span>
+</pre></div>
+</div>
+<p>パーセプトロン</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}重みベクトル\\\begin{split}\mathbf{w} = \left[\begin{array}{cc}w_1 \\ \vdots \\ w_m\end{array}\right]\end{split}\end{aligned}\end{align} \]</div>
+<div class="math">
+\[ \begin{align}\begin{aligned}サンプル\\\begin{split}\mathbf{x} = \left[\begin{array}{cc}x_1 \\ \vdots \\ x_m\end{array}\right]\end{split}\end{aligned}\end{align} \]</div>
+<div class="math">
+\[ \begin{align}\begin{aligned}総入力 (net input)\\z = w_1x_1 + w_2x_2 + ... + w_mx_m = \mathbf{w}^T\mathbf{x}\end{aligned}\end{align} \]</div>
+<p>サンプル <span class="math">\(\mathbf{x}^{(i)}\)</span> と重みベクトルの内積 <span class="math">\(\mathbf{w}^T\mathbf{x}^{(i)}\)</span> が
+閾値 <span class="math">\(\theta\)</span> より大きい場合は <code class="docutils literal"><span class="pre">1</span></code> で小さい場合は <code class="docutils literal"><span class="pre">-1</span></code> のクラスであると予測する。</p>
+<p>総入力からクラス判定を行う関数を活性化関数 (activation function) と呼ぶ。</p>
+<p>パーセプトロンは、 活性化関数 <code class="docutils literal"><span class="pre">\phi(z)</span></code> に単位ステップ関数 (unit setep function) として
+ヘビサイド関数 (Heaviside setp function) を用いて、総入力からクラス予測をする。</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}活性化関数 (activation function)\\\begin{split}\phi(z) = \mathbf{w}^T\mathbf{x}^{(i)} = \left\{%
+\begin{array}{lc&#64;{\kern2pt}c&#64;{\kern2pt}r}
+1 &amp; (z \geq \theta, 陽性クラス) \\
+-1 &amp; (z &lt; \theta, 陰性クラス)
+\end{array}\right.\end{split}\end{aligned}\end{align} \]</div>
+</div>
+<div class="section" id="id3">
+<h2>3. 分類問題<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">3.</span> <span class="n">分類器と最適化アルゴリズムの選択</span> <span class="o">&lt;-</span> <span class="n">イマココ</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>6 . モデルの評価とハイパーパラメータのチューニングのベストプラクティス<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>6 章の概要</p>
+<ul class="simple">
+<li>アルゴリズムのチューニング</li>
+<li>モデルの性能評価</li>
+<li>モデル構築のベストプラクティス</li>
+</ul>
+<div class="section" id="id5">
+<h3>パイプラインによるワークフローの効率化<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html">Pipeline</a></li>
+<li>任意の変換ステップを含んだモデルを学習し予測する仕組み</li>
+<li><code class="docutils literal"><span class="pre">Pipeline(List[Tuple[任意の識別文字列,</span> <span class="pre">Union[変換器,</span> <span class="pre">識別器]]])</span></code></li>
+<li>中間ステップの個数に制限はない</li>
+</ul>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># 例: データの読み込み</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
+<span class="go">array([[  1.79900000e+01,   1.03800000e+01,   1.22800000e+02, ...,</span>
+<span class="go">          2.65400000e-01,   4.60100000e-01,   1.18900000e-01],</span>
+<span class="go">          2.43000000e-01,   3.61300000e-01,   8.75800000e-02],</span>
+<span class="go">       ...,</span>
+<span class="go">       [  7.76000000e+00,   2.45400000e+01,   4.79200000e+01, ...,</span>
+<span class="go">          0.00000000e+00,   2.87100000e-01,   7.03900000e-02]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([&#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;,</span>
+<span class="go">       ...,</span>
+<span class="go">       &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;M&#39;, &#39;B&#39;], dtype=object)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,</span>
+<span class="go">       ...,</span>
+<span class="go">       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">])</span>
+<span class="go">array([1, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 例: パイプラインによる変換器と推定器の結合</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># パイプラインの構成: スケーリング =&gt; 主成分分析 =&gt; ロジスティック回帰</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe_lr</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;scl&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span> <span class="p">(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;clf&#39;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 学習: fit &amp; transform =&gt; fit &amp; transform =&gt; fit =&gt; 学習モデル</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe_lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="go">Pipeline(steps=[(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)), (&#39;pca&#39;, PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=2, random_state=None,</span>
+<span class="go">  svd_solver=&#39;auto&#39;, tol=0.0, whiten=False)), (&#39;clf&#39;, LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,</span>
+<span class="go">          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;, n_jobs=1,</span>
+<span class="go">          penalty=&#39;l2&#39;, random_state=1, solver=&#39;liblinear&#39;, tol=0.0001,</span>
+<span class="go">          verbose=0, warm_start=False))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># テスト: transform =&gt; transform =&gt; predict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;Test Accuracy: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pipe_lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="go">&#39;Test Accuracy: 0.947&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="k">
+<h3>k 分割交差検証を使ったモデルの性能の評価<a class="headerlink" href="#k" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">未知のデータに対するモデルの性能（モデルの汎化誤差）を評価する</p>
+</li>
+<li><p class="first">モデルがバイアスとバリアンスの適度なバランスを取るように評価する</p>
+</li>
+<li><p class="first">モデル選択 (model selection)</p>
+<ul class="simple">
+<li>予測性能向上のために必要なパラメータ設定のチューニングと比較を行うプロセス</li>
+<li>モデルのパラメータの最適値を選択する分類問題</li>
+</ul>
+</li>
+<li><p class="first">ホールドアウト法 (holdout method)</p>
+<ul class="simple">
+<li>汎化性能の評価に従来より使われる一般的なアプローチ</li>
+<li>元のデータセットを 3 分割する<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">トレーニングデータセット:</th><td class="field-body">学習用</td>
+</tr>
+<tr class="field-even field"><th class="field-name">検証データセット:</th><td class="field-body">モデル選択</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">テストデータセット:</th><td class="field-body">最終的な性能評価</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>データセットの分割のされ方次第でモデルの性能が変わってしまう</li>
+</ul>
+</li>
+<li><p class="first">k 分割交差検証 (k-fold cross-validation)</p>
+<ul>
+<li><p class="first">トレーニングデータセットをランダムに <span class="math">\(k\)</span> 分割（非復元抽出）</p>
+<ul class="simple">
+<li>標準的には <span class="math">\(k = 10\)</span></li>
+</ul>
+</li>
+<li><p class="first"><span class="math">\(k - 1\)</span> 個をトレーニング、 1 個をテストに使い、
+<span class="math">\(k\)</span> 回繰り返すことで <span class="math">\(k\)</span> 個のモデルと性能評価を得る</p>
+<ul class="simple">
+<li>イテレーション <span class="math">\(i\)</span> における性能 <span class="math">\(E_i\)</span> 正解率や誤分類率</li>
+<li>推定平均性能 <span class="math">\(E\)</span> (<span class="math">\(E_i\)</span> の算術平均)</li>
+</ul>
+</li>
+<li><p class="first">ホールドアウト方に比べ、再分割に敏感でない性能評価</p>
+<ul class="simple">
+<li>ホールドアウト法の「データセットの分割のされ方次第でモデルの性能が変わってしまう」問題に対処</li>
+<li>ホールドアウト法よりもバリアンスの低い性能評価が得られる</li>
+</ul>
+</li>
+<li><p class="first">満足な汎化性能を得られるハイパーパラメータを見つけるために利用する</p>
+</li>
+<li><p class="first">層化 k 分割交差検証 (stratified k-fold cross-validation)</p>
+<ul>
+<li><p class="first">各サブセットでのクラス比率を維持するように抽出する</p>
+</li>
+<li><p class="first"><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html">StratifiedKFold</a></p>
+</li>
+<li><p class="first">例</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kfold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="n">pipe_lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">train</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">train</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">score</span> <span class="o">=</span> <span class="n">pipe_lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">test</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">test</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="s1">&#39;Fold: </span><span class="si">%s</span><span class="s1">, Class dist.: </span><span class="si">%s</span><span class="s1">, Acc: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_train</span><span class="p">[</span><span class="n">train</span><span class="p">]),</span> <span class="n">score</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Pipeline(steps=[(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)), (&#39;pca&#39;, PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=2, random_state=None,</span>
+<span class="go">  svd_solver=&#39;auto&#39;, tol=0.0, whiten=False)), (&#39;clf&#39;, LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,</span>
+<span class="go">          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;, n_jobs=1,</span>
+<span class="go">          penalty=&#39;l2&#39;, random_state=1, solver=&#39;liblinear&#39;, tol=0.0001,</span>
+<span class="go">          verbose=0, warm_start=False))])</span>
+<span class="go">&#39;Fold: 1, Class dist.: [256 153], Acc: 0.891&#39;</span>
+<span class="gp">...</span>
+<span class="go">Pipeline(steps=[(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)), (&#39;pca&#39;, PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=2, random_state=None,</span>
+<span class="go">  svd_solver=&#39;auto&#39;, tol=0.0, whiten=False)), (&#39;clf&#39;, LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,</span>
+<span class="go">          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;, n_jobs=1,</span>
+<span class="go">          penalty=&#39;l2&#39;, random_state=1, solver=&#39;liblinear&#39;, tol=0.0001,</span>
+<span class="go">          verbose=0, warm_start=False))])</span>
+<span class="go">&#39;Fold: 10, Class dist.: [257 153], Acc: 0.956&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;CV accuracy: </span><span class="si">%.3f</span><span class="s1"> +/- </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
+<span class="go">&#39;CV accuracy: 0.956 +/- 0.028&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>学習曲線と検証曲線によるアルゴリズムの診断<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">学習曲線 (learning curve)</p>
+<ul>
+<li><p class="first">サンプルサイズに対するトレーニングデータセットとテストデータセットの正解率の関数</p>
+</li>
+<li><p class="first">トレーニングデータセットとテストデータセットの正解率曲線に隔たりがある場合は、過学習の可能性がある</p>
+<div class="figure">
+<img alt="_images/pyml-learning_curve.png" src="_images/pyml-learning_curve.png" />
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.learning_curve</span> <span class="kn">import</span> <span class="n">learning_curve</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe_lr</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;scl&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span> <span class="p">(</span><span class="s1">&#39;clf&#39;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_sizes</span><span class="p">,</span> <span class="n">train_scores</span><span class="p">,</span> <span class="n">test_scores</span> <span class="o">=</span> \
+<span class="gp">... </span>    <span class="n">learning_curve</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">estimator</span><span class="o">=</span><span class="n">pipe_lr</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">train_sizes</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_mean</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_std</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">train_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_mean</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_std</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">test_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># トレーニングの学習曲線をプロット</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_sizes</span><span class="p">,</span> <span class="n">train_mean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training accuracy&#39;</span><span class="p">)</span>
+<span class="go">[&lt;matplotlib.lines.Line2D object at 0x7f68ae467518&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># u +/- sigma を塗りつぶし</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">train_sizes</span><span class="p">,</span> <span class="n">train_mean</span> <span class="o">+</span> <span class="n">train_std</span><span class="p">,</span> <span class="n">train_mean</span> <span class="o">-</span> <span class="n">train_std</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.collections.PolyCollection object at 0x7f68ae467668&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 考査検証の学習曲線をプロット</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_sizes</span><span class="p">,</span> <span class="n">test_mean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation accuracy&#39;</span><span class="p">)</span>
+<span class="go">[&lt;matplotlib.lines.Line2D object at 0x7f68ae46e4a8&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># u +/- sigma を塗りつぶし</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">train_sizes</span><span class="p">,</span> <span class="n">test_mean</span> <span class="o">+</span> <span class="n">test_std</span><span class="p">,</span> <span class="n">test_mean</span> <span class="o">-</span> <span class="n">test_std</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.collections.PolyCollection object at 0x7f68ae46e5f8&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of training samples&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f68b79fd588&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f68ae49dc18&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.legend.Legend object at 0x7f68c4b07ef0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="go">(0.8, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">検証曲線 (validation curve)</p>
+<ul>
+<li><p class="first">モデルのパラメータに対するトレーニングデータセットとテストデータセットの正解率の関数</p>
+<ul>
+<li><p class="first">例: ロジスティクス回帰の逆正則化パラメータ <span class="math">\(C\)</span></p>
+<ul class="simple">
+<li>正則化パラメータ <span class="math">\(C\)</span> を小さくすると学習不足に陥ることがわかる</li>
+<li>正則化パラメータ <span class="math">\(C\)</span> を大きくすると過学習に陥ることがわかる</li>
+</ul>
+<div class="figure">
+<img alt="_images/pyml-validation_curve.png" src="_images/pyml-validation_curve.png" />
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.learning_curve</span> <span class="kn">import</span> <span class="n">validation_curve</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param_range</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_scores</span><span class="p">,</span> <span class="n">test_scores</span> <span class="o">=</span> <span class="n">validation_curve</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimator</span><span class="o">=</span><span class="n">pipe_lr</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">param_name</span><span class="o">=</span><span class="s1">&#39;clf__C&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">param_range</span><span class="o">=</span><span class="n">param_range</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cv</span><span class="o">=</span><span class="mi">10</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_mean</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_std</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">train_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_mean</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_std</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">test_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># トレーニングの検証曲線をプロット</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">param_range</span><span class="p">,</span> <span class="n">train_mean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training accuracy&#39;</span><span class="p">)</span>
+<span class="go">[&lt;matplotlib.lines.Line2D object at 0x7f6899147630&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># u +/- sigma を塗りつぶし</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">param_range</span><span class="p">,</span> <span class="n">train_mean</span> <span class="o">+</span> <span class="n">train_std</span><span class="p">,</span> <span class="n">train_mean</span> <span class="o">-</span> <span class="n">train_std</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.collections.PolyCollection object at 0x7f6899147780&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 交差検証の検証曲線をプロット</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">param_range</span><span class="p">,</span> <span class="n">test_mean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation accuracy&#39;</span><span class="p">)</span>
+<span class="go">[&lt;matplotlib.lines.Line2D object at 0x7f689914d5c0&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># u +/- sigma を塗りつぶし</span>
+<span class="gp">... </span><span class="n">pyplot</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">param_range</span><span class="p">,</span> <span class="n">test_mean</span> <span class="o">+</span> <span class="n">test_std</span><span class="p">,</span> <span class="n">test_mean</span> <span class="o">-</span> <span class="n">test_std</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.collections.PolyCollection object at 0x7f689914d710&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.legend.Legend object at 0x7f68ae45ae80&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Parameter C&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f68b7579748&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f6899357eb8&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="go">(0.8, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>グリッドサーチによる機械学習モデルのチューニング<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>（モデルの）パラメータ<ul>
+<li>トレーニングデータから学習されるパラメータ</li>
+<li>例<ul>
+<li>ロジスティック回帰の重み</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ハイパーパラメータ (hyperparameter)<ul>
+<li>学習アルゴリズムのパラメータ</li>
+<li>例<ul>
+<li>正則化パラメータ</li>
+<li>決定木の深さ</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>グリッドサーチ (grid search)<ul>
+<li>ハイパーパラメータの最適化</li>
+<li>網羅的探索手法</li>
+<li><code class="docutils literal"><span class="pre">GridSearchCV</span></code></li>
+</ul>
+</li>
+<li>入れ子式の交差検証 (nested cross-validation)</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3>さまざまな性能評価指標<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">混同行列</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>&#160;</td>
+<td>P</td>
+<td>N</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>P</td>
+<td>真陽性 (True Positive)</td>
+<td>偽陰性 (False Negative</td>
+<td>第二種過誤)</td>
+</tr>
+<tr class="row-odd"><td>N</td>
+<td>擬陽性 (False Positive</td>
+<td>第一種過誤)</td>
+<td>真陰性 (True Negative)</td>
+</tr>
+</tbody>
+</table>
+<p>scikit-learn でのプロット</p>
+<div class="figure">
+<img alt="_images/pyml-confmat.png" src="_images/pyml-confmat.png" />
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe_svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="go">Pipeline(steps=[(&#39;scl&#39;, StandardScaler(copy=True, with_mean=True, with_std=True)), (&#39;clf&#39;, SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,</span>
+<span class="go">  decision_function_shape=None, degree=3, gamma=&#39;auto&#39;, kernel=&#39;rbf&#39;,</span>
+<span class="go">  max_iter=-1, probability=False, random_state=1, shrinking=True,</span>
+<span class="go">  tol=0.001, verbose=False))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe_svc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">confmat</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">confmat</span>
+<span class="go">array([[71,  1],</span>
+<span class="go">       [ 2, 40]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">confmat</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pyplot</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.image.AxesImage object at 0x7f09468dbc88&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">confmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">confmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+<span class="gp">... </span>        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">j</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">confmat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f09468e52b0&gt;</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f09468e5828&gt;</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f09468e5da0&gt;</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f09468f2358&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;predicted label&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f095414c748&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;true label&#39;</span><span class="p">)</span>
+<span class="go">&lt;matplotlib.text.Text object at 0x7f0954028e10&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">適合率 (precision: PRE)</p>
+<div class="math">
+\[PRE = \frac{TP}{TP + FP}\]</div>
+</li>
+<li><p class="first">再現率 (recall: REC)・真陽性率 (TPR)</p>
+<p>参考: <a class="reference external" href="https://bellcurve.jp/statistics/glossary/2014.html">https://bellcurve.jp/statistics/glossary/2014.html</a></p>
+<p>実際に陽性だった場合に、陽性と判定される割合</p>
+<div class="math">
+\[REC = TPR = \frac{TP}{FN + TP}\]</div>
+</li>
+<li><p class="first">F1 スコア (F1-score)</p>
+<p>PRE と REC の調和平均</p>
+<div class="math">
+\[F1 = 2 \frac{PRE \times REC}{PRE + REC}\]</div>
+</li>
+<li><p class="first">誤分類率 (ERR)</p>
+<div class="math">
+\[ERR = \frac{FP + FN}{FP + FN + TP + TN}\]</div>
+</li>
+<li><p class="first">正解率 (accuracy: ACC)</p>
+<div class="math">
+\[ACC = \frac{TP + TN}{FP + FN + TP + TN} = 1 - ERR\]</div>
+</li>
+<li><p class="first">受信者操作特性 (Receiver Operator Charactaristic: ROC)</p>
+<ul class="simple">
+<li>性能に基づいて分類モデルを選択するためのツール</li>
+<li>分類器の閾値をかえる</li>
+<li>FRP/TRP を計算する</li>
+<li>対角線は当て推量（ランダムな推量）と解釈できる</li>
+<li>対角線を下回ると当て推量より劣る</li>
+<li>完璧なモデルは TRP = 1, FRP = 0 となる</li>
+</ul>
+</li>
+<li><p class="first">曲面下面積 (Area Under the Curve:AUC)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_pyml_03.html" class="btn btn-neutral float-right" title="分類問題 - 機械学習ライブラリ sckit-learn の活用" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_pandas_10min.html" class="btn btn-neutral" title="10 Minutes to pandas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+=============
+日記 2017-W02
+=============
+
+2017-01-16 09:00:00
+
+- 完全に思い付きで書き始めた日記
+- 無理せずに続けたいので、週一以上で書かないようにする
+
+最近やってたこと
+----------------
+
+- Runtastic Six pack [#SIXPACK]_ の Level 3 で限界を迎えた
+
+  - 肩が弱いのでサイドプランクなどの肩を使うトレーニングで、
+    腹筋より先に肩が限界を迎えてしまう
+  - ただ、肩の筋肉痛が来ず、筋肥大につながっている感もないので壁にぶつかっている状況
+  - セルフウェイト (bodyweight) でどうにか肩を鍛えたい
+  - 普通のクランチだとオールアウトまでが時間食ってツラいので、 Six pack のメニューでどうにかしたい 
+
+- ビデオエイペックスさん [#APEX]_ で MO ドライブを借りてデータサルベージを行った
+
+  - キンコーズに MO ドライブあるという数年前の書き込みをネット上でちらほら見かけるが、
+    店頭で確認したところ、現在は全店舗で基本的に設置していないらしい
+
+- GAS でウェブアプリ組む方法 [#GAS_WEB]_ について調べていた
+
+  - One Drive の API トークンを取得する [#ONEDRIVE_OAUTH]_ ための雑アプリを組むために使う予定
+
+- フリーの DDNS と組み合わせてメールを受信できるサービスを探した
+
+  - 最終的に Postmark [#POSTMARK]_ を使うことにした
+  - Postmark は、受信だけであれば MX レコードだけで利用できる [#POSTMARK_CONFIGURE]_
+  - 最有力候補は mailgun [#MAILGUN]_ だったが、 mailgun は MX, TXT レコードの登録も必要で、
+    MX, TXT レコードを無料で追加できる DDNS サービスは見つけられなかった
+  - DDNS には no-ip [#NOIP]_ を使うことにした
+  - メール受信したいだけなので別にダイナミックでなくてもいいだけど。
+
+- 数理統計研究所の公開講座「 `欠測データの統計科学 <http://www.ism.ac.jp/lectures/28m.html>`_ 」に参加した
+
+  - まとめて記事にする予定
+
+最近読んだ文章
+--------------
+
+- `Current HOWTO: Remote X Apps mini-HOWTO <http://www.linux-tutorial.info/modules.php?name=Howto&pagename=Remote-X-Apps/Remote-X-Apps-6.html>`_
+
+  - X11 の認証周りがよくわからなかったので読んだ
+  - ``~/.Xauthority``, ``XAUTHORITY`` の役割りは上記記事でなんとなく理解できた
+  - ssh での X 転送時の Xauthority 情報については、 man page に書かれている [#MAN_SSH]_
+
+- `リビングで悩みの、コード類の収納。 <http://kazokujikan.blog79.fc2.com/blog-entry-283.html>`_
+
+  - ケーブルやルータを無印とかのファイルボックス [#MUJI_FILEBOX]_ に突っ込むという収納アイデア
+  - ケーブルボックスはそこそこのお値段することが多いので、ファイルボックスの方が安上がりでよさそう
+  - ケーブルボックスにしてもファイルボックスにしても、熱はこもりそうなので、そこだけ懸念が残る
+  - Pinterest で見つけた
+  - 使い勝手は Tumblr には劣るものの、 Pinterest も意外といい感じ
+
+- Man page of bash(1) - Process Substitution
+
+  - プロセス置換を使った際のリダイレクトの挙動がよくわからず、動作と man での説明を確認した
+  - ::
+
+      The name of this file is passed as an argument to the current command as the result of the expansion.
+
+      展開の結果、このファイル名（展開された FIFO や /dev/fd の名前）が現在のコマンドへ引数として渡される
+
+  - ``>(list)`` や ``<(list)`` だけでリダイレクトされると考えていたが、誤解だった
+  - プロセス置換だけではリダイレクトされず、 ``list`` への標準入出力へつながった FIFO や FD のパスへ置換される
+  - 実例を見てみる
+
+    .. code-block:: console
+
+      $ # 例えば、次のようなコマンドを実行すると、 'hoge' と FD 名が出力される
+      $ echo hoge >(cat)
+      hoge /dev/fd/63
+      $ # このとき何が起きているかを -x オプションで表示してみると、
+      $ # プロセス置換の展開結果として FD 名が引数として渡されていることがわかる
+      $ bash -cx 'echo >(cat)'
+      + echo /dev/fd/63
+      /dev/fd/63
+      ++ cat
+
+- `Handbook of Character Recognition and Document Image Analysis <https://www.amazon.co.jp/dp/981022270X>`_ 3.1 Skew detection
+
+  - 傾き角検出に projection profile analysis を使う例を探して見つけた書籍
+  - この書籍の場合、各角度で水平方向の projection profile を取得し、分散が最大となる角度を水平としている
+
+- `PHP: mysqli::poll - Manual <http://php.net/manual/mysqli.poll.php>`_
+
+  - PHP の MySQLi は、非同期でクエリを投げられるらしく、実装を確認したかった
+  - 実装 [#MYSQLI_NONAPI]_ を確認すると、非同期クエリが使えるのはビルド時に Mysqlnd が有効な場合になりそうだった
+  - また、 libmysqlclient にはドキュメント化された API として非同期クエリの API が存在しないらしい [#ASYNC_MYSQL_CAPI]_
+  - したがって、 libmysqlclient の他言語バインディング、例えば MySQL-Python 、 を使う場合は、非同期クエリは使えないものと考えた方がよいのだろう
+  - 備考として、 PHP の Mysqlnd には user handler plugin [#MYSQLND_UH]_ というプラグインが存在しており、
+    Mysqlnd のより低レベルな API を PHP から利用することができる
+
+.. [#SIXPACK] https://play.google.com/store/apps/details?id=com.runtastic.android.sixpack.lite
+.. [#APEX] http://www.apex106.com/
+.. [#MAN_SSH] http://euske.github.io/openssh-jman/ssh.html
+.. [#GAS_WEB] https://developers.google.com/apps-script/guides/web
+.. [#ONEDRIVE_OAUTH] https://dev.onedrive.com/auth/msa_oauth.htm
+.. [#MAILGUN] https://mailgun.com
+.. [#POSTMARK] https://postmarkapp.com/
+.. [#POSTMARK_CONFIGURE] http://support.postmarkapp.com/article/785-configuring-a-custom-email-address-forward-with-gmail
+.. [#NOIP] https://noip.com/
+.. [#MUJI_FILEBOX] http://www.muji.net/store/cmdty/detail/4547315556366
+.. [#MYSQLI_NONAPI] https://github.com/php/php-src/blob/php-7.1.0/ext/mysqli/mysqli_nonapi.c#L578
+.. [#ASYNC_MYSQL_CAPI] http://jan.kneschke.de/projects/mysql/async-mysql-queries-with-c-api/
+.. [#MYSQLND_UH] http://php.net/manual/ja/book.mysqlnd-uh.php

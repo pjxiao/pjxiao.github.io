@@ -1,0 +1,2796 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 10 Minutes to pandas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Object Creation\n",
+    "\n",
+    "- 詳細は [Intro to Data Structures](http://pandas.pydata.org/pandas-docs/stable/dsintro.html)\n",
+    "- `List[Union[int, numpy.nan]]` 渡して Series オブジェクトを作る\n",
+    "- デフォルトのキーは整数"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    1.0\n",
+       "1    3.0\n",
+       "2    5.0\n",
+       "3    NaN\n",
+       "4    6.0\n",
+       "5    8.0\n",
+       "dtype: float64"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "s = pd.Series([1, 3, 5, np.nan, 6, 8])\n",
+    "s"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- numpy array を渡して DataFrame オブジェクトを作る\n",
+    "- インデックス: `datetime.datetime`\n",
+    "- str 型ラベル付き"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "DatetimeIndex(['2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04',\n",
+       "               '2013-01-05', '2013-01-06'],\n",
+       "              dtype='datetime64[ns]', freq='D')"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dates = pd.date_range('20130101', periods=6)\n",
+    "dates"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-01 -0.447207 -1.526706 -1.005708  0.355344\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  0.211930"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df = pd.DataFrame(\n",
+    "    np.random.randn(6, 4),\n",
+    "    index=dates,\n",
+    "    columns=('A', 'B', 'C', 'D'),\n",
+    ")\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- `Dict[Any, Any]` を渡すとキーをカラムに、値をシリーズのように変換した DataFrame が作られる"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "      <th>E</th>\n",
+       "      <th>F</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>2013-01-02</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>test</td>\n",
+       "      <td>foo</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>2013-01-02</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>train</td>\n",
+       "      <td>foo</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>2013-01-02</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>test</td>\n",
+       "      <td>foo</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>2013-01-02</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>train</td>\n",
+       "      <td>foo</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   A          B    C  D      E    F\n",
+       "0  1 2013-01-02  1.0  3   test  foo\n",
+       "1  1 2013-01-02  1.0  3  train  foo\n",
+       "2  1 2013-01-02  1.0  3   test  foo\n",
+       "3  1 2013-01-02  1.0  3  train  foo"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df2 = pd.DataFrame({\n",
+    "    'A': 1,\n",
+    "    'B': pd.Timestamp('20130102'),\n",
+    "    'C': pd.Series(1, index=list(range(4)), dtype='float32'),\n",
+    "    'D': np.array([3] * 4, dtype='int32'),\n",
+    "    'E': pd.Categorical(['test', 'train', 'test', 'train']),\n",
+    "    'F': 'foo',\n",
+    "})\n",
+    "df2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "A             int64\n",
+       "B    datetime64[ns]\n",
+       "C           float32\n",
+       "D             int32\n",
+       "E          category\n",
+       "F            object\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df2.dtypes"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Viewing Data\n",
+    "\n",
+    "- [詳細](http://pandas.pydata.org/pandas-docs/stable/basics.html)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 最初と最後の行を見る"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-01 -0.447207 -1.526706 -1.005708  0.355344\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-01 -0.447207 -1.526706 -1.005708  0.355344\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head(2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  0.211930"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.tail()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  0.211930"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.tail(3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- インデックス・カラム・値の表示"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "DatetimeIndex(['2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04',\n",
+       "               '2013-01-05', '2013-01-06'],\n",
+       "              dtype='datetime64[ns]', freq='D')"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.index"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['A', 'B', 'C', 'D'], dtype='object')"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[-0.447207  , -1.52670616, -1.0057077 ,  0.35534353],\n",
+       "       [-1.99354836, -0.37616369,  0.10073156,  1.73248358],\n",
+       "       [-1.12688407,  0.35037087,  2.3407937 , -1.60111651],\n",
+       "       [ 1.43779918, -0.7458961 , -0.86044098, -0.40787179],\n",
+       "       [ 0.1159771 ,  0.49434941,  0.38766897,  1.53227813],\n",
+       "       [ 0.97873726,  0.30529005, -0.05642316,  0.21193029]])"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.values"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 簡単な統計情報の表示"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>6.000000</td>\n",
+       "      <td>6.000000</td>\n",
+       "      <td>6.000000</td>\n",
+       "      <td>6.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>-0.172521</td>\n",
+       "      <td>-0.249793</td>\n",
+       "      <td>0.151104</td>\n",
+       "      <td>0.303841</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>1.288733</td>\n",
+       "      <td>0.789260</td>\n",
+       "      <td>1.204803</td>\n",
+       "      <td>1.240691</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>-0.956965</td>\n",
+       "      <td>-0.653463</td>\n",
+       "      <td>-0.659437</td>\n",
+       "      <td>-0.252921</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>-0.165615</td>\n",
+       "      <td>-0.035437</td>\n",
+       "      <td>0.022154</td>\n",
+       "      <td>0.283637</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>0.763047</td>\n",
+       "      <td>0.339101</td>\n",
+       "      <td>0.315935</td>\n",
+       "      <td>1.238044</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "              A         B         C         D\n",
+       "count  6.000000  6.000000  6.000000  6.000000\n",
+       "mean  -0.172521 -0.249793  0.151104  0.303841\n",
+       "std    1.288733  0.789260  1.204803  1.240691\n",
+       "min   -1.993548 -1.526706 -1.005708 -1.601117\n",
+       "25%   -0.956965 -0.653463 -0.659437 -0.252921\n",
+       "50%   -0.165615 -0.035437  0.022154  0.283637\n",
+       "75%    0.763047  0.339101  0.315935  1.238044\n",
+       "max    1.437799  0.494349  2.340794  1.732484"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.describe()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 転置"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2013-01-01 00:00:00</th>\n",
+       "      <th>2013-01-02 00:00:00</th>\n",
+       "      <th>2013-01-03 00:00:00</th>\n",
+       "      <th>2013-01-04 00:00:00</th>\n",
+       "      <th>2013-01-05 00:00:00</th>\n",
+       "      <th>2013-01-06 00:00:00</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>A</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.978737</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>B</th>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.305290</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>C</th>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>-0.056423</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>D</th>\n",
+       "      <td>0.355344</td>\n",
+       "      <td>1.732484</td>\n",
+       "      <td>-1.601117</td>\n",
+       "      <td>-0.407872</td>\n",
+       "      <td>1.532278</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   2013-01-01  2013-01-02  2013-01-03  2013-01-04  2013-01-05  2013-01-06\n",
+       "A   -0.447207   -1.993548   -1.126884    1.437799    0.115977    0.978737\n",
+       "B   -1.526706   -0.376164    0.350371   -0.745896    0.494349    0.305290\n",
+       "C   -1.005708    0.100732    2.340794   -0.860441    0.387669   -0.056423\n",
+       "D    0.355344    1.732484   -1.601117   -0.407872    1.532278    0.211930"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.T"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 指定した行でソート"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>D</th>\n",
+       "      <th>C</th>\n",
+       "      <th>B</th>\n",
+       "      <th>A</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>0.355344</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-0.447207</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>1.732484</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>-1.993548</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.601117</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>-1.126884</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>-0.407872</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>1.437799</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>1.532278</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.115977</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.211930</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>0.978737</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   D         C         B         A\n",
+       "2013-01-01  0.355344 -1.005708 -1.526706 -0.447207\n",
+       "2013-01-02  1.732484  0.100732 -0.376164 -1.993548\n",
+       "2013-01-03 -1.601117  2.340794  0.350371 -1.126884\n",
+       "2013-01-04 -0.407872 -0.860441 -0.745896  1.437799\n",
+       "2013-01-05  1.532278  0.387669  0.494349  0.115977\n",
+       "2013-01-06  0.211930 -0.056423  0.305290  0.978737"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.sort_index(axis=1, ascending=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  0.211930\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-01 -0.447207 -1.526706 -1.005708  0.355344"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.sort_index(axis=0, ascending=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 値でソート"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-01 -0.447207 -1.526706 -1.005708  0.355344\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  0.211930\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.sort_values('B')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>A</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   B         C         A         D\n",
+       "2013-01-01 -1.526706 -1.005708 -0.447207  0.355344\n",
+       "2013-01-02 -0.376164  0.100732 -1.993548  1.732484\n",
+       "2013-01-03  0.350371  2.340794 -1.126884 -1.601117\n",
+       "2013-01-04 -0.745896 -0.860441  1.437799 -0.407872\n",
+       "2013-01-05  0.494349  0.387669  0.115977  1.532278\n",
+       "2013-01-06  0.305290 -0.056423  0.978737  0.211930"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.sort_values('2013-01-01', axis=1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 選択"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 取得"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2013-01-01   -0.447207\n",
+       "2013-01-02   -1.993548\n",
+       "2013-01-03   -1.126884\n",
+       "2013-01-04    1.437799\n",
+       "2013-01-05    0.115977\n",
+       "2013-01-06    0.978737\n",
+       "Freq: D, Name: A, dtype: float64"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# DataFrame -> Any -> Series\n",
+    "df['A']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- スライス"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-01 -0.447207 -1.526706 -1.005708  0.355344\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[0:3]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872"
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['2013-01-02':'2013-01-04']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## ラベルで選択する"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Timestamp('2013-01-01 00:00:00', freq='D')"
+      ]
+     },
+     "execution_count": 36,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dates[0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "A   -0.447207\n",
+       "B   -1.526706\n",
+       "C   -1.005708\n",
+       "D    0.355344\n",
+       "Name: 2013-01-01 00:00:00, dtype: float64"
+      ]
+     },
+     "execution_count": 40,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc[dates[0]]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "A   -0.447207\n",
+       "B   -1.526706\n",
+       "C   -1.005708\n",
+       "D    0.355344\n",
+       "Name: 2013-01-01 00:00:00, dtype: float64"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc[dates[0], :]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 複数列をラベルから選択"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B\n",
+       "2013-01-01 -0.447207 -1.526706\n",
+       "2013-01-02 -1.993548 -0.376164\n",
+       "2013-01-03 -1.126884  0.350371\n",
+       "2013-01-04  1.437799 -0.745896\n",
+       "2013-01-05  0.115977  0.494349\n",
+       "2013-01-06  0.978737  0.305290"
+      ]
+     },
+     "execution_count": 39,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc[:, ['A', 'B']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B\n",
+       "2013-01-02 -1.993548 -0.376164\n",
+       "2013-01-03 -1.126884  0.350371\n",
+       "2013-01-04  1.437799 -0.745896"
+      ]
+     },
+     "execution_count": 43,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc['20130102':'20130104', ['A', 'B']]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "A   -1.993548\n",
+       "B   -0.376164\n",
+       "Name: 2013-01-02 00:00:00, dtype: float64"
+      ]
+     },
+     "execution_count": 44,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc['20130102', ['A', 'B']]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- スカラ値の取得"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-0.44720699753148185"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc[dates[0], 'A']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "A   -0.447207\n",
+       "Name: 2013-01-01 00:00:00, dtype: float64"
+      ]
+     },
+     "execution_count": 47,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc[dates[0], ['A']]  # not scalar"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 行を位置から取得"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "A    1.437799\n",
+       "B   -0.745896\n",
+       "C   -0.860441\n",
+       "D   -0.407872\n",
+       "Name: 2013-01-04 00:00:00, dtype: float64"
+      ]
+     },
+     "execution_count": 48,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iloc[3]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872"
+      ]
+     },
+     "execution_count": 54,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[3:4]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B\n",
+       "2013-01-04  1.437799 -0.745896\n",
+       "2013-01-05  0.115977  0.494349"
+      ]
+     },
+     "execution_count": 55,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iloc[3:5, 0:2]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- インデックスのリストで指定する"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>C</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>0.100732</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.860441</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>-0.056423</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         C\n",
+       "2013-01-02 -1.993548  0.100732\n",
+       "2013-01-04  1.437799 -0.860441\n",
+       "2013-01-06  0.978737 -0.056423"
+      ]
+     },
+     "execution_count": 62,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iloc[[1, 3, 5], [0, 2]]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 明示的に行をスライスする"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117"
+      ]
+     },
+     "execution_count": 63,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iloc[1:3, :]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 明示的に列をスライスする"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   B         C\n",
+       "2013-01-01 -1.526706 -1.005708\n",
+       "2013-01-02 -0.376164  0.100732\n",
+       "2013-01-03  0.350371  2.340794\n",
+       "2013-01-04 -0.745896 -0.860441\n",
+       "2013-01-05  0.494349  0.387669\n",
+       "2013-01-06  0.305290 -0.056423"
+      ]
+     },
+     "execution_count": 65,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iloc[:, 1:3]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 値を明示的なインデックスから取得"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-0.37616369372891451"
+      ]
+     },
+     "execution_count": 67,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iloc[1, 1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- スカラ値を取得する場合は以下の方が速い"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-0.37616369372891451"
+      ]
+     },
+     "execution_count": 68,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iat[1, 1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Boolean Indexing"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 単一列で選択"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  0.211930"
+      ]
+     },
+     "execution_count": 69,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[df.A > 0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- 条件に合う値を取り出す"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.355344</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>0.211930</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D\n",
+       "2013-01-01       NaN       NaN       NaN  0.355344\n",
+       "2013-01-02       NaN       NaN  0.100732  1.732484\n",
+       "2013-01-03       NaN  0.350371  2.340794       NaN\n",
+       "2013-01-04  1.437799       NaN       NaN       NaN\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278\n",
+       "2013-01-06  0.978737  0.305290       NaN  0.211930"
+      ]
+     },
+     "execution_count": 71,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[df > 0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- `isin()` メソッドを使ったフィルタリング"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "      <th>E</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>-0.447207</td>\n",
+       "      <td>-1.526706</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>0.355344</td>\n",
+       "      <td>one</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>1.732484</td>\n",
+       "      <td>one</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "      <td>two</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-0.407872</td>\n",
+       "      <td>three</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "      <td>four</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>0.211930</td>\n",
+       "      <td>three</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D      E\n",
+       "2013-01-01 -0.447207 -1.526706 -1.005708  0.355344    one\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  1.732484    one\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117    two\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441 -0.407872  three\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278   four\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  0.211930  three"
+      ]
+     },
+     "execution_count": 76,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df3 = df.copy()\n",
+    "df3['E'] = ['one', 'one', 'two', 'three', 'four', 'three']\n",
+    "df3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "      <th>E</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>-1.601117</td>\n",
+       "      <td>two</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>1.532278</td>\n",
+       "      <td>four</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C         D     E\n",
+       "2013-01-03 -1.126884  0.350371  2.340794 -1.601117   two\n",
+       "2013-01-05  0.115977  0.494349  0.387669  1.532278  four"
+      ]
+     },
+     "execution_count": 78,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df3[df3['E'].isin(['two', 'four'])]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Setting"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2013-01-02    1\n",
+       "2013-01-03    2\n",
+       "2013-01-04    3\n",
+       "2013-01-05    4\n",
+       "2013-01-06    5\n",
+       "2013-01-07    6\n",
+       "Freq: D, dtype: int64"
+      ]
+     },
+     "execution_count": 80,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "s1 = pd.Series([1, 2, 3, 4, 5, 6], index=pd.date_range('20130102', periods=6))\n",
+    "s1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 81,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df['F'] = s1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-0.44720699753148185"
+      ]
+     },
+     "execution_count": 82,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.at[dates[0], 'A']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df.at[dates[0], 'A'] = 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.0"
+      ]
+     },
+     "execution_count": 84,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.at[dates[0], 'A']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-1.5267061569203189"
+      ]
+     },
+     "execution_count": 85,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iat[0, 1]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df.iat[0, 1] = 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.0"
+      ]
+     },
+     "execution_count": 87,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.iat[0, 1]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2013-01-01    0.355344\n",
+       "2013-01-02    1.732484\n",
+       "2013-01-03   -1.601117\n",
+       "2013-01-04   -0.407872\n",
+       "2013-01-05    1.532278\n",
+       "2013-01-06    0.211930\n",
+       "Freq: D, Name: D, dtype: float64"
+      ]
+     },
+     "execution_count": 88,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc[:, 'D']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 89,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "df.loc[:, 'D'] = np.array([5] * len(df))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2013-01-01    5\n",
+       "2013-01-02    5\n",
+       "2013-01-03    5\n",
+       "2013-01-04    5\n",
+       "2013-01-05    5\n",
+       "2013-01-06    5\n",
+       "Freq: D, Name: D, dtype: int64"
+      ]
+     },
+     "execution_count": 90,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.loc[:, 'D']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 91,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "      <th>F</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>5</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>0.100732</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>0.350371</td>\n",
+       "      <td>2.340794</td>\n",
+       "      <td>5</td>\n",
+       "      <td>2.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>5</td>\n",
+       "      <td>3.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>0.115977</td>\n",
+       "      <td>0.494349</td>\n",
+       "      <td>0.387669</td>\n",
+       "      <td>5</td>\n",
+       "      <td>4.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>0.978737</td>\n",
+       "      <td>0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>5</td>\n",
+       "      <td>5.0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C  D    F\n",
+       "2013-01-01  0.000000  0.000000 -1.005708  5  NaN\n",
+       "2013-01-02 -1.993548 -0.376164  0.100732  5  1.0\n",
+       "2013-01-03 -1.126884  0.350371  2.340794  5  2.0\n",
+       "2013-01-04  1.437799 -0.745896 -0.860441  5  3.0\n",
+       "2013-01-05  0.115977  0.494349  0.387669  5  4.0\n",
+       "2013-01-06  0.978737  0.305290 -0.056423  5  5.0"
+      ]
+     },
+     "execution_count": 91,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df4 = df.copy()\n",
+    "df4[df4 > 0] = -df4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 96,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>A</th>\n",
+       "      <th>B</th>\n",
+       "      <th>C</th>\n",
+       "      <th>D</th>\n",
+       "      <th>F</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2013-01-01</th>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>-1.005708</td>\n",
+       "      <td>-5</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-02</th>\n",
+       "      <td>-1.993548</td>\n",
+       "      <td>-0.376164</td>\n",
+       "      <td>-0.100732</td>\n",
+       "      <td>-5</td>\n",
+       "      <td>-1.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-03</th>\n",
+       "      <td>-1.126884</td>\n",
+       "      <td>-0.350371</td>\n",
+       "      <td>-2.340794</td>\n",
+       "      <td>-5</td>\n",
+       "      <td>-2.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-04</th>\n",
+       "      <td>-1.437799</td>\n",
+       "      <td>-0.745896</td>\n",
+       "      <td>-0.860441</td>\n",
+       "      <td>-5</td>\n",
+       "      <td>-3.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-05</th>\n",
+       "      <td>-0.115977</td>\n",
+       "      <td>-0.494349</td>\n",
+       "      <td>-0.387669</td>\n",
+       "      <td>-5</td>\n",
+       "      <td>-4.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2013-01-06</th>\n",
+       "      <td>-0.978737</td>\n",
+       "      <td>-0.305290</td>\n",
+       "      <td>-0.056423</td>\n",
+       "      <td>-5</td>\n",
+       "      <td>-5.0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                   A         B         C  D    F\n",
+       "2013-01-01  0.000000  0.000000 -1.005708 -5  NaN\n",
+       "2013-01-02 -1.993548 -0.376164 -0.100732 -5 -1.0\n",
+       "2013-01-03 -1.126884 -0.350371 -2.340794 -5 -2.0\n",
+       "2013-01-04 -1.437799 -0.745896 -0.860441 -5 -3.0\n",
+       "2013-01-05 -0.115977 -0.494349 -0.387669 -5 -4.0\n",
+       "2013-01-06 -0.978737 -0.305290 -0.056423 -5 -5.0"
+      ]
+     },
+     "execution_count": 96,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Missing Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.4.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

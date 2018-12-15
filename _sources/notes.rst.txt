@@ -1,0 +1,237 @@
+====
+詰み
+====
+
+積んだ本のノート
+
+Contents:
+
+.. toctree::
+   :maxdepth: 1
+
+   notes_distcomp
+   notes_flattening_curved_documents_in_images
+   notes_geometric_rectification_of_camera_captured_document_images
+   notes_hoel
+   notes_pandas_10min
+   notes_pyml
+   notes_set_and_topology
+   notes_stat_grade_1
+   notes_structured
+   notes_ten_simple_rules_for_scientists
+   notes_what_is_the_x_window_system
+   notes_the_republic
+
+
+未整理
+======
+- `Image binarization for end-to-end text understanding in natural images <http://research.microsoft.com/en-us/um/people/pkohli/papers/mbnlk_icdar2013.pdf>`_
+- `Restoration of images scanned from thick bound documents <https://pdfs.semanticscholar.org/7e11/f7e45be38f715c1fa2c03ac4bdc35376fb34.pdf>`_
+
+参考例
+======
+
+UC Berkeley Statistics major
+----------------------------
+
+1. prerequires
+
+   - Math 1A
+
+     :範囲:
+
+        - 極限
+        - 微分
+
+     :参考資料:
+
+        - https://math.berkeley.edu/courses/choosing/lowerdivcourses/math1A
+        - https://www.whitman.edu/mathematics/calculus/calculus.pdf
+        - https://math.berkeley.edu/~ogus/Math_1A/syllabus.html
+
+   - Math 1B
+
+     :範囲:
+
+        - 積分
+        - 数列
+        - 極座標
+
+     :参考資料:
+
+        - http://persson.berkeley.edu/1B/
+        - https://math.berkeley.edu/~reshetik/intex1b-16.html
+        - https://www.whitman.edu/mathematics/calculus/calculus.pdf
+
+   - Math 53
+
+     :範囲:
+
+        - 重積分
+        - ベクトル解析
+
+     :参考資料:
+
+        - https://math.berkeley.edu/~auroux/53s16/
+
+   - Math 54
+
+     :範囲:
+
+       - 微分方程式
+       - 線形代数
+       - 高次線形微分方程式
+       - 偏微分方程式
+
+     :参考資料:
+
+        - https://math.berkeley.edu/courses/choosing/lowerdivcourses/math54
+
+2. major requirements
+
+   - Stat 133
+
+     :範囲:
+
+        - データ処理プログラム入門
+        - XML
+        - SQL
+        - R
+        - 正規表現
+
+     :参考資料:
+
+        - http://www.stat.berkeley.edu/~s133/
+        - http://www.stat.berkeley.edu/~nolan/stat133/Fall05/lectures/index.html
+
+   - Stat 134
+
+     :範囲:
+
+       - 確率論基礎
+
+     :参考資料:
+
+        - http://www.stat.berkeley.edu/~aldous/134/
+
+     :関連資料:
+
+        - https://www.amazon.co.jp/dp/4130420658
+        - https://www.amazon.co.jp/dp/4563008281
+
+   - Stat 135
+
+     :範囲:
+
+       - 期待値
+       - 中心極限定理
+       - 標本
+       - パラーメータ推定
+       - 検定
+       - データ要約（ヒストグラム・ボックスチャート）
+       - 二標本問題
+       - 最小二乗法
+
+     :参考資料:
+
+        - http://www.stat.berkeley.edu/~rice/Stat135/
+        - https://sites.google.com/site/pittersh/2016stat135
+        - https://www.amazon.com/dp/0534399428
+
+     :関連資料:
+
+        - https://www.amazon.co.jp/dp/4130420658
+        - https://www.amazon.co.jp/dp/4563008281
+
+   - Stat 150
+
+     :範囲:
+
+       - 確率過程
+       - 条件付確率
+       - マルコフ連鎖
+       - ポアソン過程
+       - マルチンゲール
+       - ブラウン運動
+
+     :参考資料:
+
+        - http://www.stat.berkeley.edu/~aldous/150/
+
+     :関連資料:
+
+       - https://www.amazon.co.jp/dp/4489006594
+       - https://www.amazon.co.jp/dp/4320085671
+
+   - Stat 151A (labs)
+
+     :範囲:
+
+       - 単回帰分析
+       - 重回帰分析
+       - 仮説検定
+       - ブートストラップ法
+       - ダミー変数
+       - ANOVA
+       - ロジスティック回帰
+       - GLM
+       - ノンパラメトリック回帰
+
+
+     :参考資料:
+
+        - https://www.amazon.co.jp/dp/1452205663
+        - http://www.stat.berkeley.edu/~epurdom/Syllabi/Stat151A/Syllabus2014Spring.pdf
+
+   - Stat 151B (labs)
+
+     :範囲:
+
+       - 教師あり学習 (HTF2)
+       - 線形回帰 (HTF3)
+       - 線形分類 (HTF4)
+       - Basic expansions (HTF5)
+       - モデル選択 (HTF7)
+       - 分類・回帰木 (HTF9.2)
+       - ブースティング (HTF10)
+       - ブートストラップ法 (HTF15)
+       - カーネル法
+
+     :参考資料:
+
+        - http://statweb.stanford.edu/~tibs/ElemStatLearn/ (HTF)
+        - http://www.stat.berkeley.edu/~jon/stat-151b-spring-2012/
+        - http://mason.gmu.edu/~jgentle/csi772/13s/ (What's HTF)
+
+   - Stat 155
+
+     :範囲:
+
+       - ゲーム理論
+
+     :参考資料:
+
+        - http://www.stat.berkeley.edu/~sly/Stat155.htm
+
+    - Math 113 (Optional)
+
+      :範囲:
+
+        - 抽象代数
+        - 群・環・体
+
+     :参考資料:
+
+        - http://abstract.ups.edu/download/aata-20150812.pdf
+
+3. MA
+
+   - Stat 260
+
+      :範囲:
+
+        - ベイジアンモデリング
+
+     :参考資料:
+
+        - https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/

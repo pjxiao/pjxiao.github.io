@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>画像の二値化二値化 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="覚え書き" href="memo.html"/>
+        <link rel="next" title="ImageMagick" href="memo_imagemagick.html"/>
+        <link rel="prev" title="覚え書き" href="memo.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="memo.html">覚え書き</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">画像の二値化二値化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#otsu-method">Otsu method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="memo_imagemagick.html">ImageMagick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_powershell.html">PowerShell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_awscli.html">AWS-CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_oas.html">Open API Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_ms_flow.html">Microsoft Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#id3">メモ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#mathjax">MathJax チートシート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#linux-gyazo">Linux 版 gyazo のスクリーンキャプチャコマンドを変更する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#pca">PCA に関する覚え書き</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#nginx-ssh">ファイヤーウォール内のサイトへの接続に Nginx と SSH を組み合わせる</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#systemctl-user">systemctl –user 実行時のエラーへの対処方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#memo-ephemeral-port">一時ポート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#ssh-systemd-user">SSH トンネルを Systemd/User のサービスとして登録する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#systemd">Systemd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#bash">Bash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#vim">Vim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#docker">Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#git">Git</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="memo.html">覚え書き</a> &raquo;</li>
+        
+      <li>画像の二値化二値化</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/memo_binarization.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1>画像の二値化二値化<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="otsu-method">
+<h2>Otsu method<a class="headerlink" href="#otsu-method" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>クラス内分散を最大化する値を閾値とする <a class="footnote-reference" href="#ref-wikipedia-otsu" id="id2">[1]</a></p>
+<p>Wikipedia にあった MATLAB による実装 <a class="footnote-reference" href="#ref-wikipedia-otsu" id="id3">[1]</a> を numpy で実装した例</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">hist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">im_wp_arr</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">257</span><span class="p">))</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">hist</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">sum_1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+
+<span class="n">W_b</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+<span class="n">W_f</span> <span class="o">=</span> <span class="n">total</span> <span class="o">-</span> <span class="n">W_b</span>
+<span class="n">S_b</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span> <span class="o">*</span> <span class="n">hist</span><span class="p">)</span>
+<span class="n">M_f</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">divide</span><span class="p">((</span><span class="n">sum_1</span> <span class="o">-</span> <span class="n">S_b</span><span class="p">),</span> <span class="n">W_f</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">W_f</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">M_f</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">M_f</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">M_b</span> <span class="o">=</span> <span class="n">S_b</span> <span class="o">/</span> <span class="n">W_b</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">W_b</span> <span class="o">*</span> <span class="n">W_f</span> <span class="o">*</span> <span class="p">((</span><span class="n">M_b</span> <span class="o">-</span> <span class="n">M_f</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>  <span class="c1"># 算出された閾値</span>
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="ref-wikipedia-otsu" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> <a class="reference external" href="https://en.wikipedia.org/wiki/Otsu%27s_method">https://en.wikipedia.org/wiki/Otsu%27s_method</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="memo_imagemagick.html" class="btn btn-neutral float-right" title="ImageMagick" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="memo.html" class="btn btn-neutral" title="覚え書き" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

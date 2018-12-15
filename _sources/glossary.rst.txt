@@ -1,0 +1,246 @@
+======
+用語集
+======
+
+.. caution::
+
+  - この用語集は備忘録あり、定義の正しさは一切保証しない
+  - 適宜参考文献を示しているため、用語の定義への参照が必要な場合は、参考文献側への参照を使うべきである
+
+.. glossary::
+
+  Paxos
+    :カテゴリ:
+      - 分散システム
+      - 分散合意
+
+    :概要:
+      - 分散合意アルゴリズム
+
+    :参考文献:
+      - http://sharply.hatenablog.com/entry/2016/06/13/230552
+      - https://www.slideshare.net/pfi/paxos-13615514
+      - http://d.hatena.ne.jp/minghai/20110308/p1
+      - http://d.hatena.ne.jp/minghai/20110315/p1
+
+  Linearizability
+    :カテゴリ:
+      - 分散システム
+      - トランザクション
+
+    :概要:
+      - 依存関係のあるイベント (causally related evetns) の順序は、時系列順に定められる [#REF_COCKROACH_BLOG_WO_ATOMIC_CLOCKS]_
+      - :term:`Serializability` とは異なり、順序は時系列順になる
+      - タイポしやすい
+
+    :参考文献:
+      - 
+
+  Serializability
+    :カテゴリ:
+      - 分散システム
+      - トランザクション
+
+    :概要:
+      - 複数のトランザクションが並行 (concurrent) に実行されても、
+        ひとつづつ (serial) に処理される [#REF_COCKROACH_BLOG_WO_ATOMIC_CLOCKS]_
+      - :term:`Linearizability` とは異なり、順序は任意になる [#REF_837203523104186369]_
+      - タイポしやすい
+
+    :参考文献:
+      - 
+
+  External consistency
+    :カテゴリ:
+      - 分散システム
+      - トランザクション
+
+    :概要:
+      - 雑に言うと :term:`Linearizability` と同義
+      - 厳密には Linearizability より制約が弱い [#REF_837203937081974784]_
+
+    :参考文献:
+      - 
+
+  Mathematical morphology
+    :カテゴリ:
+      - 集合論
+      - 位相論
+      - コンピュータビジョン
+
+    :概要:
+      - ja:数理形態学
+      - 集合論や位相論由来の簡単な演算子を使い、幾何学構造の分析・処理を行う分野 [#REF_MATMORPH]_ [#REF_WIKIPEDIA_MATHEMATICAL_MORPHOLOGY]_
+      - 代表的な演算子には、 :term:`Erosion operator`, :term:`Dilation operator`, :term:`Open operator` がある
+
+    :参考文献:
+      - 
+
+  Structuring element
+    :カテゴリ:
+      - Mathematical morphology
+
+    :概要:
+      - 雑に言うと、 Mathematical morphology において、当たり判定が発生する範囲
+      - 各演算子の適用前後を比較するとイメージしやすい
+
+  Erosion operator
+    :カテゴリ:
+      - Mathematical morphology
+
+    :概要:
+      - :term:`Structuring element` を用いて図形を縮小する [#REF_ERODE]_
+
+  Dilation operator
+    :カテゴリ:
+      - Mathematical morphology
+
+    :概要:
+      - :term:`Structuring element` を用いて図形を拡大する [#REF_DILATE]_
+
+    :参考文献:
+      - 
+
+  Open operator
+    :カテゴリ:
+      - Mathematical morphology
+
+    :概要:
+      - 
+
+    :参考文献:
+      - 
+
+  不偏性
+    :カテゴリ:
+      - 統計学
+
+    :概要:
+      - 推定値の期待値が真の値と等しいような、推定値の性質
+
+  一致性
+    :カテゴリ:
+      - 統計学
+
+    :概要:
+      - 標本の大きさを無限大にすると、推定値が真の値と等しくなるような、推定値の性質
+
+  帰納的集合
+    :カテゴリ:
+      - 集合論
+
+    :概要:
+      - 順序集合 :math:`A` の空でない任意の全順序部分集合が :math:`A` の中に上界を有するならば、 :math:`A` は帰納的（集合）である
+
+  整列集合
+    :カテゴリ:
+      - 集合論
+
+    :概要:
+      - ある順序集合 :math:`W` の任意の空でない部分集合が、
+        常に :term:`最小限` を持つならば、:math:`W` は整列集合である
+      - :math:`W` は全順序集合となる
+
+  最大限
+    :カテゴリ:
+      - 集合論
+
+    :概要:
+      - ある順序集合の元 :math:`a \in A` が、任意の元 :math:`x \in A` について、
+        :math:`a \geq x` ならば、 :math:`a` は最大限である
+      - 必ず存在するとは限らない
+      - 一意に定まる
+      - :math:`\max A` で表す
+
+  最小限
+    :カテゴリ:
+      - 集合論
+
+    :概要:
+      - ある順序集合の元 :math:`a \in A` が、任意の元 :math:`x \in A` について、
+        :math:`a \leq x` ならば、 :math:`a` は最小限である
+      - 必ず存在するとは限らない
+      - 一意に定まる
+      - :math:`\min A` で表す
+
+  順序数
+    :カテゴリ:
+      - 集合論
+
+    :概要:
+      - :math:`{\bf ord} A = {\bf ord} B \Leftrightarrow  A \simeq B`
+
+  TF-IDF
+    :カテゴリ:
+      - 自然言語処理
+
+    :概要:
+      - :term:`Term frequency` と :term:`Inverse document frequency` の積
+
+  Term frequency
+    :カテゴリ:
+      - 自然言語処理
+
+    :概要:
+      - TF
+      - :math:`tf: (t, d) \Rightarrow \mathbb{N}`
+      - :math:`tf: (t, d) \Rightarrow \mathbb{Q}` （標準化した場合）
+      - あるドキュメント :math:`d` 内での、ある単語 (term) :math:`t` の出現回数 [#REF_TFIDF_COM]_
+      - ドキュメントごとに文字数の違が異なるため、しばしば、あるドキュメント :math:`d` 内のすべての単語数で割ることで標準化される [#REF_TFIDF_COM]_
+
+        :math:`tf_{t,d} = \frac{t の d 内での出現回数}{d 内の総単語数}`
+
+      - 単語数での割る以外にも、ドキュメント内で最大の :math:`\max_{t \in d}\left(tf_{t,d}\right)`
+        で割ることで標準化するバリエーションも存在する [#REF_NLP_STANFORD_MAX_TF]_
+      - TF は、ストップワードを含め、すべての単語は等しく重要であるとものとして計算される [#REF_TFIDF_COM]_
+
+  Inverse document frequency
+    :カテゴリ:
+      - 自然言語処理
+
+    :概要:
+      - IDF
+      - :math:`idf: t \Rightarrow \mathbb{R}`
+      - ドキュメントのコレクション :math:`D` 全体で出現頻度の高い単語の重要度を下げる
+
+        :math:`idf_{t} = {\log_e}\frac{ドキュメント数 N}{単語 t の現れたドキュメント数 df_t}`
+
+  A 系列
+    :カテゴリ:
+      - 時間論
+
+    :概要:
+      - 「過去」「現在」「未来」
+
+  B 系列
+    :カテゴリ:
+      - 時間論
+
+    :概要:
+      - 「より前」（「同時である」）「より後」
+
+
+..  テンプレート
+..    :カテゴリ:
+..      - 
+
+..    :概要:
+..      - 
+
+..    :参考文献:
+..      - 
+
+
+参考文献
+========
+
+.. [#REF_COCKROACH_BLOG_WO_ATOMIC_CLOCKS] https://www.cockroachlabs.com/blog/living-without-atomic-clocks/
+.. [#REF_837203523104186369] https://twitter.com/kumagi/status/837203523104186369
+.. [#REF_837203937081974784] https://twitter.com/kumagi/status/837203937081974784
+.. [#REF_MATMORPH] http://homepages.inf.ed.ac.uk/rbf/HIPR2/matmorph.htm
+.. [#REF_WIKIPEDIA_MATHEMATICAL_MORPHOLOGY] https://en.wikipedia.org/wiki/Mathematical_morphology
+.. [#REF_ERODE] http://homepages.inf.ed.ac.uk/rbf/HIPR2/erode.htm
+.. [#REF_DILATE] http://homepages.inf.ed.ac.uk/rbf/HIPR2/dilate.htm
+.. [#REF_TFIDF_COM] http://www.tfidf.com/
+.. [#REF_NLP_STANFORD_MAX_TF] https://nlp.stanford.edu/IR-book/html/htmledition/maximum-tf-normalization-1.html
+.. [#REF_MCTAGGART_1908] マクタガート (1908) *The Unreality of Time* Mind: 永井均 (2017) 『時間の非実在性』 講談社学術文庫

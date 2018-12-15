@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>日記 2017-W12 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Articles" href="feed.html"/>
+        <link rel="next" title="行レベルのアクセス制御" href="articles_row_level_ac.html"/>
+        <link rel="prev" title="日記 2017-W13" href="weeklyreport_2017w13.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="feed.html">Articles</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="articles_design_2017.html">分析・設計本所感</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w15.html">日記 2017-W15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w14.html">日記 2017-W14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w13.html">日記 2017-W13</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">日記 2017-W12</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">最近やってたこと</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">最近読んだ文章</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">見つけたもの</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">教えてもらったもの</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id21">脚注</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="articles_row_level_ac.html">行レベルのアクセス制御</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_missing_values.html">欠測データの統計科学受講ノート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w02.html">日記 2017-W02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w01.html">日記 2017-W01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_setup-debian-8-on-mbp-11-5.html">Debian jessie (8) を Mac Book Pro 11,5 にセットアップする</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_sphinxcontrib-newsfeed.html">sphinxcontrib-newsfeed</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="feed.html">Articles</a> &raquo;</li>
+        
+      <li>日記 2017-W12</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/weeklyreport_2017w12.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="w12">
+<h1>日記 2017-W12<a class="headerlink" href="#w12" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>2017-03-22 09:00:00</p>
+<ul class="simple">
+<li>10 週間放置してた</li>
+</ul>
+<div class="section" id="id1">
+<h2>最近やってたこと<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>コンピュータ CBT をはじめた<ul>
+<li>Pacifica <a class="footnote-reference" href="#pacifica-app" id="id2">[1]</a> というやつ</li>
+<li>なんとなく自分の精神の不安定化が予見できるようになってきた</li>
+</ul>
+</li>
+<li>ゲーム機の収納に付いて考えていた<ul>
+<li>調査の過程で金属板を折り曲げるポケットベンター <a class="footnote-reference" href="#tv-40" id="id3">[2]</a> <a class="footnote-reference" href="#original-pccase" id="id4">[3]</a> というものを見つけた</li>
+<li>程よいコの字ステーを探すよりポケットベンダーでコの字に曲げた方がいい</li>
+</ul>
+</li>
+<li>歯医者で歯の掃除してもらった<ul>
+<li>歯の舌触りがだいぶ変わって、虫歯の有無問わず豆に行った方がよさそう</li>
+</ul>
+</li>
+<li>カメラで撮影したドキュメントの歪み補正について<ul>
+<li>あとで読む<ul>
+<li><a class="reference external" href="http://ieeexplore.ieee.org/abstract/document/4359339/">http://ieeexplore.ieee.org/abstract/document/4359339/</a></li>
+</ul>
+</li>
+<li>Morphology <a class="footnote-reference" href="#morphology" id="id5">[4]</a><ul>
+<li>structuring element に基づいて隣接したピクセルの有無を確認して、ピクセルを残すかどうか決めるというだけで、縮小拡大ができる</li>
+<li>領域の拡大縮小について、一度パスみたいなデータを抽出するとかしなくても隣接ピクセル (structuring element) だけ見ればいいというのが感動的なところでした。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>オブジェクト指向分析・設計についての自分の考えの整理<ul>
+<li>「状態遷移のオブジェクト」</li>
+<li>DDD<ul>
+<li>ICONIX と DDD の悪魔合体あたりが落とし所なのでは</li>
+<li>DDD の戦術パターン、設計をシンプルに保つために、定義を狭義化してるところがいい</li>
+<li>モデリング手法を知らずに DDD へ飛びつくと、 DDD (Evans) はモデリング手法に言及していないため詰む</li>
+</ul>
+</li>
+<li>継承について<ul>
+<li>差分プログラミングための継承こそ要らないですけど、汎化関連は実装したい</li>
+<li>インタフェースがあればいいんですけど、なければ親クラスとして実装することになる</li>
+<li>継承のややこしさって、結局関連が複雑ってところに起因してるんでは</li>
+</ul>
+</li>
+<li>オブジェクトの実装について<ul>
+<li>「Flat is better than nested」 、手続き型を甘んじて受け入れろってこととは違うと思いたい</li>
+</ul>
+</li>
+<li>フレームワークについて<ul>
+<li>Django モデルを POPO にマッピングして欲しいという思い、何か重大な間違いを犯している感がある</li>
+<li>バウンダリによらず、インスタンス生成時にバリデーションが必要であれば Form または ModelForm をファクトリとして使うというアーキテクチャに見える</li>
+<li>Django モデルの状態変更にあたり不変条件を満たしてくれるのも ModelForm なので、状態変更も ModelForm を介するとよいのだろうか</li>
+<li>Form に関する思考実験<ul>
+<li>Form にアプリケーションレイヤの責務を負わせるとする</li>
+<li>Form は入力値の処理という責務があるので、アプリケーションロジックまで突っ込むと、責務過多ではないか</li>
+<li>しかし、アプリケーションロジックは入力値の型に依存するので、間接的に Form に依存している</li>
+<li>しかし、アプリケーションロジックの依存先は Form の具象クラスではなく Form が生成するある種の DTO</li>
+<li>基本的に Form はプレゼンテーションレイヤにいて、アプリケーションレイヤの責務は Form に置かない</li>
+<li>ただし、バリデーションロジックがユーザ認証に依存する場合はアプリケーションレイヤへ侵食する</li>
+</ul>
+</li>
+<li>ModelForm に関する思考実験<ul>
+<li>問題: やっかいな存在としての ModelForm があり。 ModelForm はプレゼンテーション・アプリケーション・ドメインの各レイヤにまたがってるように見える</li>
+<li>ModelForm は、ドメインレイヤのエンティティ <a class="footnote-reference" href="#isbn-9784798121963" id="id6">[10]</a> たる Django モデルを生成するファクトリ <a class="footnote-reference" href="#isbn-9784798121963" id="id7">[10]</a> の責務を負っている</li>
+<li>ModelForm は、ドメインレイヤのエンティティ <a class="footnote-reference" href="#isbn-9784798121963" id="id8">[10]</a> たる Django モデルの状態変更における不変条件を満たす責務も負っている</li>
+<li>ModelForm は、Physical レイヤ <a class="footnote-reference" href="#isbn-9784873114163" id="id9">[9]</a> にいる Django モデルに対する Logical レイヤ <a class="footnote-reference" href="#isbn-9784873114163" id="id10">[9]</a> のモデルであり、
+ドメインレイヤ <a class="footnote-reference" href="#isbn-9784798121963" id="id11">[10]</a> に存在するようにみえる</li>
+<li>ModelForm は、Form としての責務も負っている</li>
+<li>ModelForm は、この点でプレゼンテーションレイヤに存在している</li>
+<li>ModelForm は、ドメインレイヤ・プレゼンテーションレイヤの両レイヤにまたがっている</li>
+<li>ModelForm で対処可能な要件ならば、複数レイヤにまたがること設計上の妥協点として認める得る</li>
+<li>モデルの状態変更が ModelForm からのみかつ ModelForm のみで行われる場合には、複数レイヤにまたがること設計上の妥協点として認める得る</li>
+<li>状態変更のユースケースがバウンダリとバウンダリから直結したエンティティのみで完結する場合には、
+そのエンティティに ModelForm なステレオタイプを置くというアーキテクチャは認め得る</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>クラスという構文をどう説明するか<ul>
+<li>犬とかアヒルとかを鳴かせるオブジェクト指向プログラミングの説明<ul>
+<li>OOA/D/P の説明としては無いなとはやはり思う</li>
+<li>クラスっていう構文を教えるための苦肉の策としてア</li>
+<li>クラスっていうものを使ったコードを書ける人への説明とクラスなんじゃそれって人への説明は違う</li>
+<li>でもたこ焼き器の説明だけは許さない</li>
+</ul>
+</li>
+<li>OOP は FP に状態を加えたもの (Peter Van Roy) なので、
+状態が変化しないオブジェクトを単純なデータ構造と関数によってエミュレートし、
+エミュレートされたオブジェクトをクラスへ書き換えることで感覚をつかめるのではという仮説</li>
+</ul>
+</li>
+<li>アプリケーションレイヤ<ul>
+<li>「アプリケーションモデル」の定義を暫定的に「アプリケーションレイヤ」の「モデルオブジェクト」とする</li>
+<li>アプリケーションレイヤを設けることで、プレゼンテーションレイヤの責務をリクエストの処理とレスポンスの生成、アプリケーションレイヤの呼び出しに絞ることができる</li>
+<li>アプリケーションレイヤの返り値を MVC における View が必要としている形式に変換する責務は、ある程度アプリケーションレイヤが負ってもよいと思う</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>計画<ul>
+<li>PERT の良さ<ul>
+<li>ケツがわかりやすくなる</li>
+</ul>
+</li>
+<li>仮説: 見積り工数に対して工期は 1.5 程度倍かかる<ul>
+<li>原因: コミュニケーションロスなどのなんらかのブロック</li>
+<li>対応: ブロック要因を潰すか</li>
+<li>対処: ブロックされてる時間を別の作業に割り当てる<ul>
+<li>問題: ブロックされてる時間を別の作業に割り当てると、言い換えると複数の作業を並行して進めることになる</li>
+<li>問題: 作業間の切り替えにあたって切り替えコストが発生する</li>
+<li>対応: 切り替えコストの極小化には、切り替え自体を少なくする</li>
+<li>定義: 中間でブロックが発生しうる作業をブロック発生のタイミング分割し、分割された作業を作業単位と呼ぶ</li>
+<li>対応: 作業単位の実行タイミングを調整し、時間あたりの作業量を極大化する</li>
+<li>手段: PERT</li>
+<li>問題: 長期的なブロックの予測は、わたしには無理</li>
+<li>対応: 作業郡を直交する作業単位郡へ直和分割し（分割統治）、併せて依存関係を明示化する</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>携行用の指輪ケースが欲しい<ul>
+<li>出先で一時的に指輪を外しておきたい時がある</li>
+<li>プロポーズ用には便利そうそうなのがある <a class="footnote-reference" href="#chestpocket-box" id="id12">[6]</a> が、回転するとかいうギミックがあって高い</li>
+<li>無印の名刺入れにウレタンフォーム突っ込んどくのでよいのでは</li>
+<li>ちょっと凝って、スエードの布貼っといてもいい</li>
+</ul>
+</li>
+<li>コンテナのネットワーキングの実装について<ul>
+<li><a class="reference external" href="https://github.com/docker/libnetwork/blob/75756e4/drivers/bridge/setup_ipv4.go">https://github.com/docker/libnetwork/blob/75756e4/drivers/bridge/setup_ipv4.go</a></li>
+<li><a class="reference external" href="https://www.karlrupp.net/en/computer/nat_tutorial">https://www.karlrupp.net/en/computer/nat_tutorial</a></li>
+<li><a class="reference external" href="https://developer.ibm.com/recipes/tutorials/networking-your-docker-containers-using-docker0-bridge/">https://developer.ibm.com/recipes/tutorials/networking-your-docker-containers-using-docker0-bridge/</a></li>
+</ul>
+</li>
+<li>Ansible の変数の dict がマージされなくてつらい<ul>
+<li>つらい <a class="reference external" href="http://stackoverflow.com/a/25131711">http://stackoverflow.com/a/25131711</a></li>
+</ul>
+</li>
+<li>Occultic;Nine みた<ul>
+<li>OC9 、オカマが悪役だったとこ以外はよかったですが、オカマが悪役だったところは最悪でした</li>
+<li>リセットモノでの並行世界間の整合性はどうなっているのかという疑問</li>
+</ul>
+</li>
+<li>IPA が出してる統一プロセスみたいなの、読んどきたいんですよね。</li>
+<li>Android Chrome のオススメコンテンツを消す<ul>
+<li><code class="docutils literal"><span class="pre">#enable-ntp-popular-sites</span></code> だけでなく <code class="docutils literal"><span class="pre">#enable-ntp-snippets</span></code> も無効化する</li>
+</ul>
+</li>
+<li>医学統計が気になる<ul>
+<li>発端はおそらく欠測データの統計科学</li>
+<li>朝倉書店から医学統計学シリーズというシリーズが出版されている <a class="footnote-reference" href="#asakura-med-stat-series" id="id13">[8]</a></li>
+</ul>
+</li>
+<li>Steins;Gate 0<ul>
+<li>ダルがアツい</li>
+<li>続編としては負荷領域のデジャヴがダメだった一方でゼロはすごくよかった</li>
+<li>シュタインズゲートへ到達する物語ではなく、鳳凰院凶魔を復活させ、シュタインズゲートに到達させる物語</li>
+<li>シュタインズゲートに到達には「未来を司る女神作戦」縛りがあるので、本編に戻れないとどうしても結末の物足りなさはあった</li>
+<li>シュタゲゼロ、本当に良くて、本当によかった</li>
+<li>ダルアフター的な側面もよかった</li>
+</ul>
+</li>
+<li>虐殺器官<ul>
+<li>虐殺器官本当に最高でした。</li>
+<li>関連用語<ul>
+<li>Emotion regulation questionaries</li>
+<li>Interpersonal emotion regulation</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Spanner<ul>
+<li>Replication は global scale な可用性のため</li>
+<li>TrueTime API<ul>
+<li>原始時計使ってるので不確かさが十分に小さくて全順序になる?</li>
+<li>「正確な時刻」を保証するわけではなく、「高い精度」を与える</li>
+<li>TrueTime API の精度が 7ms だから 7ms 待てば Linearizability 保証される?</li>
+</ul>
+</li>
+<li>疑問<ul>
+<li>例えば LAN 内で完結する場合って原子時計なしでも行けたりしないか</li>
+<li>NTP サーバが SPOF に</li>
+<li>Linearizability まで保証させると、クロックの精度の問題で実用に耐えなくなるが、 Serializability までは保証される <a class="footnote-reference" href="#cockroach-without-atom" id="id14">[11]</a></li>
+<li>NTP の精度が 150 ms 程度なので、待ち時間が 150 ms 程度になって使い物にならんし、高精度の時計が必要になる <a class="footnote-reference" href="#cockroach-without-atom" id="id15">[11]</a></li>
+<li>ノード間で持ってるデータ同じでも書き込み性能はスケールするのか</li>
+</ul>
+</li>
+<li>関連<ul>
+<li><a class="reference external" href="https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf">https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Serializability, Linearizability, External consistency<ul>
+<li>ファントムリードが発生するかと Serializability はたぶん別</li>
+<li>Linearizability があれば Serializability もあるでよさそうですたぶん。</li>
+</ul>
+</li>
+<li>Paxos<ul>
+<li><a class="reference external" href="https://www.slideshare.net/pfi/paxos-13615514">https://www.slideshare.net/pfi/paxos-13615514</a></li>
+</ul>
+</li>
+<li>タイムズレンタカーで車を借りた<ul>
+<li>タイムズカープラス会員だったおかけでレンタカーが格安になった</li>
+</ul>
+</li>
+<li>意識とは<ul>
+<li>そもそも人間の意識とは</li>
+<li>意識の二元論的解釈しか想像がつかない</li>
+<li>誰に承認されたいのか</li>
+</ul>
+</li>
+<li>ある評価基準とされる用語について<ul>
+<li>嫌悪感にも近い違和感がある<ul>
+<li>定量評価プロセスの欠如</li>
+<li>公共性の低さに起因する根本的な必要性の欠如</li>
+</ul>
+</li>
+<li>端的に言えば、欺瞞を感じている</li>
+</ul>
+</li>
+<li>人前でしゃべった<ul>
+<li>MP が使い果たされた</li>
+<li>ファシリテータ、狂言回しとして物語に直接干渉せずつもりでいた</li>
+<li>とりあえず、君の中のニュータイプが目を覚ますとかいっときゃいいんだろと思ってた</li>
+</ul>
+</li>
+<li>Rundeck だるい<ul>
+<li><a class="reference external" href="https://github.com/rundeck/rundeck/issues/82#issuecomment-18010746">https://github.com/rundeck/rundeck/issues/82#issuecomment-18010746</a></li>
+</ul>
+</li>
+<li>JS<ul>
+<li><code class="docutils literal"><span class="pre">jQuery.ajax()</span></code> 的なのをよしなにしてくれる Web 標準な何かとして Fetch API</li>
+<li>副作用地獄なので副作用よしなに扱う仕組みとその仕組みをよしなに構成する方法が必要</li>
+<li>副作用がいやというか、副作用があるならオブジェクトとしてカプセル化すべき</li>
+</ul>
+</li>
+<li>朝起きられない<ul>
+<li>布団から出られないのは、眠いし寒いしダルいからで、まったく布団から出られるモチベーションが得られそうにない</li>
+</ul>
+</li>
+<li>スマホスタンド<ul>
+<li>長らく仕掛状態で放置していたスマヒョスタンドを完成させたものの、重心が偏っていてスマヒョを置くと転倒する</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id16">
+<h2>最近読んだ文章<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>入門数理統計学<ul>
+<li>回帰について<ul>
+<li>一般線形モデルと単なる回帰直線は別モンとして考えにゃならなそう</li>
+<li>一般線形モデルは、説明変数・従属変数ともに正規分布に従うことを仮定したモデルですが、最小二乗法による回帰直線は必ずしもそうではない</li>
+<li>最小二乗法は、単に当てはまりのよさで線を引いているので、当てはめるだけであれば、変数に分布を仮定する必要も、あまつさえ変数が確率変数である必要もない</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>急須の洗い方<ul>
+<li>注ぎ口をグラスに突き刺しておくとよく乾く <a class="footnote-reference" href="#kyusu" id="id17">[5]</a></li>
+</ul>
+</li>
+<li>Distributed computing<ul>
+<li>NTP<ul>
+<li>オフセットは、あるクロック C の時刻 C(t) と実時間 t との差 C(t) - t</li>
+<li>伝送の所要時間が上りと下りで同じだと仮定すると、オフセットが推定できる</li>
+<li>いくつかの推定結果のうち、併せて計算しておいた round-trip delay が一番小さいものを採用する</li>
+<li>統計的に処理せずに、一番 round-trip delay が小さいものを採用する</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>TLS の概要<ul>
+<li><a class="reference external" href="https://www.ipa.go.jp/security/pki/071.html">https://www.ipa.go.jp/security/pki/071.html</a></li>
+</ul>
+</li>
+<li>vmware AirWatch <a class="footnote-reference" href="#air-watch" id="id18">[7]</a><ul>
+<li>ブラウザとかメールとかの業務で使うアプリは、全部独自アプリ化して一元管理しちゃえばいいんじゃっていう結構パワー系の発想</li>
+<li>コンテナ化</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://web.canon.jp/technology/s_labo/light/003/01.html">http://web.canon.jp/technology/s_labo/light/003/01.html</a></li>
+<li><a class="reference external" href="http://www.iij.ad.jp/news/iijnews/2017/index.html">http://www.iij.ad.jp/news/iijnews/2017/index.html</a><ul>
+<li>今まで大企業じゃないと厳しかった IoT がコモディティ化したことに意味があると。</li>
+</ul>
+</li>
+<li>集合位相入門<ul>
+<li>選出公理の何が公理たらしめているのか<ul>
+<li><span class="math">\(\forall\lambda\in\Lambda \left(A_{\lambda} != \emptyset\right)\)</span> のとき、 写像 <span class="math">\(a: \Lambda \mapsto \bigcup A_{\lambda}\)</span> があり、
+各 <span class="math">\(\lambda \in \Lambda\)</span> について <span class="math">\(a\left(\lambda\right) = a_{\lambda} \in A_{\lambda}\)</span> とすると、 <span class="math">\(a_{\lambda}\)</span> をどう選ぶかが問題となる</li>
+<li>写像（選択関数） <span class="math">\(a\)</span> による要素 <span class="math">\(a_{\lambda}\)</span> の選ばれ方をすべて考えことは、
+取り得るすべての <span class="math">\(a_{\lambda}\)</span> の組み合わせについて考えることになり、（命題の必要条件である）直積となるイメージ</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.ism.ac.jp/editsec/toukei/pdf/64-2-233.pdf">http://www.ism.ac.jp/editsec/toukei/pdf/64-2-233.pdf</a></li>
+</ul>
+</div>
+<div class="section" id="id19">
+<h2>見つけたもの<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.semanticscholar.org/">https://www.semanticscholar.org/</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/B00DNS898G">https://www.amazon.co.jp/dp/B00DNS898G</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/B017JPTTZ0/">https://www.amazon.co.jp/dp/B017JPTTZ0/</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/B00F9QJD3U/">https://www.amazon.co.jp/dp/B00F9QJD3U/</a></li>
+<li><a class="reference external" href="http://id.fnshr.info/2017/01/27/no-sdw/">http://id.fnshr.info/2017/01/27/no-sdw/</a></li>
+<li><a class="reference external" href="https://play.google.com/store/apps/details?id=com.flavionet.android.camera.pro">https://play.google.com/store/apps/details?id=com.flavionet.android.camera.pro</a></li>
+</ul>
+</div>
+<div class="section" id="id20">
+<h2>教えてもらったもの<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.wheninmanila.com/chris-pratts-how-to-get-fat-tips/">http://www.wheninmanila.com/chris-pratts-how-to-get-fat-tips/</a></li>
+</ul>
+</div>
+<div class="section" id="id21">
+<h2>脚注<a class="headerlink" href="#id21" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table class="docutils footnote" frame="void" id="pacifica-app" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><a class="reference external" href="https://play.google.com/store/apps/details?id=com.pacificalabs.pacifica&amp;hl=en">https://play.google.com/store/apps/details?id=com.pacificalabs.pacifica&amp;hl=en</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="tv-40" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td><a class="reference external" href="http://www.engineer.jp/products/cut/ct08/item_01/tv-40">http://www.engineer.jp/products/cut/ct08/item_01/tv-40</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="original-pccase" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[3]</a></td><td><a class="reference external" href="http://momoshin.net/2ch_original_pccase.htm">http://momoshin.net/2ch_original_pccase.htm</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="morphology" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[4]</a></td><td><a class="reference external" href="http://homepages.inf.ed.ac.uk/rbf/HIPR2/morops.htm">http://homepages.inf.ed.ac.uk/rbf/HIPR2/morops.htm</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="kyusu" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id17">[5]</a></td><td><a class="reference external" href="http://www.ochakin.co.jp/kyuso.html">http://www.ochakin.co.jp/kyuso.html</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="chestpocket-box" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id12">[6]</a></td><td><a class="reference external" href="http://bijoupiko.com/weddingitem/item/50/">http://bijoupiko.com/weddingitem/item/50/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="air-watch" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id18">[7]</a></td><td><a class="reference external" href="http://www.air-watch.com/jp/">http://www.air-watch.com/jp/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="asakura-med-stat-series" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13">[8]</a></td><td><a class="reference external" href="http://www.asakura.co.jp/G_11.php?sreiesname=50">http://www.asakura.co.jp/G_11.php?sreiesname=50</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="isbn-9784873114163" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[9]</td><td><em>(<a class="fn-backref" href="#id9">1</a>, <a class="fn-backref" href="#id10">2</a>)</em> <a class="reference external" href="https://www.amazon.co.jp/dp/4873114160/">https://www.amazon.co.jp/dp/4873114160/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="isbn-9784798121963" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[10]</td><td><em>(<a class="fn-backref" href="#id6">1</a>, <a class="fn-backref" href="#id7">2</a>, <a class="fn-backref" href="#id8">3</a>, <a class="fn-backref" href="#id11">4</a>)</em> <a class="reference external" href="https://www.amazon.co.jp/dp/B00GRKD6XU/">https://www.amazon.co.jp/dp/B00GRKD6XU/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="cockroach-without-atom" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[11]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id15">2</a>)</em> <a class="reference external" href="https://www.cockroachlabs.com/blog/living-without-atomic-clocks/">https://www.cockroachlabs.com/blog/living-without-atomic-clocks/</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="articles_row_level_ac.html" class="btn btn-neutral float-right" title="行レベルのアクセス制御" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="weeklyreport_2017w13.html" class="btn btn-neutral" title="日記 2017-W13" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

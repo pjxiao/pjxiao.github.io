@@ -1,0 +1,1703 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>データ前処理 — よりよいトレーニングセットの構築 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Python機械学習プログラミング" href="notes_pyml.html"/>
+        <link rel="next" title="次元削減でデータを圧縮する" href="notes_pyml_05.html"/>
+        <link rel="prev" title="分類問題 - 機械学習ライブラリ sckit-learn の活用" href="notes_pyml_03.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html">分類問題 - 機械学習ライブラリ sckit-learn の活用</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">データ前処理 — よりよいトレーニングセットの構築</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#4.1　欠測データへの対処">4.1　欠測データへの対処</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.2-カテゴリデータの処理">4.2 カテゴリデータの処理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.3-データセットをトレーニングデータセットとテストデータセットに分割する">4.3 データセットをトレーニングデータセットとテストデータセットに分割する</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.4-特徴量の尺度を揃える">4.4 特徴量の尺度を揃える</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.5　有益な特徴量の選択">4.5　有益な特徴量の選択</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.6-ランダムフォレストで特徴量の重要度にアクセスする">4.6 ランダムフォレストで特徴量の重要度にアクセスする</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html">次元削減でデータを圧縮する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html">モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_07.html">アンサンブル学習 - 異なるモデルの組み合わせ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html">ニューラルネットワーク - 画像認識トレーニング</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html">ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html">ニューラルネットワーク</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id1">機械学習アルゴリズムのトレーニングの構成要素</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id2">2.分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id3">3. 分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id4">6 . モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+          <li><a href="notes_pyml.html">Python機械学習プログラミング</a> &raquo;</li>
+        
+      <li>データ前処理 — よりよいトレーニングセットの構築</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_pyml_04.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="データ前処理-—-よりよいトレーニングセットの構築">
+<h1>データ前処理 — よりよいトレーニングセットの構築<a class="headerlink" href="#データ前処理-—-よりよいトレーニングセットの構築" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="4.1　欠測データへの対処">
+<h2>4.1　欠測データへの対処<a class="headerlink" href="#4.1　欠測データへの対処" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>欠測値<ul>
+<li>データ収集過程での誤り</li>
+<li>不適切な測定</li>
+<li>アンケートの空欄</li>
+</ul>
+</li>
+<li>欠測値は予期せぬ結果を産み出す</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
+
+<span class="n">csv_data</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">A,B,C,D</span>
+<span class="s2">1.0,2.0,3.0,4.0</span>
+<span class="s2">5.0,6.0,,8.0</span>
+<span class="s2">10.0,11.0,12.0,</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">csv_data</span><span class="p">))</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>NaN</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.0</td>
+      <td>11.0</td>
+      <td>12.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>A    0
+B    0
+C    1
+D    1
+dtype: int64
+</pre></div>
+</div>
+</div>
+<div class="section" id="4.1.1　欠測値を持つサンプル／特徴量を取り除く">
+<h3>4.1.1　欠測値を持つサンプル／特徴量を取り除く<a class="headerlink" href="#4.1.1　欠測値を持つサンプル／特徴量を取り除く" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Drop rows contains NaN column</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>4.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Drop columns contains NaN</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.0</td>
+      <td>11.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="4.1.2　欠測値を補完する">
+<h3>4.1.2　欠測値を補完する<a class="headerlink" href="#4.1.2　欠測値を補完する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>標本や特徴量全体の削除 (CCA に相当する)
+は、データの損失につながり、信頼性を損ねたりする</li>
+</ul>
+<p><em>注意:</em>　この書籍で紹介されている手法は「単一代入法」であり、望ましい方法ではない。</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">Imputer</span>
+
+<span class="c1"># 平均値補完</span>
+<span class="n">imr</span> <span class="o">=</span> <span class="n">Imputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="s1">&#39;NaN&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">imr</span> <span class="o">=</span> <span class="n">imr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">imputed_data</span> <span class="o">=</span> <span class="n">imr</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">imputed_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[  1. ,   2. ,   3. ,   4. ],
+       [  5. ,   6. ,   7.5,   8. ],
+       [ 10. ,  11. ,  12. ,   6. ]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="4.1.3　scikit-learn-の推定器API">
+<h3>4.1.3　scikit-learn の推定器API<a class="headerlink" href="#4.1.3　scikit-learn-の推定器API" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Imputer</span></code> は変換器（transformer) クラスに属する</li>
+<li>変換器は、 <code class="docutils literal"><span class="pre">fit()</span></code> と <code class="docutils literal"><span class="pre">transform()</span></code> の 2 つのメソッドを持つ</li>
+<li>変換器は、 <code class="docutils literal"><span class="pre">fit()</span></code> で教師データからパラメータを学習し、
+<code class="docutils literal"><span class="pre">transform()</span></code> でパラメータに基づいた変換を行う</li>
+<li>一方で推定器は、 <code class="docutils literal"><span class="pre">fit()</span></code> と <code class="docutils literal"><span class="pre">transform()</span></code>, <code class="docutils literal"><span class="pre">predict()</span></code> の 3
+つのメソッドをもつ</li>
+</ul>
+</div>
+</div>
+<div class="section" id="4.2-カテゴリデータの処理">
+<h2>4.2 カテゴリデータの処理<a class="headerlink" href="#4.2-カテゴリデータの処理" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+        <span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="mf">10.1</span><span class="p">,</span> <span class="s1">&#39;class1&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="mf">13.5</span><span class="p">,</span> <span class="s1">&#39;class2&#39;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;XL&#39;</span><span class="p">,</span> <span class="mf">15.3</span><span class="p">,</span> <span class="s1">&#39;class1&#39;</span><span class="p">]])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;classlabel&#39;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color</th>
+      <th>size</th>
+      <th>price</th>
+      <th>classlabel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>green</td>
+      <td>M</td>
+      <td>10.1</td>
+      <td>class1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>red</td>
+      <td>L</td>
+      <td>13.5</td>
+      <td>class2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>blue</td>
+      <td>XL</td>
+      <td>15.3</td>
+      <td>class1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="section" id="4.2.1-順序特徴量のマッピング">
+<h3>4.2.1 順序特徴量のマッピング<a class="headerlink" href="#4.2.1-順序特徴量のマッピング" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>map() メソッドで順序特徴量を整数値へマッピングする</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">size_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;XL&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">size_mapping</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color</th>
+      <th>size</th>
+      <th>price</th>
+      <th>classlabel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>green</td>
+      <td>1</td>
+      <td>10.1</td>
+      <td>class1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>red</td>
+      <td>2</td>
+      <td>13.5</td>
+      <td>class2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>blue</td>
+      <td>3</td>
+      <td>15.3</td>
+      <td>class1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="4.2.2-クラスラベルのエンコーディング">
+<h3>4.2.2 クラスラベルのエンコーディング<a class="headerlink" href="#4.2.2-クラスラベルのエンコーディング" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>エンコーディングのスクラッチ</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">class_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="n">l</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;classlabel&#39;</span><span class="p">]))}</span>
+<span class="n">class_mapping</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>{&#39;class1&#39;: 0, &#39;class2&#39;: 1}
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;classlabel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;classlabel&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">class_mapping</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>color</th>
+      <th>size</th>
+      <th>price</th>
+      <th>classlabel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>green</td>
+      <td>1</td>
+      <td>10.1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>red</td>
+      <td>2</td>
+      <td>13.5</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>blue</td>
+      <td>3</td>
+      <td>15.3</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>LabelEncoder を用いる</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">LabelEncoder</span>
+
+<span class="n">class_le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">class_le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;classlabel&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([0, 1, 0])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">class_le</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([0, 1, 0])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="4.2.3-名義特徴量での-one-hot-エンコーディング">
+<h3>4.2.3 名義特徴量での one-hot エンコーディング<a class="headerlink" href="#4.2.3-名義特徴量での-one-hot-エンコーディング" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>one-hot エンコーディング: 名義尺度に対してダミー変数を作る</li>
+<li>OneHotEncoder を使う</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">OneHotEncoder</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">color_le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">color_le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ohe</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">categorical_features</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># first 3 columns are color</span>
+<span class="n">ohe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[  0. ,   1. ,   0. ,   1. ,  10.1],
+       [  0. ,   0. ,   1. ,   2. ,  13.5],
+       [  1. ,   0. ,   0. ,   3. ,  15.3]])
+</pre></div>
+</div>
+</div>
+<p>get_dummies() 関数を用いると、文字列値を持つ列のみがダミー変数化される</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">pandas</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>price</th>
+      <th>size</th>
+      <th>color_blue</th>
+      <th>color_green</th>
+      <th>color_red</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>13.5</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>15.3</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+</div>
+<div class="section" id="4.3-データセットをトレーニングデータセットとテストデータセットに分割する">
+<h2>4.3 データセットをトレーニングデータセットとテストデータセットに分割する<a class="headerlink" href="#4.3-データセットをトレーニングデータセットとテストデータセットに分割する" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df_wine</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">df_wine</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Class label&#39;</span><span class="p">,</span> <span class="s1">&#39;Alcohol&#39;</span><span class="p">,</span> <span class="s1">&#39;Malic acid&#39;</span><span class="p">,</span> <span class="s1">&#39;Ash&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Alcalinity of ash&#39;</span><span class="p">,</span> <span class="s1">&#39;Magnesium&#39;</span><span class="p">,</span> <span class="s1">&#39;Total phenols&#39;</span><span class="p">,</span> <span class="s1">&#39;Flavanoids&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Nonflavanoid phenols&#39;</span><span class="p">,</span> <span class="s1">&#39;Proanthocyanins&#39;</span><span class="p">,</span> <span class="s1">&#39;Color intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;Hue&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OD280/OD315 of diluted wines&#39;</span><span class="p">,</span> <span class="s1">&#39;Proline&#39;</span>
+<span class="p">]</span>
+<span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">df_wine</span><span class="p">[</span><span class="s1">&#39;Class label&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([1, 2, 3])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">df_wine</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Class label</th>
+      <th>Alcohol</th>
+      <th>Malic acid</th>
+      <th>Ash</th>
+      <th>Alcalinity of ash</th>
+      <th>Magnesium</th>
+      <th>Total phenols</th>
+      <th>Flavanoids</th>
+      <th>Nonflavanoid phenols</th>
+      <th>Proanthocyanins</th>
+      <th>Color intensity</th>
+      <th>Hue</th>
+      <th>OD280/OD315 of diluted wines</th>
+      <th>Proline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>14.23</td>
+      <td>1.71</td>
+      <td>2.43</td>
+      <td>15.6</td>
+      <td>127</td>
+      <td>2.80</td>
+      <td>3.06</td>
+      <td>0.28</td>
+      <td>2.29</td>
+      <td>5.64</td>
+      <td>1.04</td>
+      <td>3.92</td>
+      <td>1065</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>13.20</td>
+      <td>1.78</td>
+      <td>2.14</td>
+      <td>11.2</td>
+      <td>100</td>
+      <td>2.65</td>
+      <td>2.76</td>
+      <td>0.26</td>
+      <td>1.28</td>
+      <td>4.38</td>
+      <td>1.05</td>
+      <td>3.40</td>
+      <td>1050</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>13.16</td>
+      <td>2.36</td>
+      <td>2.67</td>
+      <td>18.6</td>
+      <td>101</td>
+      <td>2.80</td>
+      <td>3.24</td>
+      <td>0.30</td>
+      <td>2.81</td>
+      <td>5.68</td>
+      <td>1.03</td>
+      <td>3.17</td>
+      <td>1185</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>14.37</td>
+      <td>1.95</td>
+      <td>2.50</td>
+      <td>16.8</td>
+      <td>113</td>
+      <td>3.85</td>
+      <td>3.49</td>
+      <td>0.24</td>
+      <td>2.18</td>
+      <td>7.80</td>
+      <td>0.86</td>
+      <td>3.45</td>
+      <td>1480</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>13.24</td>
+      <td>2.59</td>
+      <td>2.87</td>
+      <td>21.0</td>
+      <td>118</td>
+      <td>2.80</td>
+      <td>2.69</td>
+      <td>0.39</td>
+      <td>1.82</td>
+      <td>4.32</td>
+      <td>1.04</td>
+      <td>2.93</td>
+      <td>735</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_wine</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df_wine</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="4.4-特徴量の尺度を揃える">
+<h2>4.4 特徴量の尺度を揃える<a class="headerlink" href="#4.4-特徴量の尺度を揃える" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>特徴量のスケーリング (feature scaling)</li>
+<li>正規化 (normalization): 値域を <span class="math">\([0, 1]\)</span> にスケールする
+<span class="math">\(x_{norm}^{(i)} = \frac{x^{(i)} - x_{min}}{x_{max} - x_{min}}\)</span></li>
+<li>標準化 (standardization): 標準化
+<span class="math">\(x_{std}^{(i)} = \frac{x^{(i)} - \mu_x}{\sigma_x}\)</span></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span>
+<span class="n">mms</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">X_train_norm</span> <span class="o">=</span> <span class="n">mms</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_norm</span> <span class="o">=</span> <span class="n">mms</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<span class="n">stdsc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_train_std</span> <span class="o">=</span> <span class="n">stdsc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_std</span> <span class="o">=</span> <span class="n">stdsc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="4.5　有益な特徴量の選択">
+<h2>4.5　有益な特徴量の選択<a class="headerlink" href="#4.5　有益な特徴量の選択" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="4.5.1　L1-正則化による疎な解">
+<h3>4.5.1　L1 正則化による疎な解<a class="headerlink" href="#4.5.1　L1-正則化による疎な解" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>L1 正則化</li>
+<li><span class="math">\(L1: ||w||_1 = \sum_{j=1}^{m}|w_j|\)</span></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+<span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training accuracy:&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_std</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Training accuracy: 0.983870967742
+Test accuracy: 0.981481481481
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 切片</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">intercept_</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[20]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([-0.38375921, -0.15809518, -0.70041813])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 係数</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">coef_</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[21]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.28005382,  0.        ,  0.        , -0.02779695,  0.        ,
+         0.        ,  0.7100444 ,  0.        ,  0.        ,  0.        ,
+         0.        ,  0.        ,  1.23668311],
+       [-0.64395597, -0.06879977, -0.05720375,  0.        ,  0.        ,
+         0.        ,  0.        ,  0.        ,  0.        , -0.92688245,
+         0.0601489 ,  0.        , -0.37104599],
+       [ 0.        ,  0.06153206,  0.        ,  0.        ,  0.        ,
+         0.        , -0.63610706,  0.        ,  0.        ,  0.49812282,
+        -0.35821198, -0.57114533,  0.        ]])
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li>正則化パス</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span> <span class="s1">&#39;lightblue&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="s1">&#39;indigo&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">]</span>
+<span class="n">weights</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="n">c</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">c</span><span class="p">)</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">weights</span><span class="p">[:,</span> <span class="n">column</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">df_wine</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">),</span> <span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;weight coefficient&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.38</span><span class="p">,</span> <span class="mf">1.03</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fancybox</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_04_37_0.png" src="_images/notes_pyml_04_37_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="4.5.2　逐次特徴選択アルゴリズム">
+<h3>4.5.2　逐次特徴選択アルゴリズム<a class="headerlink" href="#4.5.2　逐次特徴選択アルゴリズム" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">次元削減</p>
+</li>
+<li><p class="first">特徴選択</p>
+<ul class="simple">
+<li>特徴量の一部を選択する</li>
+<li>計算効率を改善する</li>
+<li>無関係な特徴量を取り除くことで汎化性能を向上させる</li>
+<li>正則化を使えないアルゴリズムで役立つ</li>
+</ul>
+</li>
+<li><p class="first">特徴抽出</p>
+<ul class="simple">
+<li>特徴空間からより次元の低い特徴空間へマッピングする</li>
+</ul>
+</li>
+<li><p class="first">逐次特徴選択</p>
+<ul class="simple">
+<li>貪欲探索</li>
+</ul>
+</li>
+<li><p class="first">逐次後退選択 (SBS)</p>
+<ul class="simple">
+<li>目的の個数の特徴量まで特徴量を逐次的に削除する</li>
+<li><span class="math">\(J\)</span>: 最小化問題の目的関数</li>
+<li><span class="math">\(d\)</span>: 元の特徴量数</li>
+<li><span class="math">\(X_k\)</span>: <span class="math">\(k\)</span> 次元特徴空間</li>
+</ul>
+<ol class="arabic simple">
+<li><span class="math">\(k = d\)</span> でアルゴリズムを初期化</li>
+<li>最小化問題において <span class="math">\(J\)</span> を最大化する特徴量 <span class="math">\(x^-\)</span>
+を決定する: <span class="math">\(x^- = argmax J(X_k - x)\)</span></li>
+<li><span class="math">\(x^-\)</span> を削除する: <span class="math">\(X_{k_1} = X_k - x^-; k := k - 1\)</span></li>
+</ol>
+</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">combinations</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">accuracy_score</span>
+
+
+<span class="k">class</span> <span class="nc">SBS</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Sequential backward selection &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">k_features</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">accuracy_score</span><span class="p">,</span>
+                 <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scoring</span> <span class="o">=</span> <span class="n">scoring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_features</span> <span class="o">=</span> <span class="n">k_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="n">test_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subsets_</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+                <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+                <span class="n">test_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_size</span><span class="p">,</span>
+                <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subsets_</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indices_</span><span class="p">]</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+                <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span> <span class="o">=</span> <span class="p">[</span><span class="n">score</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">dim</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_features</span><span class="p">:</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">subsets</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indices_</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+                <span class="n">subsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+            <span class="n">best</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indices_</span> <span class="o">=</span> <span class="n">subsets</span><span class="p">[</span><span class="n">best</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subsets_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indices_</span><span class="p">)</span>
+            <span class="n">dim</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">best</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_score_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_calc_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span> <span class="n">indices</span><span class="p">],</span> <span class="n">y_train</span><span class="p">)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span> <span class="n">indices</span><span class="p">])</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scoring</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">score</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
+
+<span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sbs</span> <span class="o">=</span> <span class="n">SBS</span><span class="p">(</span><span class="n">knn</span><span class="p">,</span> <span class="n">k_features</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sbs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;__main__.SBS at 0x7f380b4b2198&gt;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">k_feat</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">sbs</span><span class="o">.</span><span class="n">subsets_</span><span class="p">]</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_feat</span><span class="p">,</span> <span class="n">sbs</span><span class="o">.</span><span class="n">scores_</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of features&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_04_41_0.png" src="_images/notes_pyml_04_41_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 精度を最大化した 5 つの特徴を表示する</span>
+<span class="n">k5</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sbs</span><span class="o">.</span><span class="n">subsets_</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_wine</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:][</span><span class="n">k5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;Alcohol&#39;, &#39;Malic acid&#39;, &#39;Alcalinity of ash&#39;, &#39;Hue&#39;, &#39;Proline&#39;], dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training accuracy:&#39;</span><span class="p">,</span> <span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_std</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Training accuracy: 0.983870967742
+Test accuracy: 0.944444444444
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">[:,</span> <span class="n">k5</span><span class="p">],</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training accuracy:&#39;</span><span class="p">,</span> <span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">[:,</span> <span class="n">k5</span><span class="p">],</span> <span class="n">y_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_std</span><span class="p">[:,</span> <span class="n">k5</span><span class="p">],</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Training accuracy: 0.959677419355
+Test accuracy: 0.962962962963
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="4.6-ランダムフォレストで特徴量の重要度にアクセスする">
+<h2>4.6 ランダムフォレストで特徴量の重要度にアクセスする<a class="headerlink" href="#4.6-ランダムフォレストで特徴量の重要度にアクセスする" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>ランダムフォレストで重要な特徴量を選択する</li>
+<li>ランダムフォレストはアンサンブル手法のひとつ</li>
+<li>線形分離可能かどうかの前提は不要</li>
+<li>ランダムフォレストの意味解釈性には注意が必要で、 2
+つ以上の特徴量に相関関係がある場合、そのうちの 1
+つの特徴量のみの重要度のランクのみ高くなり、残りの重要度がランキングに反映されない可能性がある</li>
+<li>scikit-learn のランダムフォレストの実装は特徴量の重要度が計算できる</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="n">feat_labels</span> <span class="o">=</span> <span class="n">df_wine</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">importances</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">feature_importances_</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">importances</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%2d</span><span class="s2">) </span><span class="si">%-*s</span><span class="s2"> </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span>
+    <span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">feat_labels</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">f</span><span class="p">]],</span> <span class="n">importances</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">f</span><span class="p">]]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ 1) Color intensity                0.182483
+ 2) Proline                        0.158610
+ 3) Flavanoids                     0.150948
+ 4) OD280/OD315 of diluted wines   0.131987
+ 5) Alcohol                        0.106589
+ 6) Hue                            0.078243
+ 7) Total phenols                  0.060718
+ 8) Alcalinity of ash              0.032033
+ 9) Malic acid                     0.025400
+10) Proanthocyanins                0.022351
+11) Magnesium                      0.022078
+12) Nonflavanoid phenols           0.014645
+13) Ash                            0.013916
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Feature Importances&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+    <span class="nb">range</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="n">importances</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightblue&#39;</span><span class="p">,</span>
+    <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span>
+    <span class="nb">range</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="n">feat_labels</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span>
+    <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_04_48_0.png" src="_images/notes_pyml_04_48_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_pyml_05.html" class="btn btn-neutral float-right" title="次元削減でデータを圧縮する" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_pyml_03.html" class="btn btn-neutral" title="分類問題 - 機械学習ライブラリ sckit-learn の活用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

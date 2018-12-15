@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>hirai.me</title>
+  <link href="https://hirai.me/"/>
+  <id>https://hirai.me/</id>
+  <author>
+    <name>Yabatanien</name>
+  </author>
+  <updated>2018-12-15T11:55:34+09:00</updated>
+  <entry>
+    <title>UPDATED: memo_ms_flow.html</title>
+    <link href="https://hirai.me/memo_ms_flow.html" />
+    <id>https://hirai.me/memo_ms_flow.html</id>
+    <updated>2018-12-15T11:55:34+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/memo_ms_flow.rst b/memo_ms_flow.rst
+new file mode 100644
+index 0000000..ee75633
+--- /dev/null
++++ b/memo_ms_flow.rst
+@@ -0,0 +1,48 @@
++==============
++Microsoft Flow
++==============
++
++Webhook
++=======
++
++Creating a webhook
++------------------
++
++Problem
++^^^^^^^^
+]]></summary>
+  </entry>
+  <entry>
+    <title>UPDATED: notes_the_republic.html</title>
+    <link href="https://hirai.me/notes_the_republic.html" />
+    <id>https://hirai.me/notes_the_republic.html</id>
+    <updated>2018-12-14T00:01:18+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/notes_the_republic.rst b/notes_the_republic.rst
+new file mode 100644
+index 0000000..c005177
+--- /dev/null
++++ b/notes_the_republic.rst
+@@ -0,0 +1,28 @@
++====
++国家
++====
++
++プラトンの対話篇。理想国家の建国という思考実験を通して、「正義」についての議論 [#NOTE_ABOUT]_ が展開される。
++藤沢令夫訳、岩波文庫刊。
++
++雑メモ
++======
++
++知性に関する対話のなかで次のような文がある。
++「指」は「指」であり、どんな特徴があろうとも「指」であるという話。
+]]></summary>
+  </entry>
+  <entry>
+    <title>UPDATED: memo_oas.html</title>
+    <link href="https://hirai.me/memo_oas.html" />
+    <id>https://hirai.me/memo_oas.html</id>
+    <updated>2018-12-05T12:41:40+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/memo_oas.rst b/memo_oas.rst
+new file mode 100644
+index 0000000..bd36329
+--- /dev/null
++++ b/memo_oas.rst
+@@ -0,0 +1,44 @@
++======================
++Open API Specification
++======================
++
++aka Swagger
++
++Swagger UI
++==========
++
++雑に `docker run` して起動するのが楽。
++リクエストを送る、モックサーバーやモッククライアントを生成するなどができるが、
++壊れていたり、エラーメッセージが不親切だったりで、使い勝手は良くない。
+]]></summary>
+  </entry>
+  <entry>
+    <title>UPDATED: notes_geometric_rectification_of_camera_captured_document_images.html</title>
+    <link href="https://hirai.me/notes_geometric_rectification_of_camera_captured_document_images.html" />
+    <id>https://hirai.me/notes_geometric_rectification_of_camera_captured_document_images.html</id>
+    <updated>2018-12-05T12:04:47+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/notes_geometric_rectification_of_camera_captured_document_images.rst b/notes_geometric_rectification_of_camera_captured_document_images.rst
+index bc25f4d..ad427d7 100644
+--- a/notes_geometric_rectification_of_camera_captured_document_images.rst
++++ b/notes_geometric_rectification_of_camera_captured_document_images.rst
+@@ -48,3 +48,3 @@ B. Preprocessing
+ まず、 binarize された画像からテキストの場所を検出する（テキスト認識、text identification）。
+-テキスト検出は gradient-based method [REF_GRADIENT_BASED_METHOD]_ を用いる。
++テキスト検出は gradient-based method [#REF_GRADIENT_BASED_METHOD]_ を用いる。
+ 
+@@ -54,3 +54,3 @@ major text flow の検出は、local な skew detection problem （傾き検出
+ スキャナで取り込んだ画像の場合、傾き（skew angle）はページ全体で一定だが、カメラで取り込んだ曲がったテキストの場合はページ内で一定しない。
+-projection profile analysis を用いて小さいエリアの skew angle を検出する。エラーの低減とスムーズ化のために  relaxation labeling approach [REF_RELAXATION_LABELING_APPROACH]_ を用いる。
++projection profile analysis を用いて小さいエリアの skew angle を検出する。エラーの低減とスムーズ化のために  relaxation labeling approach [#REF_RELAXATION_LABELING_APPROACH]_ を用いる。
+ 
+@@ -68,4 +68,4 @@ projection profile analysis を用いて小さいエリアの skew angle を検
+ 
+-.. [REF_GRADIENT_BASED_METHOD] J. Liang, D. DeMenthon, and D. Doermann, “Flattening curved documents in images,” in Proceedings of the Conference on Computer Vision and Pattern Recognition, 2005, pp. 338345
++.. [#REF_GRADIENT_BASED_METHOD] J. Liang, D. DeMenthon, and D. Doermann, “Flattening curved documents in images,” in Proceedings of the Conference on Computer Vision and Pattern Recognition, 2005, pp. 338345
+]]></summary>
+  </entry>
+  <entry>
+    <title>UPDATED: memo_powershell.html</title>
+    <link href="https://hirai.me/memo_powershell.html" />
+    <id>https://hirai.me/memo_powershell.html</id>
+    <updated>2018-12-05T12:04:47+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/memo_powershell.rst b/memo_powershell.rst
+index 58edc19..7be0cdb 100644
+--- a/memo_powershell.rst
++++ b/memo_powershell.rst
+@@ -17,3 +17,3 @@ VIキーバインド
+ 
+-`PSReadlineOption` を設定すると、 bash の `set -o vi` 相当のキーバインドになる。 [REF_SF_38297]_
++`PSReadlineOption` を設定すると、 bash の `set -o vi` 相当のキーバインドになる。 [#REF_SF_38297]_
+ ただし、bash とはことなり Ctrl-R でコマンド履歴を追えない。
+@@ -25,2 +25,2 @@ VIキーバインド
+ 
+-.. [REF_SF_38297] https://serverfault.com/a/38297
++.. [#REF_SF_38297] https://serverfault.com/a/38297
+]]></summary>
+  </entry>
+  <entry>
+    <title>UPDATED: memo_imagemagick.html</title>
+    <link href="https://hirai.me/memo_imagemagick.html" />
+    <id>https://hirai.me/memo_imagemagick.html</id>
+    <updated>2018-12-05T12:04:47+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/memo_imagemagick.rst b/memo_imagemagick.rst
+index 15dc33d..3f5b0a0 100644
+--- a/memo_imagemagick.rst
++++ b/memo_imagemagick.rst
+@@ -35,3 +35,3 @@ Convert PDF to PNGs.
+ 
+-角のピクセルの色基準で自動切り抜きを行う。 [CONVERT_TRIM]_
++角のピクセルの色基準で自動切り抜きを行う。 [#CONVERT_TRIM]_
+ 
+@@ -41,3 +41,3 @@ Simple usage::
+ 
+-特定の方向だけ切り抜きたい場合は、小細工が必要。 [TRIM_ONESIDE]_
++特定の方向だけ切り抜きたい場合は、小細工が必要。 [#TRIM_ONESIDE]_
+ 
+@@ -61,3 +61,3 @@ Simple usage::
+ 
+-.. [CONVERT_TRIM] https://www.imagemagick.org/script/command-line-options.php?#trim
+-.. [TRIM_ONESIDE] http://www.imagemagick.org/Usage/crop/#trim_oneside
+]]></summary>
+  </entry>
+  <entry>
+    <title>UPDATED: memo_binarization.html</title>
+    <link href="https://hirai.me/memo_binarization.html" />
+    <id>https://hirai.me/memo_binarization.html</id>
+    <updated>2018-12-05T12:04:47+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/memo_binarization.rst b/memo_binarization.rst
+index 7c4e973..8e4c4e4 100644
+--- a/memo_binarization.rst
++++ b/memo_binarization.rst
+@@ -8,5 +8,5 @@ Otsu method
+ 
+-クラス内分散を最大化する値を閾値とする [REF_WIKIPEDIA_OTSU]_
++クラス内分散を最大化する値を閾値とする [#REF_WIKIPEDIA_OTSU]_
+ 
+-Wikipedia にあった MATLAB による実装 [REF_WIKIPEDIA_OTSU]_ を numpy で実装した例
++Wikipedia にあった MATLAB による実装 [#REF_WIKIPEDIA_OTSU]_ を numpy で実装した例
+ 
+@@ -30,2 +30,2 @@ Wikipedia にあった MATLAB による実装 [REF_WIKIPEDIA_OTSU]_ を numpy 
+ 
+-.. [REF_WIKIPEDIA_OTSU] https://en.wikipedia.org/wiki/Otsu%27s_method
++.. [#REF_WIKIPEDIA_OTSU] https://en.wikipedia.org/wiki/Otsu%27s_method
+]]></summary>
+  </entry>
+  <entry>
+    <title>UPDATED: memo_awscli.html</title>
+    <link href="https://hirai.me/memo_awscli.html" />
+    <id>https://hirai.me/memo_awscli.html</id>
+    <updated>2018-12-05T11:49:59+09:00</updated>
+    <summary type="text"><![CDATA[
+
+diff --git a/memo_awscli.rst b/memo_awscli.rst
+new file mode 100644
+index 0000000..c654710
+--- /dev/null
++++ b/memo_awscli.rst
+@@ -0,0 +1,87 @@
++=======
++AWS-CLI
++=======
++
++引数
++====
++
++ファイル
++--------
++
++`file:///path/to/file` でファイルからパラメータを渡すことができる。 [#REF_AWS_CLI_USING_PARAM_FILE]_
++引数が JSON 文字列を受けるケースなどで使える
+]]></summary>
+  </entry>
+</feed>

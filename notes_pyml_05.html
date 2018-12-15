@@ -1,0 +1,2800 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>次元削減でデータを圧縮する &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Python機械学習プログラミング" href="notes_pyml.html"/>
+        <link rel="next" title="モデルの評価とハイパーパラメータのチューニングのベストプラクティス" href="notes_pyml_06.html"/>
+        <link rel="prev" title="データ前処理 — よりよいトレーニングセットの構築" href="notes_pyml_04.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html">分類問題 - 機械学習ライブラリ sckit-learn の活用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html">データ前処理 — よりよいトレーニングセットの構築</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">次元削減でデータを圧縮する</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#5.1　主成分分析による教師なし次元削減">5.1　主成分分析による教師なし次元削減</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#5.2-線形判別分析による教師ありデータ圧縮">5.2 線形判別分析による教師ありデータ圧縮</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#5.3-カーネル主成分分析を使った非線形写像">5.3 カーネル主成分分析を使った非線形写像</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html">モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_07.html">アンサンブル学習 - 異なるモデルの組み合わせ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html">ニューラルネットワーク - 画像認識トレーニング</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html">ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html">ニューラルネットワーク</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id1">機械学習アルゴリズムのトレーニングの構成要素</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id2">2.分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id3">3. 分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id4">6 . モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+          <li><a href="notes_pyml.html">Python機械学習プログラミング</a> &raquo;</li>
+        
+      <li>次元削減でデータを圧縮する</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_pyml_05.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="次元削減でデータを圧縮する">
+<h1>次元削減でデータを圧縮する<a class="headerlink" href="#次元削減でデータを圧縮する" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<ul class="simple">
+<li>特徴抽出 (feature extraction)</li>
+<li>特徴空間から、より次元の低い新しい部分特徴空間 (feature subspace)
+を作成する<ul>
+<li>PCA, LDA, カーネル主成分分析</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="5.1　主成分分析による教師なし次元削減">
+<h2>5.1　主成分分析による教師なし次元削減<a class="headerlink" href="#5.1　主成分分析による教師なし次元削減" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>特徴抽出は、一般に、計算効率を改善するために使用される</li>
+<li>主成分分析 (PCA)</li>
+<li>分散が最大となる直交軸へ射影する</li>
+<li>サンプルベクトル:
+<span class="math">\(\boldsymbol{x} = [x_1, ..., x_d], \boldsymbol{x} \in \mathbb{R}\)</span></li>
+<li>変換行列: <span class="math">\(\boldsymbol{W} \in \mathbb{R}^{d \times k}\)</span></li>
+<li><span class="math">\(\boldsymbol{z} = \boldsymbol{xW} \in \mathbb{R}^{k}\)</span></li>
+<li>すべての特徴量に等しく重要度を割り当てる場合は、標準化が必要</li>
+</ul>
+<div class="section" id="5.1.1　共分散行列の固有対を求める">
+<h3>5.1.1　共分散行列の固有対を求める<a class="headerlink" href="#5.1.1　共分散行列の固有対を求める" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>固有対を求めて、固有値降順に並べる</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df_wine</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s1">&#39;https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data&#39;</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">df_wine</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>14.23</td>
+      <td>1.71</td>
+      <td>2.43</td>
+      <td>15.6</td>
+      <td>127</td>
+      <td>2.80</td>
+      <td>3.06</td>
+      <td>0.28</td>
+      <td>2.29</td>
+      <td>5.640000</td>
+      <td>1.04</td>
+      <td>3.92</td>
+      <td>1065</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>13.20</td>
+      <td>1.78</td>
+      <td>2.14</td>
+      <td>11.2</td>
+      <td>100</td>
+      <td>2.65</td>
+      <td>2.76</td>
+      <td>0.26</td>
+      <td>1.28</td>
+      <td>4.380000</td>
+      <td>1.05</td>
+      <td>3.40</td>
+      <td>1050</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>13.16</td>
+      <td>2.36</td>
+      <td>2.67</td>
+      <td>18.6</td>
+      <td>101</td>
+      <td>2.80</td>
+      <td>3.24</td>
+      <td>0.30</td>
+      <td>2.81</td>
+      <td>5.680000</td>
+      <td>1.03</td>
+      <td>3.17</td>
+      <td>1185</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>14.37</td>
+      <td>1.95</td>
+      <td>2.50</td>
+      <td>16.8</td>
+      <td>113</td>
+      <td>3.85</td>
+      <td>3.49</td>
+      <td>0.24</td>
+      <td>2.18</td>
+      <td>7.800000</td>
+      <td>0.86</td>
+      <td>3.45</td>
+      <td>1480</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>13.24</td>
+      <td>2.59</td>
+      <td>2.87</td>
+      <td>21.0</td>
+      <td>118</td>
+      <td>2.80</td>
+      <td>2.69</td>
+      <td>0.39</td>
+      <td>1.82</td>
+      <td>4.320000</td>
+      <td>1.04</td>
+      <td>2.93</td>
+      <td>735</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>14.20</td>
+      <td>1.76</td>
+      <td>2.45</td>
+      <td>15.2</td>
+      <td>112</td>
+      <td>3.27</td>
+      <td>3.39</td>
+      <td>0.34</td>
+      <td>1.97</td>
+      <td>6.750000</td>
+      <td>1.05</td>
+      <td>2.85</td>
+      <td>1450</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>14.39</td>
+      <td>1.87</td>
+      <td>2.45</td>
+      <td>14.6</td>
+      <td>96</td>
+      <td>2.50</td>
+      <td>2.52</td>
+      <td>0.30</td>
+      <td>1.98</td>
+      <td>5.250000</td>
+      <td>1.02</td>
+      <td>3.58</td>
+      <td>1290</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>14.06</td>
+      <td>2.15</td>
+      <td>2.61</td>
+      <td>17.6</td>
+      <td>121</td>
+      <td>2.60</td>
+      <td>2.51</td>
+      <td>0.31</td>
+      <td>1.25</td>
+      <td>5.050000</td>
+      <td>1.06</td>
+      <td>3.58</td>
+      <td>1295</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>14.83</td>
+      <td>1.64</td>
+      <td>2.17</td>
+      <td>14.0</td>
+      <td>97</td>
+      <td>2.80</td>
+      <td>2.98</td>
+      <td>0.29</td>
+      <td>1.98</td>
+      <td>5.200000</td>
+      <td>1.08</td>
+      <td>2.85</td>
+      <td>1045</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>13.86</td>
+      <td>1.35</td>
+      <td>2.27</td>
+      <td>16.0</td>
+      <td>98</td>
+      <td>2.98</td>
+      <td>3.15</td>
+      <td>0.22</td>
+      <td>1.85</td>
+      <td>7.220000</td>
+      <td>1.01</td>
+      <td>3.55</td>
+      <td>1045</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>14.10</td>
+      <td>2.16</td>
+      <td>2.30</td>
+      <td>18.0</td>
+      <td>105</td>
+      <td>2.95</td>
+      <td>3.32</td>
+      <td>0.22</td>
+      <td>2.38</td>
+      <td>5.750000</td>
+      <td>1.25</td>
+      <td>3.17</td>
+      <td>1510</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>14.12</td>
+      <td>1.48</td>
+      <td>2.32</td>
+      <td>16.8</td>
+      <td>95</td>
+      <td>2.20</td>
+      <td>2.43</td>
+      <td>0.26</td>
+      <td>1.57</td>
+      <td>5.000000</td>
+      <td>1.17</td>
+      <td>2.82</td>
+      <td>1280</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>13.75</td>
+      <td>1.73</td>
+      <td>2.41</td>
+      <td>16.0</td>
+      <td>89</td>
+      <td>2.60</td>
+      <td>2.76</td>
+      <td>0.29</td>
+      <td>1.81</td>
+      <td>5.600000</td>
+      <td>1.15</td>
+      <td>2.90</td>
+      <td>1320</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1</td>
+      <td>14.75</td>
+      <td>1.73</td>
+      <td>2.39</td>
+      <td>11.4</td>
+      <td>91</td>
+      <td>3.10</td>
+      <td>3.69</td>
+      <td>0.43</td>
+      <td>2.81</td>
+      <td>5.400000</td>
+      <td>1.25</td>
+      <td>2.73</td>
+      <td>1150</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1</td>
+      <td>14.38</td>
+      <td>1.87</td>
+      <td>2.38</td>
+      <td>12.0</td>
+      <td>102</td>
+      <td>3.30</td>
+      <td>3.64</td>
+      <td>0.29</td>
+      <td>2.96</td>
+      <td>7.500000</td>
+      <td>1.20</td>
+      <td>3.00</td>
+      <td>1547</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1</td>
+      <td>13.63</td>
+      <td>1.81</td>
+      <td>2.70</td>
+      <td>17.2</td>
+      <td>112</td>
+      <td>2.85</td>
+      <td>2.91</td>
+      <td>0.30</td>
+      <td>1.46</td>
+      <td>7.300000</td>
+      <td>1.28</td>
+      <td>2.88</td>
+      <td>1310</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>14.30</td>
+      <td>1.92</td>
+      <td>2.72</td>
+      <td>20.0</td>
+      <td>120</td>
+      <td>2.80</td>
+      <td>3.14</td>
+      <td>0.33</td>
+      <td>1.97</td>
+      <td>6.200000</td>
+      <td>1.07</td>
+      <td>2.65</td>
+      <td>1280</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1</td>
+      <td>13.83</td>
+      <td>1.57</td>
+      <td>2.62</td>
+      <td>20.0</td>
+      <td>115</td>
+      <td>2.95</td>
+      <td>3.40</td>
+      <td>0.40</td>
+      <td>1.72</td>
+      <td>6.600000</td>
+      <td>1.13</td>
+      <td>2.57</td>
+      <td>1130</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>1</td>
+      <td>14.19</td>
+      <td>1.59</td>
+      <td>2.48</td>
+      <td>16.5</td>
+      <td>108</td>
+      <td>3.30</td>
+      <td>3.93</td>
+      <td>0.32</td>
+      <td>1.86</td>
+      <td>8.700000</td>
+      <td>1.23</td>
+      <td>2.82</td>
+      <td>1680</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1</td>
+      <td>13.64</td>
+      <td>3.10</td>
+      <td>2.56</td>
+      <td>15.2</td>
+      <td>116</td>
+      <td>2.70</td>
+      <td>3.03</td>
+      <td>0.17</td>
+      <td>1.66</td>
+      <td>5.100000</td>
+      <td>0.96</td>
+      <td>3.36</td>
+      <td>845</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1</td>
+      <td>14.06</td>
+      <td>1.63</td>
+      <td>2.28</td>
+      <td>16.0</td>
+      <td>126</td>
+      <td>3.00</td>
+      <td>3.17</td>
+      <td>0.24</td>
+      <td>2.10</td>
+      <td>5.650000</td>
+      <td>1.09</td>
+      <td>3.71</td>
+      <td>780</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>1</td>
+      <td>12.93</td>
+      <td>3.80</td>
+      <td>2.65</td>
+      <td>18.6</td>
+      <td>102</td>
+      <td>2.41</td>
+      <td>2.41</td>
+      <td>0.25</td>
+      <td>1.98</td>
+      <td>4.500000</td>
+      <td>1.03</td>
+      <td>3.52</td>
+      <td>770</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1</td>
+      <td>13.71</td>
+      <td>1.86</td>
+      <td>2.36</td>
+      <td>16.6</td>
+      <td>101</td>
+      <td>2.61</td>
+      <td>2.88</td>
+      <td>0.27</td>
+      <td>1.69</td>
+      <td>3.800000</td>
+      <td>1.11</td>
+      <td>4.00</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1</td>
+      <td>12.85</td>
+      <td>1.60</td>
+      <td>2.52</td>
+      <td>17.8</td>
+      <td>95</td>
+      <td>2.48</td>
+      <td>2.37</td>
+      <td>0.26</td>
+      <td>1.46</td>
+      <td>3.930000</td>
+      <td>1.09</td>
+      <td>3.63</td>
+      <td>1015</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1</td>
+      <td>13.50</td>
+      <td>1.81</td>
+      <td>2.61</td>
+      <td>20.0</td>
+      <td>96</td>
+      <td>2.53</td>
+      <td>2.61</td>
+      <td>0.28</td>
+      <td>1.66</td>
+      <td>3.520000</td>
+      <td>1.12</td>
+      <td>3.82</td>
+      <td>845</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1</td>
+      <td>13.05</td>
+      <td>2.05</td>
+      <td>3.22</td>
+      <td>25.0</td>
+      <td>124</td>
+      <td>2.63</td>
+      <td>2.68</td>
+      <td>0.47</td>
+      <td>1.92</td>
+      <td>3.580000</td>
+      <td>1.13</td>
+      <td>3.20</td>
+      <td>830</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>1</td>
+      <td>13.39</td>
+      <td>1.77</td>
+      <td>2.62</td>
+      <td>16.1</td>
+      <td>93</td>
+      <td>2.85</td>
+      <td>2.94</td>
+      <td>0.34</td>
+      <td>1.45</td>
+      <td>4.800000</td>
+      <td>0.92</td>
+      <td>3.22</td>
+      <td>1195</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>1</td>
+      <td>13.30</td>
+      <td>1.72</td>
+      <td>2.14</td>
+      <td>17.0</td>
+      <td>94</td>
+      <td>2.40</td>
+      <td>2.19</td>
+      <td>0.27</td>
+      <td>1.35</td>
+      <td>3.950000</td>
+      <td>1.02</td>
+      <td>2.77</td>
+      <td>1285</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1</td>
+      <td>13.87</td>
+      <td>1.90</td>
+      <td>2.80</td>
+      <td>19.4</td>
+      <td>107</td>
+      <td>2.95</td>
+      <td>2.97</td>
+      <td>0.37</td>
+      <td>1.76</td>
+      <td>4.500000</td>
+      <td>1.25</td>
+      <td>3.40</td>
+      <td>915</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>1</td>
+      <td>14.02</td>
+      <td>1.68</td>
+      <td>2.21</td>
+      <td>16.0</td>
+      <td>96</td>
+      <td>2.65</td>
+      <td>2.33</td>
+      <td>0.26</td>
+      <td>1.98</td>
+      <td>4.700000</td>
+      <td>1.04</td>
+      <td>3.59</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>148</th>
+      <td>3</td>
+      <td>13.32</td>
+      <td>3.24</td>
+      <td>2.38</td>
+      <td>21.5</td>
+      <td>92</td>
+      <td>1.93</td>
+      <td>0.76</td>
+      <td>0.45</td>
+      <td>1.25</td>
+      <td>8.420000</td>
+      <td>0.55</td>
+      <td>1.62</td>
+      <td>650</td>
+    </tr>
+    <tr>
+      <th>149</th>
+      <td>3</td>
+      <td>13.08</td>
+      <td>3.90</td>
+      <td>2.36</td>
+      <td>21.5</td>
+      <td>113</td>
+      <td>1.41</td>
+      <td>1.39</td>
+      <td>0.34</td>
+      <td>1.14</td>
+      <td>9.400000</td>
+      <td>0.57</td>
+      <td>1.33</td>
+      <td>550</td>
+    </tr>
+    <tr>
+      <th>150</th>
+      <td>3</td>
+      <td>13.50</td>
+      <td>3.12</td>
+      <td>2.62</td>
+      <td>24.0</td>
+      <td>123</td>
+      <td>1.40</td>
+      <td>1.57</td>
+      <td>0.22</td>
+      <td>1.25</td>
+      <td>8.600000</td>
+      <td>0.59</td>
+      <td>1.30</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <th>151</th>
+      <td>3</td>
+      <td>12.79</td>
+      <td>2.67</td>
+      <td>2.48</td>
+      <td>22.0</td>
+      <td>112</td>
+      <td>1.48</td>
+      <td>1.36</td>
+      <td>0.24</td>
+      <td>1.26</td>
+      <td>10.800000</td>
+      <td>0.48</td>
+      <td>1.47</td>
+      <td>480</td>
+    </tr>
+    <tr>
+      <th>152</th>
+      <td>3</td>
+      <td>13.11</td>
+      <td>1.90</td>
+      <td>2.75</td>
+      <td>25.5</td>
+      <td>116</td>
+      <td>2.20</td>
+      <td>1.28</td>
+      <td>0.26</td>
+      <td>1.56</td>
+      <td>7.100000</td>
+      <td>0.61</td>
+      <td>1.33</td>
+      <td>425</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>3</td>
+      <td>13.23</td>
+      <td>3.30</td>
+      <td>2.28</td>
+      <td>18.5</td>
+      <td>98</td>
+      <td>1.80</td>
+      <td>0.83</td>
+      <td>0.61</td>
+      <td>1.87</td>
+      <td>10.520000</td>
+      <td>0.56</td>
+      <td>1.51</td>
+      <td>675</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>3</td>
+      <td>12.58</td>
+      <td>1.29</td>
+      <td>2.10</td>
+      <td>20.0</td>
+      <td>103</td>
+      <td>1.48</td>
+      <td>0.58</td>
+      <td>0.53</td>
+      <td>1.40</td>
+      <td>7.600000</td>
+      <td>0.58</td>
+      <td>1.55</td>
+      <td>640</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>3</td>
+      <td>13.17</td>
+      <td>5.19</td>
+      <td>2.32</td>
+      <td>22.0</td>
+      <td>93</td>
+      <td>1.74</td>
+      <td>0.63</td>
+      <td>0.61</td>
+      <td>1.55</td>
+      <td>7.900000</td>
+      <td>0.60</td>
+      <td>1.48</td>
+      <td>725</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>3</td>
+      <td>13.84</td>
+      <td>4.12</td>
+      <td>2.38</td>
+      <td>19.5</td>
+      <td>89</td>
+      <td>1.80</td>
+      <td>0.83</td>
+      <td>0.48</td>
+      <td>1.56</td>
+      <td>9.010000</td>
+      <td>0.57</td>
+      <td>1.64</td>
+      <td>480</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>3</td>
+      <td>12.45</td>
+      <td>3.03</td>
+      <td>2.64</td>
+      <td>27.0</td>
+      <td>97</td>
+      <td>1.90</td>
+      <td>0.58</td>
+      <td>0.63</td>
+      <td>1.14</td>
+      <td>7.500000</td>
+      <td>0.67</td>
+      <td>1.73</td>
+      <td>880</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>3</td>
+      <td>14.34</td>
+      <td>1.68</td>
+      <td>2.70</td>
+      <td>25.0</td>
+      <td>98</td>
+      <td>2.80</td>
+      <td>1.31</td>
+      <td>0.53</td>
+      <td>2.70</td>
+      <td>13.000000</td>
+      <td>0.57</td>
+      <td>1.96</td>
+      <td>660</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>3</td>
+      <td>13.48</td>
+      <td>1.67</td>
+      <td>2.64</td>
+      <td>22.5</td>
+      <td>89</td>
+      <td>2.60</td>
+      <td>1.10</td>
+      <td>0.52</td>
+      <td>2.29</td>
+      <td>11.750000</td>
+      <td>0.57</td>
+      <td>1.78</td>
+      <td>620</td>
+    </tr>
+    <tr>
+      <th>160</th>
+      <td>3</td>
+      <td>12.36</td>
+      <td>3.83</td>
+      <td>2.38</td>
+      <td>21.0</td>
+      <td>88</td>
+      <td>2.30</td>
+      <td>0.92</td>
+      <td>0.50</td>
+      <td>1.04</td>
+      <td>7.650000</td>
+      <td>0.56</td>
+      <td>1.58</td>
+      <td>520</td>
+    </tr>
+    <tr>
+      <th>161</th>
+      <td>3</td>
+      <td>13.69</td>
+      <td>3.26</td>
+      <td>2.54</td>
+      <td>20.0</td>
+      <td>107</td>
+      <td>1.83</td>
+      <td>0.56</td>
+      <td>0.50</td>
+      <td>0.80</td>
+      <td>5.880000</td>
+      <td>0.96</td>
+      <td>1.82</td>
+      <td>680</td>
+    </tr>
+    <tr>
+      <th>162</th>
+      <td>3</td>
+      <td>12.85</td>
+      <td>3.27</td>
+      <td>2.58</td>
+      <td>22.0</td>
+      <td>106</td>
+      <td>1.65</td>
+      <td>0.60</td>
+      <td>0.60</td>
+      <td>0.96</td>
+      <td>5.580000</td>
+      <td>0.87</td>
+      <td>2.11</td>
+      <td>570</td>
+    </tr>
+    <tr>
+      <th>163</th>
+      <td>3</td>
+      <td>12.96</td>
+      <td>3.45</td>
+      <td>2.35</td>
+      <td>18.5</td>
+      <td>106</td>
+      <td>1.39</td>
+      <td>0.70</td>
+      <td>0.40</td>
+      <td>0.94</td>
+      <td>5.280000</td>
+      <td>0.68</td>
+      <td>1.75</td>
+      <td>675</td>
+    </tr>
+    <tr>
+      <th>164</th>
+      <td>3</td>
+      <td>13.78</td>
+      <td>2.76</td>
+      <td>2.30</td>
+      <td>22.0</td>
+      <td>90</td>
+      <td>1.35</td>
+      <td>0.68</td>
+      <td>0.41</td>
+      <td>1.03</td>
+      <td>9.580000</td>
+      <td>0.70</td>
+      <td>1.68</td>
+      <td>615</td>
+    </tr>
+    <tr>
+      <th>165</th>
+      <td>3</td>
+      <td>13.73</td>
+      <td>4.36</td>
+      <td>2.26</td>
+      <td>22.5</td>
+      <td>88</td>
+      <td>1.28</td>
+      <td>0.47</td>
+      <td>0.52</td>
+      <td>1.15</td>
+      <td>6.620000</td>
+      <td>0.78</td>
+      <td>1.75</td>
+      <td>520</td>
+    </tr>
+    <tr>
+      <th>166</th>
+      <td>3</td>
+      <td>13.45</td>
+      <td>3.70</td>
+      <td>2.60</td>
+      <td>23.0</td>
+      <td>111</td>
+      <td>1.70</td>
+      <td>0.92</td>
+      <td>0.43</td>
+      <td>1.46</td>
+      <td>10.680000</td>
+      <td>0.85</td>
+      <td>1.56</td>
+      <td>695</td>
+    </tr>
+    <tr>
+      <th>167</th>
+      <td>3</td>
+      <td>12.82</td>
+      <td>3.37</td>
+      <td>2.30</td>
+      <td>19.5</td>
+      <td>88</td>
+      <td>1.48</td>
+      <td>0.66</td>
+      <td>0.40</td>
+      <td>0.97</td>
+      <td>10.260000</td>
+      <td>0.72</td>
+      <td>1.75</td>
+      <td>685</td>
+    </tr>
+    <tr>
+      <th>168</th>
+      <td>3</td>
+      <td>13.58</td>
+      <td>2.58</td>
+      <td>2.69</td>
+      <td>24.5</td>
+      <td>105</td>
+      <td>1.55</td>
+      <td>0.84</td>
+      <td>0.39</td>
+      <td>1.54</td>
+      <td>8.660000</td>
+      <td>0.74</td>
+      <td>1.80</td>
+      <td>750</td>
+    </tr>
+    <tr>
+      <th>169</th>
+      <td>3</td>
+      <td>13.40</td>
+      <td>4.60</td>
+      <td>2.86</td>
+      <td>25.0</td>
+      <td>112</td>
+      <td>1.98</td>
+      <td>0.96</td>
+      <td>0.27</td>
+      <td>1.11</td>
+      <td>8.500000</td>
+      <td>0.67</td>
+      <td>1.92</td>
+      <td>630</td>
+    </tr>
+    <tr>
+      <th>170</th>
+      <td>3</td>
+      <td>12.20</td>
+      <td>3.03</td>
+      <td>2.32</td>
+      <td>19.0</td>
+      <td>96</td>
+      <td>1.25</td>
+      <td>0.49</td>
+      <td>0.40</td>
+      <td>0.73</td>
+      <td>5.500000</td>
+      <td>0.66</td>
+      <td>1.83</td>
+      <td>510</td>
+    </tr>
+    <tr>
+      <th>171</th>
+      <td>3</td>
+      <td>12.77</td>
+      <td>2.39</td>
+      <td>2.28</td>
+      <td>19.5</td>
+      <td>86</td>
+      <td>1.39</td>
+      <td>0.51</td>
+      <td>0.48</td>
+      <td>0.64</td>
+      <td>9.899999</td>
+      <td>0.57</td>
+      <td>1.63</td>
+      <td>470</td>
+    </tr>
+    <tr>
+      <th>172</th>
+      <td>3</td>
+      <td>14.16</td>
+      <td>2.51</td>
+      <td>2.48</td>
+      <td>20.0</td>
+      <td>91</td>
+      <td>1.68</td>
+      <td>0.70</td>
+      <td>0.44</td>
+      <td>1.24</td>
+      <td>9.700000</td>
+      <td>0.62</td>
+      <td>1.71</td>
+      <td>660</td>
+    </tr>
+    <tr>
+      <th>173</th>
+      <td>3</td>
+      <td>13.71</td>
+      <td>5.65</td>
+      <td>2.45</td>
+      <td>20.5</td>
+      <td>95</td>
+      <td>1.68</td>
+      <td>0.61</td>
+      <td>0.52</td>
+      <td>1.06</td>
+      <td>7.700000</td>
+      <td>0.64</td>
+      <td>1.74</td>
+      <td>740</td>
+    </tr>
+    <tr>
+      <th>174</th>
+      <td>3</td>
+      <td>13.40</td>
+      <td>3.91</td>
+      <td>2.48</td>
+      <td>23.0</td>
+      <td>102</td>
+      <td>1.80</td>
+      <td>0.75</td>
+      <td>0.43</td>
+      <td>1.41</td>
+      <td>7.300000</td>
+      <td>0.70</td>
+      <td>1.56</td>
+      <td>750</td>
+    </tr>
+    <tr>
+      <th>175</th>
+      <td>3</td>
+      <td>13.27</td>
+      <td>4.28</td>
+      <td>2.26</td>
+      <td>20.0</td>
+      <td>120</td>
+      <td>1.59</td>
+      <td>0.69</td>
+      <td>0.43</td>
+      <td>1.35</td>
+      <td>10.200000</td>
+      <td>0.59</td>
+      <td>1.56</td>
+      <td>835</td>
+    </tr>
+    <tr>
+      <th>176</th>
+      <td>3</td>
+      <td>13.17</td>
+      <td>2.59</td>
+      <td>2.37</td>
+      <td>20.0</td>
+      <td>120</td>
+      <td>1.65</td>
+      <td>0.68</td>
+      <td>0.53</td>
+      <td>1.46</td>
+      <td>9.300000</td>
+      <td>0.60</td>
+      <td>1.62</td>
+      <td>840</td>
+    </tr>
+    <tr>
+      <th>177</th>
+      <td>3</td>
+      <td>14.13</td>
+      <td>4.10</td>
+      <td>2.74</td>
+      <td>24.5</td>
+      <td>96</td>
+      <td>2.05</td>
+      <td>0.76</td>
+      <td>0.56</td>
+      <td>1.35</td>
+      <td>9.200000</td>
+      <td>0.61</td>
+      <td>1.60</td>
+      <td>560</td>
+    </tr>
+  </tbody>
+</table>
+<p>178 rows × 14 columns</p>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df_wine</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df_wine</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_train_std</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_std</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">cov_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X_train_std</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">eigen_vals</span><span class="p">,</span> <span class="n">eigen_vecs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">cov_mat</span><span class="p">)</span>
+<span class="n">eigen_vecs</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[  1.46698114e-01,   5.04170789e-01,  -1.17235150e-01,
+          2.06254611e-01,  -1.87815947e-01,  -1.48851318e-01,
+         -1.79263662e-01,  -5.54687162e-02,  -4.03054922e-01,
+         -4.17197583e-01,   2.75660860e-01,   4.03567189e-01,
+          4.13320786e-04],
+       [ -2.42245536e-01,   2.42168894e-01,   1.49946576e-01,
+          1.30489298e-01,   5.68639776e-01,  -2.69052764e-01,
+         -5.92636731e-01,   3.32731614e-02,  -1.01833706e-01,
+          2.17101488e-01,  -8.13845005e-02,  -1.52474999e-01,
+         -8.78560762e-02],
+       [ -2.99344215e-02,   2.86984836e-01,   6.56394387e-01,
+          1.51536318e-02,  -2.99209426e-01,  -9.33386061e-02,
+          6.07334578e-02,  -1.00618575e-01,   3.51841423e-01,
+          1.28549846e-01,  -1.29751275e-02,   1.68376064e-01,
+         -4.52518598e-01],
+       [ -2.55190023e-01,  -6.46871827e-02,   5.84282337e-01,
+         -9.04220851e-02,  -4.12499478e-02,  -1.01342392e-01,
+          2.50323869e-01,   5.61658566e-02,  -5.00457282e-01,
+          4.73344124e-02,   9.89088030e-02,  -6.70902927e-02,
+          4.86169765e-01],
+       [  1.20797723e-01,   2.29953850e-01,   8.22627466e-02,
+         -8.39128346e-01,  -2.71971315e-02,   1.12567350e-01,
+         -2.85240559e-01,   9.58423947e-02,   8.37391743e-02,
+         -2.78918776e-01,  -9.59297663e-02,  -1.02396856e-01,
+          1.14764951e-01],
+       [  3.89344551e-01,   9.36399132e-02,   1.80804417e-01,
+          1.93179478e-01,   1.40645426e-01,   1.22248798e-02,
+          5.31455344e-02,  -4.21265116e-01,   1.35111456e-01,
+         -2.80985650e-01,   2.83897644e-01,  -6.18600153e-01,
+          9.45645138e-02],
+       [  4.23264856e-01,   1.08862204e-02,   1.42959330e-01,
+          1.40459548e-01,   9.26866486e-02,  -5.50345182e-02,
+          7.98994076e-02,   8.47224703e-01,   3.36016514e-03,
+         -3.91442963e-02,   1.16729207e-01,  -1.39680277e-01,
+         -1.00444099e-01],
+       [ -3.06349555e-01,   1.87021637e-02,   1.72234753e-01,
+          3.37332618e-01,  -8.58416771e-02,   6.95340883e-01,
+         -2.97371718e-01,   1.66256803e-01,   1.90120758e-01,
+         -2.78622194e-01,  -3.96566280e-02,   1.63323514e-03,
+          2.00128778e-01],
+       [  3.05722194e-01,   3.04035180e-02,   1.58362102e-01,
+         -1.14752900e-01,   5.65105241e-01,   4.98354410e-01,
+          2.02519133e-01,  -1.66197468e-01,  -1.76029939e-01,
+          1.48539457e-01,   8.60602743e-02,   3.88568490e-01,
+         -1.39942067e-01],
+       [ -9.86919131e-02,   5.45270809e-01,  -1.42421708e-01,
+          7.87857057e-02,   1.32346052e-02,   1.59452160e-01,
+          3.97364107e-01,   3.96173606e-02,  -2.14930670e-01,
+         -4.10240865e-03,  -5.71651893e-01,  -3.08345904e-01,
+         -1.15349466e-01],
+       [  3.00325353e-01,  -2.79243218e-01,   9.32387182e-02,
+          2.41740256e-02,  -3.72610811e-01,   2.16515349e-01,
+         -3.84654748e-01,  -1.05383688e-01,  -5.17259438e-01,
+          1.97814118e-01,  -1.98844532e-01,  -2.00456386e-01,
+         -3.02254353e-01],
+       [  3.68211538e-01,  -1.74365000e-01,   1.96077407e-01,
+          1.84028641e-01,   8.93796748e-02,  -2.35172361e-01,
+         -8.62903341e-02,  -9.95055559e-02,   1.36456039e-01,
+         -2.38138151e-01,  -6.50869713e-01,   2.84100327e-01,
+          3.18414303e-01],
+       [  2.92597130e-01,   3.63154608e-01,  -9.73171134e-02,
+          5.67677845e-02,  -2.17529485e-01,   1.05621383e-01,
+         -1.30298291e-01,  -1.60661776e-02,   1.67758429e-01,
+          6.37350206e-01,   7.12377082e-02,   3.75546771e-02,
+          5.03247839e-01]])
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">tot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">eigen_vals</span><span class="p">)</span>
+<span class="n">var_exp</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span> <span class="o">/</span> <span class="n">tot</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">eigen_vals</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+<span class="n">cum_var_exp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">var_exp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">14</span><span class="p">),</span> <span class="n">var_exp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="s1">&#39;individual explained variance&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">14</span><span class="p">),</span> <span class="n">cum_var_exp</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cumulative explained variance&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Explained variance ratio&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Principal components&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_7_0.png" src="_images/notes_pyml_05_7_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="5.1.2　特徴変換">
+<h3>5.1.2　特徴変換<a class="headerlink" href="#5.1.2　特徴変換" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Wine データセットを主成分軸に変換する</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">eigen_pairs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eigen_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">eigen_vecs</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">eigen_vals</span><span class="p">))</span>
+<span class="p">]</span>
+<span class="n">eigen_pairs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>第 1, 2 主成分で分散の約 60 % を占めるため、今回はこの 2
+主成分のみ用いて変換行列 <span class="math">\(\boldsymbol{W}\)</span> を作る</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">w</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">eigen_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">eigen_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_train_std</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 2.59891628,  0.00484089])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_train_std</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.91083058, -0.46259897, -0.01142613, -0.82067872,  0.06241693,
+        0.58820446,  0.93565436, -0.7619138 ,  0.13007174, -0.51238741,
+        0.65706596,  1.94354495,  0.93700997])
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_train_pca</span> <span class="o">=</span> <span class="n">X_train_std</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">]</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="n">colors</span><span class="p">,</span> <span class="n">markers</span><span class="p">):</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">X_train_pca</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="n">l</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_train_pca</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">m</span>
+    <span class="p">)</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;PC 1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PC 2&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_15_0.png" src="_images/notes_pyml_05_15_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="5.1.3　scikit-learn-の主成分分析">
+<h3>5.1.3　scikit-learn の主成分分析<a class="headerlink" href="#5.1.3　scikit-learn-の主成分分析" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>scikit-learn の PCA
+クラスを用いて特徴抽出したのち、ロジスティクス回帰でサンプルを分類する</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="k">import</span> <span class="n">ListedColormap</span>
+
+
+<span class="k">def</span> <span class="nf">plot_decision_regions</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+    <span class="n">markers</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))])</span>
+    <span class="n">x1_min</span><span class="p">,</span> <span class="n">x1_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">x2_min</span><span class="p">,</span> <span class="n">x2_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x1_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x2_min</span><span class="p">,</span> <span class="n">x2_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">))</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">xx2</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xx1</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">xx1</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">xx2</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">xx2</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+        <span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">cl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">cl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span>
+            <span class="n">marker</span><span class="o">=</span><span class="n">markers</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">cl</span>
+        <span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+
+
+
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">X_train_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">)</span>
+<span class="n">X_test_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_std</span><span class="p">)</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_pca</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;, n_jobs=1,
+          penalty=&#39;l2&#39;, random_state=None, solver=&#39;liblinear&#39;, tol=0.0001,
+          verbose=0, warm_start=False)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_train_pca</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_19_0.png" src="_images/notes_pyml_05_19_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_test_pca</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_20_0.png" src="_images/notes_pyml_05_20_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="5.2-線形判別分析による教師ありデータ圧縮">
+<h2>5.2 線形判別分析による教師ありデータ圧縮<a class="headerlink" href="#5.2-線形判別分析による教師ありデータ圧縮" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>線形判別分析 (Linear Discriminant Analysis:LDA)</li>
+<li>特徴抽出手法のひとつ</li>
+<li>分離を最適化する特徴部分空間を探す</li>
+<li>教師あり</li>
+<li>正規分布が仮定される</li>
+<li>サンプル間が独立であることが仮定される</li>
+</ul>
+<div class="section" id="5.2.1-変動行列を計算する">
+<h3>5.2.1 変動行列を計算する<a class="headerlink" href="#5.2.1-変動行列を計算する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>変動行列:
+<span class="math">\(\boldsymbol{S_i} = \sum_{x\in D_i}(\boldsymbol{x} - \boldsymbol{m}_i)(\boldsymbol{x} - \boldsymbol{m}_i)^T\)</span></li>
+<li>正規化された変動行列:
+<span class="math">\(\boldsymbol{\Sigma}_i = \frac{1}{N_i}\boldsymbol{S_i} = \frac{1}{N_i}\sum_{x\in D_i}(\boldsymbol{x} - \boldsymbol{m}_i)(\boldsymbol{x} - \boldsymbol{m}_i)^T\)</span></li>
+<li>クラス内変動行列: <span class="math">\(\boldsymbol{S}_W = \sum_i^c\boldsymbol{S_i}\)</span></li>
+<li>全クラスの平均: <span class="math">\(\boldsymbol{m}\)</span></li>
+<li>クラス間変動行列:
+<span class="math">\(\boldsymbol{S}_B = \sum_{i}^{c}N_i(\boldsymbol{m}_i - \boldsymbol{m})(\boldsymbol{m}_i - \boldsymbol{m})^T\)</span></li>
+<li>クラス <span class="math">\(i\)</span> の平均ベクトル
+<span class="math">\(\boldsymbol{m}_i = \frac{1}{n_i}\sum_{\boldsymbol{x}\in D_i}\boldsymbol{x}\)</span></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">numpy</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">mean_vecs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="n">label</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span>
+
+<span class="n">mean_vecs</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[array([ 0.9259, -0.3091,  0.2592, -0.7989,  0.3039,  0.9608,  1.0515,
+        -0.6306,  0.5354,  0.2209,  0.4855,  0.798 ,  1.2017]),
+ array([-0.8727, -0.3854, -0.4437,  0.2481, -0.2409, -0.1059,  0.0187,
+        -0.0164,  0.1095, -0.8796,  0.4392,  0.2776, -0.7016]),
+ array([ 0.1637,  0.8929,  0.3249,  0.5658, -0.01  , -0.9499, -1.228 ,
+         0.7436, -0.7652,  0.979 , -1.1698, -1.3007, -0.3912])]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="mi">13</span>
+<span class="n">S_W</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">mv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">mean_vecs</span><span class="p">):</span>
+    <span class="n">class_scatter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">X_train_std</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="n">label</span><span class="p">]:</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">mv</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">mv</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">class_scatter</span> <span class="o">+=</span> <span class="p">(</span><span class="n">row</span> <span class="o">-</span> <span class="n">mv</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">row</span> <span class="o">-</span> <span class="n">mv</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="n">S_W</span> <span class="o">+=</span> <span class="n">class_scatter</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Within-class scatter matrix: </span><span class="si">%s</span><span class="s1">x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">S_W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">S_W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Within-class scatter matrix: 13x13
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Class label distribution: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">numpy</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_train</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Class label distribution: [40 49 35]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="mi">13</span>
+<span class="n">S_W</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">mv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">mean_vecs</span><span class="p">):</span>
+    <span class="n">class_scatter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">S_W</span> <span class="o">+=</span> <span class="n">class_scatter</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Within-class scatter matrix: </span><span class="si">%s</span><span class="s1">x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">S_W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">S_W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Within-class scatter matrix: 13x13
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">mean_overall</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">13</span>
+<span class="n">S_B</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mean_vec</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mean_vecs</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">:]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mean_vec</span> <span class="o">=</span> <span class="n">mean_vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">mean_overall</span> <span class="o">=</span> <span class="n">mean_overall</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">S_B</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">mean_vec</span> <span class="o">-</span> <span class="n">mean_overall</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">mean_vec</span> <span class="o">-</span> <span class="n">mean_overall</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Between-class scatter matrix: </span><span class="si">%s</span><span class="s1">x</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">S_B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">S_B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Between-class scatter matrix: 13x13
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="5.2.2-新しい特徴部分空間の線形判別を選択する">
+<h3>5.2.2 新しい特徴部分空間の線形判別を選択する<a class="headerlink" href="#5.2.2-新しい特徴部分空間の線形判別を選択する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><span class="math">\(\boldsymbol{S}^{-1}_{W}\boldsymbol{S}_{B}\)</span>
+の一般化固有値問題を解く</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">eigen_vals</span><span class="p">,</span> <span class="n">eigen_vecs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">S_W</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S_B</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">eigen_pairs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eigen_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">eigen_vecs</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">eigen_vals</span><span class="p">))</span>
+<span class="p">]</span>
+<span class="n">eigen_pairs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">eigen_pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Eigenvalues in decreasing order:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">eigen_val</span> <span class="ow">in</span> <span class="n">eigen_pairs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">eigen_val</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Eigenvalues in decreasing order:
+
+452.721581245
+156.43636122
+4.56868837544e-14
+4.21061051419e-14
+2.70653038509e-14
+2.52412403707e-14
+2.52412403707e-14
+2.41582347751e-14
+1.46862694151e-14
+1.46862694151e-14
+3.90670799708e-15
+9.97300040939e-16
+0.0
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">tot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">eigen_vals</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+<span class="n">discr</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span> <span class="o">/</span> <span class="n">tot</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">eigen_vals</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+<span class="n">cum_discr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">discr</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+    <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="n">discr</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;individual &quot;discriminability&quot;&#39;</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+    <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="n">cum_discr</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cumulative &quot;discriminability&quot;&#39;</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;&quot;discriminability&quot; ratio&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Linear Discriminants&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_31_0.png" src="_images/notes_pyml_05_31_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">w</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">eigen_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
+     <span class="n">eigen_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">))</span>
+<span class="n">w</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[24]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[-0.0662, -0.3797],
+       [ 0.0386, -0.2206],
+       [-0.0217, -0.3816],
+       [ 0.184 ,  0.3018],
+       [-0.0034,  0.0141],
+       [ 0.2326,  0.0234],
+       [-0.7747,  0.1869],
+       [-0.0811,  0.0696],
+       [ 0.0875,  0.1796],
+       [ 0.185 , -0.284 ],
+       [-0.066 ,  0.2349],
+       [-0.3805,  0.073 ],
+       [-0.3285, -0.5971]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="5.2.3　新しい特徴空間にサンプルを射影する">
+<h3>5.2.3　新しい特徴空間にサンプルを射影する<a class="headerlink" href="#5.2.3　新しい特徴空間にサンプルを射影する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>新しい特徴空間 <span class="math">\(\boldsymbol{X'} = \boldsymbol{XW}\)</span></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_train_lda</span> <span class="o">=</span> <span class="n">X_train_std</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">]</span>
+<span class="n">makers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="n">colors</span><span class="p">,</span> <span class="n">makers</span><span class="p">):</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">X_train_lda</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="n">l</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">X_train_lda</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">l</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="n">m</span>
+    <span class="p">)</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;LD 1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;LD 2&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_34_0.png" src="_images/notes_pyml_05_34_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="5.2.4　scikit-learn-によるLDA">
+<h3>5.2.4　scikit-learn によるLDA<a class="headerlink" href="#5.2.4　scikit-learn-によるLDA" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="k">import</span> <span class="n">LinearDiscriminantAnalysis</span> <span class="k">as</span> <span class="n">LDA</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">lda</span> <span class="o">=</span> <span class="n">LDA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_train_lda</span> <span class="o">=</span> <span class="n">lda</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_lda</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_train_lda</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;LD 1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;LD 2&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_36_0.png" src="_images/notes_pyml_05_36_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_test_lda</span> <span class="o">=</span> <span class="n">lda</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test_std</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_test_lda</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;LD 1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;LD 2&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_37_0.png" src="_images/notes_pyml_05_37_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="5.3-カーネル主成分分析を使った非線形写像">
+<h2>5.3 カーネル主成分分析を使った非線形写像<a class="headerlink" href="#5.3-カーネル主成分分析を使った非線形写像" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>線形分離不可能な場合は、 PCA や LDA
+は次元削減手法として、適切ではない可能性がある</li>
+<li>カーネル PCA</li>
+</ul>
+<div class="section" id="5.3.2-Python-でカーネル主成分分析を実装する">
+<h3>5.3.2 Python でカーネル主成分分析を実装する<a class="headerlink" href="#5.3.2-Python-でカーネル主成分分析を実装する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">squareform</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">exp</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">eigh</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="k">def</span> <span class="nf">rbf_kernel_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">n_components</span><span class="p">):</span>
+    <span class="n">sq_dest</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;sqeuclidean&#39;</span><span class="p">)</span>
+    <span class="n">mat_sq_dists</span> <span class="o">=</span> <span class="n">squareform</span><span class="p">(</span><span class="n">sq_dest</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">mat_sq_dists</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">one_n</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span> <span class="o">/</span><span class="n">N</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">K</span> <span class="o">-</span> <span class="n">one_n</span> <span class="o">-</span> <span class="n">K</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">one_n</span><span class="p">)</span> <span class="o">+</span> <span class="n">one_n</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">one_n</span><span class="p">)</span>
+    <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigh</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span>
+        <span class="n">eigvecs</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_components</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">))</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">make_moons</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_41_0.png" src="_images/notes_pyml_05_41_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+<span class="n">scikit_pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_spca</span> <span class="o">=</span> <span class="n">scikit_pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_42_0.png" src="_images/notes_pyml_05_42_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="k">import</span> <span class="n">FormatStrFormatter</span>
+
+<span class="n">X_kpca</span> <span class="o">=</span> <span class="n">rbf_kernel_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.1f</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.1f</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_43_0.png" src="_images/notes_pyml_05_43_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">make_circles</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_circles</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_44_0.png" src="_images/notes_pyml_05_44_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">scikit_pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_spca</span> <span class="o">=</span> <span class="n">scikit_pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_spca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_45_0.png" src="_images/notes_pyml_05_45_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_kpca</span> <span class="o">=</span> <span class="n">rbf_kernel_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_kpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_46_0.png" src="_images/notes_pyml_05_46_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="5.3.3-新しいデータ点を射影する">
+<h3>5.3.3 新しいデータ点を射影する<a class="headerlink" href="#5.3.3-新しいデータ点を射影する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">pdist</span><span class="p">,</span> <span class="n">squareform</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">exp</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">eigh</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="k">def</span> <span class="nf">rbf_kernel_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">n_components</span><span class="p">):</span>
+    <span class="n">sq_dists</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;sqeuclidean&#39;</span><span class="p">)</span>
+    <span class="n">mat_sq_dists</span> <span class="o">=</span> <span class="n">squareform</span><span class="p">(</span><span class="n">sq_dists</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">mat_sq_dists</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">one_n</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">K</span> <span class="o">-</span> <span class="n">one_n</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">-</span> <span class="n">K</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">one_n</span><span class="p">)</span> <span class="o">+</span> <span class="n">one_n</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">one_n</span><span class="p">)</span>
+    <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigh</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="n">alphas</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span>
+        <span class="n">eigvecs</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_components</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">))</span>
+    <span class="n">lambdas</span> <span class="o">=</span> <span class="p">[</span><span class="n">eigvals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_components</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">alphas</span><span class="p">,</span> <span class="n">lambdas</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">alphas</span><span class="p">,</span> <span class="n">lambdas</span> <span class="o">=</span> <span class="n">rbf_kernel_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x_new</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">25</span><span class="p">]</span>
+<span class="n">x_new</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[37]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 1.8713,  0.0093])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x_proj</span> <span class="o">=</span> <span class="n">alphas</span><span class="p">[</span><span class="mi">25</span><span class="p">]</span>
+<span class="n">x_proj</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[38]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.0788])
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">project_x</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">alphas</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">):</span>
+    <span class="n">pair_dist</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">row</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">X</span>
+    <span class="p">])</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">pair_dist</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">k</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">alphas</span> <span class="o">/</span> <span class="n">lambdas</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x_reproj</span> <span class="o">=</span> <span class="n">project_x</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alphas</span><span class="o">=</span><span class="n">alphas</span><span class="p">,</span> <span class="n">lambdas</span><span class="o">=</span><span class="n">lambdas</span><span class="p">)</span>
+<span class="n">x_reproj</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[40]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.0788])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">alphas</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">)),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">alphas</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">50</span><span class="p">)),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x_proj</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;original projection of point X[25]&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x_reproj</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;remapped point X[25]&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">500</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_54_0.png" src="_images/notes_pyml_05_54_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="5.3.4-scikit-learn-のカーネル主成分分析">
+<h3>5.3.4 scikit-learn のカーネル主成分分析<a class="headerlink" href="#5.3.4-scikit-learn-のカーネル主成分分析" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">KernelPCA</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">scikit_kpca</span> <span class="o">=</span> <span class="n">KernelPCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">X_skernpca</span> <span class="o">=</span> <span class="n">scikit_kpca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_skernpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">X_skernpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_skernpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">X_skernpca</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;PC1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;PC2&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_05_57_0.png" src="_images/notes_pyml_05_57_0.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_pyml_06.html" class="btn btn-neutral float-right" title="モデルの評価とハイパーパラメータのチューニングのベストプラクティス" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_pyml_04.html" class="btn btn-neutral" title="データ前処理 — よりよいトレーニングセットの構築" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

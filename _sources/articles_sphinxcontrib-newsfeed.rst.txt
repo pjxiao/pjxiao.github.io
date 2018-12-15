@@ -1,0 +1,100 @@
+======================
+sphinxcontrib-newsfeed
+======================
+
+2016-11-27
+
+Sphinx でサイトを生成するようにしたので、 `sphinxcontrib-newsfeed <https://pypi.python.org/pypi/sphinxcontrib-newsfeed>`_ で RSS を配信できるようにした。
+
+.. note::
+
+    この拡張は Sphinx 1.6 にしたら死んだ
+
+
+環境
+====
+
+:OS: Debian 8.5 (AMD64)
+:Pyhon: CPython 3.4.2
+:pip: 9.0.1
+:Sphinx: 1.4.8
+:sphinxcontrib-newsfeed: 0.1.4
+
+手順
+====
+
+1\. sphinxcontrib-newsfeed のインストール
+-----------------------------------------
+
+pip でインストールすることができる。
+
+.. code-block:: console
+
+  $ workon myvenv
+  $ pip install sphinxcontrib-newsfeed
+
+2.\ conf.py の修正
+------------------
+
+``conf.py`` の ``extensions`` に ``'sphinxcontrib.newsfeed'`` を追加する
+
+.. code-block:: diff
+
+    --- conf.py.old
+    +++ conf.py
+    @@ -1,3 +1,4 @@
+     extensions = [
+         # ...
+    +    "sphinxcontrib.newsfeed",
+     ]
+
+3\. feed.rst の作成
+-------------------
+
+RSS ファイルの生成には、 ``feed`` ディレクティブを呼び出す必要があるが、
+呼び出し箇所にはフィードが出力されてしまい邪魔なので、
+呼び出し用に ``feed.rst`` を作成する
+
+.. code-block:: rst
+
+    .. feed.rst
+
+    .. feed::
+       :rss: index.xml
+       :title: CHANNEL-TITLE
+       :link: http://example.com/
+
+この時点で、 ``make html`` すれば、 ``index.xml`` に RSS ファイルが出力される。
+
+4\. RSS 配信対象の .rst を作成する
+----------------------------------
+
+RSS 配信対象とするには、まず、
+配信対象としたい rst 内で ``feed-entry`` ディレクティブを呼び出す。
+
+.. code-block:: rst
+
+    .. my_article.rst
+
+    .. feed-entry::
+       :date: 2016-11-27
+
+
+次に、先ほど作成した ``feed`` ディレクティブ内で
+``feed-entry`` を呼び出した配信対象の rst 指定する。
+
+``feed`` ディレクティブでの配信対象の rst の指定方法は、
+``toctree`` の記述方法と似ている。
+
+.. code-block:: rst
+
+    .. feed.rst
+
+    .. feed::
+       :rss: index.xml
+       :title: CHANNEL-TITLE
+       :link: http://example.com/
+
+       my_article
+
+この状態で ``make html`` すれば、 ``my_article.rst`` が出力された RSS ファイルに反映される。

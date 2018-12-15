@@ -1,0 +1,48 @@
+==============
+Microsoft Flow
+==============
+
+Webhook
+=======
+
+Creating a webhook
+------------------
+
+Problem
+^^^^^^^^
+
+We need to create a webhook using Flow.
+
+Solution
+^^^^^^^^
+
+Create Request trigger （HTTP 要求の受信時）.
+If our client sends JSON as a payload,
+we can define JSON schema in the textarea.
+And then, we can retrieve properties from the payload.
+
+Usecase
+^^^^^^^
+
+- We can use a flow as a Slack events API subscriber.
+
+Making responses
+----------------
+
+Problem
+^^^^^^^
+
+We need to response to a request with a certain response body.
+
+Solution
+^^^^^^^^
+
+Flow allows us to define a response body using Response action （応答）.
+If we needs response JSON,
+we can define JSON schema in the textarea as well as Request trigger.
+
+Usecase
+^^^^^^^
+
+- Slack events API require hooks to return `challenge` in the response body.
+  The flow can return `challenge` using Response action.

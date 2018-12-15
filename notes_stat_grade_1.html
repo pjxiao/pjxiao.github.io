@@ -1,0 +1,1405 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>統計検定1級公式テキスト &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="詰み" href="notes.html"/>
+        <link rel="next" title="構造化分析とシステム仕様" href="notes_structured.html"/>
+        <link rel="prev" title="集合・位相入門" href="notes_set_and_topology.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">統計検定1級公式テキスト</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">5. 主なデータ解析手法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.1 分散分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">5.2 回帰分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">5.3 分割表の解析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">5.4 ノンパラメトリック法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+      <li>統計検定1級公式テキスト</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_stat_grade_1.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1>統計検定1級公式テキスト<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p><a class="reference external" href="http://www.tokyo-tosho.co.jp/books/ISBN978-4-489-02150-3.html">http://www.tokyo-tosho.co.jp/books/ISBN978-4-489-02150-3.html</a></p>
+<div class="section" id="id2">
+<h2>5. 主なデータ解析手法<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h3>5.1 分散分析<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id4">
+<h4>5.1.1 一元配置分散分析<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ひとつの要因 <span class="math">\(A\)</span> に対して水準間に差があるかの検定</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">水準:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(A_i (i = 1, \dots, a)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">観測値:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(x_{ij} (i = 1, \dots, a, j = 1, \dots, r)\)</span></li>
+<li>一元配置の場合は、水準ごとに観測値の個数が異なっても良い</li>
+<li>水準間の相違とは無関係なランダム変動を含む</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">標本平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{x}_{i\cdot} = \frac{1}{r}\sum_{j=1}^{r}x_{ij} (i = 1, \dots, a)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">総平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{\bar{x}} = \frac{1}{ar}\sum_{i=1}^{a}\sum_{j=1}^{r}x_{ij}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">問題となること:</th><td class="field-body"><ul class="first simple">
+<li>「各水準間で母平均がすべて等しい」という仮説を否定するほど、
+各水準の標本平均が大きい</li>
+<li>versus 水準間とは無関係にランダム変動で説明がつく</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">構造式:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(x_{ij} = \mu + \alpha_i + \epsilon_{ij}\)</span></li>
+<li><span class="math">\(\sum_{i=1}^{a}\alpha_i = 0\)</span></li>
+<li><span class="math">\(\epsilon_{ij} {\sim} n(0, \sigma^2)\)</span>, 互いに独立</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">仮説:</th><td class="field-body"><ul class="first simple">
+<li>母平均はすべて等しい</li>
+<li><span class="math">\(\alpha_1 = \alpha_2 = \dots = \alpha_a = 0\)</span></li>
+<li><span class="math">\(s_a\)</span> が <span class="math">\(s_e\)</span> と比べてどの程度大きいか</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">変動の総平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_t = \sum_{i=1}^{a}\sum_{j=1}^{r}\left(x_{ij} - \bar{\bar{x}}^2\right)\)</span></li>
+<li><span class="math">\(s_t = r\sum_{i=1}^{a}\left(\bar{x_i} - \bar{\bar{x}}\right)^2 + \sum_{i=1}^{a}\sum_{j=1}^{r}\left(x_{ij} - \bar{x}_{i\cdot}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_t = ar - 1\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">水準間平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_a = r\sum_{i=1}^{a}\left(\bar{x_i} - \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_a = a - 1\)</span></li>
+<li><span class="math">\(s_a/\sigma^{2} \sim \chi^2(\phi_a)\)</span></li>
+<li>平均変動: <span class="math">\(v_a = \frac{s_a}{\phi_a}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">残差平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_e = \sum_{i=1}^{a}\sum_{j=1}^{r}\left(x_{ij} - \bar{x}_{i\cdot}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_e = \phi_t - \phi_a = ar - a\)</span></li>
+<li><span class="math">\(s_e/\sigma^{2} \sim \chi^2(\phi_e)\)</span></li>
+<li>平均変動: <span class="math">\(v_e = \frac{s_e}{\phi_e}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">検定統計量 f:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(f = \frac{v_a}{v_e} \sim f\left(\phi_a, \phi_e\right)\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id5">
+<h4>5.1.2 二元配置分散分析<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>2 つの要因 <span class="math">\(a, b\)</span> に対して水準間に差があるかの検定</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">水準:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(a_i (i = 1, \dots, a)\)</span></li>
+<li><span class="math">\(b_i (i = 1, \dots, b)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">観測値:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(x_ij (i = 1, \dots, a, j = 1, \dots, b)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{x}_{i{\cdot}} = \frac{1}{b}\sum_{j=1}^{b}x_{ij} (j = 1, \dots, a)\)</span></li>
+<li><span class="math">\(\bar{x}_{{\cdot}j} = \frac{1}{a}\sum_{i=1}^{a}x_{ij} (i = 1, \dots, b)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">総平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{\bar{x}} = \frac{1}{ab}\sum_{i=1}^{a}\sum_{j=1}^{b}x_{ij}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">構造式:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(x_{ij} = \mu_{ij} + \epsilon_{ij} + \mu + \alpha_i + \beta_j + \epsilon_{ij}\)</span></li>
+<li><span class="math">\(\epsilon_{ij} {\sim} n(0, \sigma^2)\)</span>, 互いに独立</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">仮説:</th><td class="field-body"><ul class="first simple">
+<li>母平均はすべて等しい</li>
+<li><span class="math">\(\alpha_1 = \alpha_2 = \dots = \alpha_a = 0\)</span></li>
+<li><span class="math">\(\beta_1 = \beta_2 = \dots = \beta_b = 0\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">変動の総平方和:</th><td class="field-body"><ul class="first">
+<li><div class="first math">
+\[s_t = \sum_{i=1}^{a}\sum_{j=1}^{b}\left(x_{ij} - \bar{\bar{x}}\right)^2
+= b\sum_{i=1}^{a}\left(\bar{x_{{i}\cdot}} - \bar{\bar{x}}\right)^2 + a\sum_{j=1}^{b}\left(\bar{x_{\cdot{j}}} - \bar{\bar{x}}\right)^2 + \sum_{i=1}^{a}\sum_{j=1}^{b}\left(x_{ij} - \bar{x_{{i}\cdot}} - \bar{x_{\cdot{j}}} + \bar{\bar{x}}\right)^2\]</div>
+</li>
+<li><p class="first">自由度: <span class="math">\(\phi_t = ab - 1\)</span></p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">a 間平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_a = b\sum_{i=1}^{a}\left(\bar{x_{{i}\cdot}} - \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_a = a - 1\)</span></li>
+<li><span class="math">\(s_a/\sigma^{2} \sim \chi^2(\phi_a)\)</span></li>
+<li>平均変動: <cite>v_a = frac{s_a}{phi_a}</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">b 間平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_b = a\sum_{j=1}^{b}\left(\bar{x_{\cdot{j}}} - \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_b = b - 1\)</span></li>
+<li><span class="math">\(s_b/\sigma^{2} \sim \chi^2(\phi_b)\)</span></li>
+<li>平均変動: <cite>v_b = frac{s_b}{phi_b}</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">残差平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_e = \sum_{i=1}^{a}\sum_{j=1}^{b}\left(x_{ij} - \bar{x_{{i}\cdot}} - \bar{x_{\cdot{j}}} + \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_e = \phi_t - \phi_a - \phi_b = ab - a - b + 1\)</span></li>
+<li><span class="math">\(s_e/\sigma^{2} \sim \chi^2(\phi_e)\)</span></li>
+<li>平均変動: <cite>v_e = frac{s_e}{phi_e}</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">検定統計量 f:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(f_a = \frac{v_a}{v_e} \sim f\left(\phi_a, \phi_e\right)\)</span></li>
+<li><span class="math">\(f_b = \frac{v_b}{v_e} \sim f\left(\phi_b, \phi_e\right)\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h4>5.1.3 交互作用<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>2 つの要因 <span class="math">\(a, b\)</span> が互いに無関係であるかわからない場合</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">母平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\mu_{ij} = \mu + \alpha_i + \beta_j + (\alpha\beta)_{ij}\)</span></li>
+<li><span class="math">\(\sum_{i=1}^{a}\alpha_i = 0\)</span></li>
+<li><span class="math">\(\sum_{j=1}^{b}\beta_j = 0\)</span></li>
+<li><span class="math">\(\sum_{i=1}^{a}(\alpha_\beta)_{ij} = 0\)</span></li>
+<li><span class="math">\(\sum_{j=1}^{b}(\alpha_\beta)_{ij} = 0\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">交互作用:</th><td class="field-body"><ul class="first simple">
+<li>2 つの要因の関係</li>
+<li><span class="math">\((\alpha\beta)_{ij}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">主効果:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\alpha_i, \beta_j\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">観測値:</th><td class="field-body"><ul class="first simple">
+<li>ランダム変動 <span class="math">\(\epsilon_{ij}\)</span> と交互作用 <span class="math">\((\alpha\beta)_{ij}\)</span> の
+区別がつかないため、各区水準の組から 2 以上の観測値を得る必要がある</li>
+<li><span class="math">\(x_ijk (i = 1, \dots, a, j = 1, \dots, b, k = 1, \dots, r)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{x}_{{i}\cdot\cdot} = \frac{1}{br}\sum_{j=1}^{b}\sum_{k=1}^{r}x_{ijk} (i = 1, \dots, a)\)</span></li>
+<li><span class="math">\(\bar{x}_{\cdot{j}\cdot} = \frac{1}{ar}\sum_{i=1}^{a}\sum_{k=1}^{r}x_{ijk} (j = 1, \dots, b)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">総平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{\bar{x}} = \frac{1}{abr}\sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{r}x_{ijk}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">各水準の組の標本平均:</th><td class="field-body"><ul class="first simple">
+<li>水準の組: <span class="math">\((a_i, b_j)\)</span></li>
+<li><span class="math">\(\bar{\bar{x}}_{ij\cdot} = \frac{1}{r}\sum_{k=1}^{r}x_{ijk}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">構造式:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(x_{ijk} = \mu_{ij} + \epsilon_{ij} = \mu + \alpha_i + \beta_j + (\alpha\beta)_{ij} + \epsilon_{ijk}\)</span></li>
+<li><span class="math">\(\epsilon_{ijk} {\sim} n(0, \sigma^2)\)</span>, 互いに独立</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">仮説:</th><td class="field-body"><ul class="first simple">
+<li>要因 a の効果がない: <span class="math">\(\alpha_1 = \alpha_2 = \dots = \alpha_a = 0\)</span></li>
+<li>要因 b の効果がない: <span class="math">\(\beta_1 = \beta_2 = \dots = \beta_b = 0\)</span></li>
+<li>交互作用: <span class="math">\((\alpha\beta)_{11} = \dots = (\alpha\beta)_{ab} = 0\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">変動の総平方和:</th><td class="field-body"><ul class="first">
+<li><div class="first math">
+\[s_t = \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{r}\left(x_{ijk} - \bar{\bar{x}}\right)^2
+= r\sum_{i=1}^{a}\sum_{j=1}^{b}\left(\bar{x}_{ij\cdot} - \bar{\bar{x}}\right)^2 + \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{r}\left(x_{ijk} - \bar{x}_{ij\cdot}\right)^2
+= br\sum_{i=1}^{a}\left(\bar{x_{{i}\cdot\cdot}} - \bar{\bar{x}}\right)^2 + ar\sum_{j=1}^{b}\left(\bar{x_{\cdot{j}\cdot}} - \bar{\bar{x}}\right)^2 + r\sum_{i=1}^{a}\sum_{j=1}^{b}\left(x_{ij\cdot} - \bar{x_{{i}\cdot\cdot}} - \bar{x_{\cdot{j}\cdot}} + \bar{\bar{x}}\right)^2\]</div>
+</li>
+<li><p class="first">自由度: <span class="math">\(\phi_t = abr - 1\)</span></p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">ab 間平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_ab = r\sum_{i=1}^{a}\sum_{j=1}^{b}\left(\bar{x}_{ij\cdot} - \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_{ab} = ab - 1\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">a 間平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_a = br\sum_{i=1}^{a}\left(\bar{x_{{i}\cdot\cdot}} - \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_a = a - 1\)</span></li>
+<li><span class="math">\(s_a/\sigma^{2} \sim \chi^2(\phi_a)\)</span></li>
+<li>平均変動: <cite>v_a = frac{s_a}{phi_a}</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">b 間平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_b = ar\sum_{j=1}^{b}\left(\bar{x_{\cdot{j}\cdot}} - \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_b = b - 1\)</span></li>
+<li><span class="math">\(s_b/\sigma^{2} \sim \chi^2(\phi_b)\)</span></li>
+<li>平均変動: <cite>v_b = frac{s_b}{phi_b}</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">a * b 平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_{a \times b}r\sum_{i=1}^{a}\sum_{j=1}^{b}\left(x_{ij\cdot} - \bar{x_{{i}\cdot\cdot}} - \bar{x_{\cdot{j}\cdot}} + \bar{\bar{x}}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_{a \times b} = \phi_{ab} - \phi_a - \phi_b = ab - a - b + 1 = (a -1)(b -1)\)</span></li>
+<li><span class="math">\(s_b/\sigma^{2} \sim \chi^2(\phi_{a \times b})\)</span></li>
+<li>平均変動: <cite>v_{a times b} = frac{s_{a times b}}{phi_{a times b}}</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">残差平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_e = \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{r}\left(x_{ijk} - \bar{x}_{ij\cdot}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_e = \phi_t - \phi_{ab} = abr - ab\)</span></li>
+<li><span class="math">\(s_e/\sigma^{2} \sim \chi^2(\phi_e)\)</span></li>
+<li>平均変動: <cite>v_e = frac{s_e}{phi_e}</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">検定統計量 f:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(f_a = \frac{v_a}{v_e} \sim f\left(\phi_a, \phi_e\right)\)</span></li>
+<li><span class="math">\(f_b = \frac{v_b}{v_e} \sim f\left(\phi_b, \phi_e\right)\)</span></li>
+<li><span class="math">\(f_{a \times b} = \frac{v_{a \times b}}{v_e} \sim f\left(\phi_{a \times b}, \phi_e\right)\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id7">
+<h4>5.1.4 共分散分析<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">共変量:</th><td class="field-body"><ul class="first simple">
+<li>ある変量の変動に影響のある別の変量</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">標本平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{x}_{i\cdot} = \frac{1}{r}\sum_{j=1}^{r}x_{ij}\)</span></li>
+<li><span class="math">\(\bar{y}_{i\cdot} = \frac{1}{r}\sum_{j=1}^{r}x_{ij}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">総平均:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\bar{\bar{x}} = \frac{1}{ar}\sum_{i=1}^{a}\sum_{j=1}^{r}x_{ij}\)</span></li>
+<li><span class="math">\(\bar{\bar{y}} = \frac{1}{ar}\sum_{i=1}^{a}\sum_{j=1}^{r}x_{ij}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">構造式:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(y_{ij} = \mu + {\alpha}_{i} + {\beta}x_{ij} + \epsilon_{ij}\)</span></li>
+<li>ただし <span class="math">\(\sum_{i=1}^{a}\alpha_i = 0, \epsilon_{ij} \sim n\left(0, \sigma^2\right)\)</span></li>
+<li>共変量 <span class="math">\(x_{ij}\)</span> の係数 <span class="math">\(\beta\)</span> は水準によらず等しい</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">仮説 (回帰の同質性):</th><td class="field-body"><ul class="first simple">
+<li>水準ごとの回帰直線が平行</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">傾きが共通な回帰直線からの残差平方和:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_w = \sum_{i=1}^{a}\sum_{j=1}^{r}\left[y_{ij} - \left( \alpha_i' + {\beta}x_{ij} \right)\right]^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_w = 観測値の総数 - 係数の数 = ar - (a + 1)\)</span></li>
+<li>分散変動: <span class="math">\(v_r = \frac{s_r}{\phi_r}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">水準ごとの回帰直線からの残差平方和:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_e = \sum_{i=1}^{a}\sum_{j=1}^{r}\left[y_{ij} - \left( \tilde{\alpha_i} + \tilde{{\beta}_i}x_{ij} \right)\right]^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_w =  ar - 2a\)</span></li>
+<li>分散変動: <span class="math">\(v_e = \frac{s_e}{\phi_e}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">回帰の差:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_r = s_w - s_e\)</span></li>
+<li>自由度: <span class="math">\(\phi_r =  \phi_w - \phi_e = a - 1\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">検定統計量 f (回帰の同質性):</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\(f = \frac{\v_e}{v_r} \sim f(a - 1, ar - 2a)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">仮説 (共分散分析):</th><td class="field-body"><ul class="first simple">
+<li>水準間に差はない</li>
+<li><span class="math">\(\alpha_1 = \dots = \alpha_i = 0\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">全水準で共通の回帰直線からの残差平方和:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_t = \sum_{i=1}^{a}\sum_{j=1}^{r}\left[y_{ij} - \left( \mu + {\beta}x_{ij} \right)\right]^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_t = 観測値の総数 - 係数の数 = ar - 2\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">水準間の変動の平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_b = s_t = s_w\)</span></li>
+<li>自由度: <span class="math">\(\phi_w = \frac{s_b}{\phi_b}\)</span></li>
+<li>分散変動: <span class="math">\(v_w =\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">検定統計量 f (共分散分析):</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(f = \frac{v_b}{v_w} \sim f(a - 1, ar - a - 1)\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>5.2 回帰分析<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id9">
+<h4>5.2.1 線型単回帰<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">線型単回帰:</th><td class="field-body"><ul class="first simple">
+<li>回帰直線: <span class="math">\(y = {\alpha} + {\beta}x\)</span></li>
+<li>説明変数: <span class="math">\(x\)</span></li>
+<li>目的変数: <span class="math">\(y\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">構造式:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(y_i = {\alpha} + {\beta}x_i + \epsilon_i\)</span></li>
+<li><span class="math">\(\epsilon_{i} {\sim} n(0, \sigma^2)\)</span>, 互いに独立</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">推定値:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\hat{y}_i = {\alpha} + {\beta}x_i\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">残差:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(観測値 - 推定値 = y_i - \left( {\alpha} + {\beta}x_i \right)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">残差平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_e = \sum_{i=1}^{n}e_i^2 = \sum_{i=1}^{n}\left( y_i - {\alpha} - {\beta}x_i \right)^2\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">係数の推定値:</th><td class="field-body"><ul class="first">
+<li><p class="first"><span class="math">\(s_e\)</span> を最小にする <span class="math">\(\alpha, \beta\)</span> の値</p>
+</li>
+<li><p class="first"><span class="math">\(\bar{x} = \frac{1}{n}\sum_{i=1}^{n}x_i\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(\bar{y} = \frac{1}{n}\sum_{i=1}^{n}y_i\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(s_{xx} = \sum_{i=1}^{n}\left(x_i - \bar{x}\right)^2\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(s_{yy} = \sum_{i=1}^{n}\left(y_i - \bar{y}\right)^2\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(s_{xy} = \sum_{i=1}^{n}\left(x_i - \bar{x}\right)\left(y_i - \bar{y}\right)\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(\hat{\beta} = \frac{s_{xy}}{s_{xy}}\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(\hat{\alpha} = \bar{y} - \hat{beta}\bar{x}\)</span></p>
+</li>
+<li><p class="first">回帰直線の方程式へ代入すると <span class="math">\(\left( \bar{x}, \bar{y} \right)\)</span> を通ることがわかる:</p>
+<p><span class="math">\(y - \bar{y} = \beta\left(x - \bar{x}\right)\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(s_e = s_yy - \frac{s_{xy}^2}{s_{xx}}\)</span></p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">共分散:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(x, y\)</span> の共分散</li>
+<li><span class="math">\(cov(x, y) = \frac{1}{n - 1}s_{xy}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">相関係数:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(\rho(x, y) = \frac{cov\left(x, y\right)}{\sqrt{var(x)}\sqrt{var(y)}} = \frac{s_{xy}}{\sqrt{s_{xx}}\sqrt{s_{xy}}}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">一次変換:</th><td class="field-body"><div class="first math">
+\[\begin{split}\begin{cases}
+u = ax + b \\
+v = cy + d
+\end{cases}\end{split}\]</div>
+<p>ただし <span class="math">\(a \ne 0, c \ne 0\)</span></p>
+<ul class="last simple">
+<li><span class="math">\(\bar{u} = a\bar{x} + b\)</span></li>
+<li><span class="math">\(\bar{v} = c\bar{y} + d\)</span></li>
+<li><span class="math">\(var(u) = a^2var(x)\)</span></li>
+<li><span class="math">\(var(v) = c^2var(y)\)</span></li>
+<li><span class="math">\(cov(u, v) = ac \times cov(x, y)\)</span></li>
+<li><span class="math">\(\rho(u, v) = \mathrm{sgn}(ac) \times \rho(x, y)\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id10">
+<h4>5.2.2 回帰の分散分析<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>回帰直線が統計的に意味があるか調べる</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">総変動の分解:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_{yy} = \sum_{i=1}^{n}\left(y_i - \bar{y}\right)^2 = \sum_{i=1}^{n}\left(\hat{\alpha} + \hat{\beta}x_i - \bar{y}\right)^2 + \sum_{i=1}^{n}\left[y_i - \left(\hat{\alpha} + \hat{\beta}x_i\right)\right]^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_{yy} = n - 1\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">回帰による変動の平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_r = \sum_{i=1}^{n}\left(\hat{\alpha} + \hat{\beta}x_i - \bar{y}\right)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_r = \phi_{yy} - \phi_e = 1\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">残差平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_e = \sum_{i=1}^{n}\left[y_i - \left(\hat{\alpha} + \hat{\beta}x_i\right)\right]^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_e = n - 2\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">寄与率・決定係数:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(r^2 = \frac{s_r}{s_{yy}} = \rho(x, y)^2 = \frac{s_{xy}^2}{s_{xx}s_{yy}} = 1 - \frac{s_e}{s_{yy}}\)</span></li>
+<li><span class="math">\(0 \leq r^2 \leq 1\)</span></li>
+<li><span class="math">\(r^2\)</span> が <span class="math">\(1\)</span> に近い <span class="math">\(iff\)</span> <span class="math">\(s_e\)</span> が小さい <span class="math">\(rightarrow\)</span> <span class="math">\(y\)</span> の変動の大半を回帰で説明できる</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">検定統計量 f:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(f = \frac{v_r}{v_e} \sim f(1, n - 2)\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id11">
+<h4>5.2.3 線型重回帰<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">線型重回帰:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(y = \alpha + \beta_1x_1 + \dots + \beta_px_p\)</span></li>
+<li>説明変数: <span class="math">\(x_1, \dots, x_p\)</span></li>
+<li>目的変数: <span class="math">\(y\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">構造式:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(y_i = \alpha + \beta_1x_{i1} + \dots + \beta_px_{ip} + \epsilon_i\)</span></li>
+<li><span class="math">\(\epsilon_{i} {\sim} n(0, \sigma^2)\)</span>, 互いに独立</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">残差平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_e = \sum_{i=1}^{n} e_i^2 = \sum_{i=1}^{n} \left[ y_i - \left( \alpha + \beta_{1}x_{i1} + \dots + \beta_{p}x_{ip} \right) \right]^2\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">係数の推定値:</th><td class="field-body"><ul class="first">
+<li><p class="first"><span class="math">\(s_e\)</span> を最小にする <span class="math">\({\alpha}, {\beta}_1, \dots, {\beta}_p\)</span> を求める</p>
+</li>
+<li><p class="first"><span class="math">\(s_e\)</span> を <span class="math">\({\alpha}, {\beta}_1, \dots, {\beta}_p\)</span> で偏微分して 0 とおく</p>
+</li>
+<li><p class="first"><span class="math">\(x^{t}x{\beta} = x^{t}y\)</span> を得る</p>
+</li>
+<li><div class="first math">
+\[\begin{split}x = \begin{bmatrix}
+1      &amp;  x_{11} &amp; \dots  &amp; x_{1p} \\
+\vdots &amp;  \vdots &amp; \ddots &amp; \vdots \\
+1      &amp;  x_{n1} &amp; \dots  &amp; x_{np}
+\end{bmatrix}\end{split}\]</div>
+</li>
+<li><div class="first math">
+\[\begin{split}\beta = \begin{bmatrix}
+\alpha \\
+\beta_1 \\
+\vdots \\
+\beta_p
+\end{bmatrix}\end{split}\]</div>
+</li>
+<li><div class="first math">
+\[\begin{split}y = \begin{bmatrix}
+y_1 \\
+\vdots \\
+y_n
+\end{bmatrix}\end{split}\]</div>
+</li>
+<li><p class="first">解: <span class="math">\(\hat{\alpha}, \hat{\beta_{1}, \dots, \hat{beta_{p}}}\)</span></p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">偏相関係数:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(x_j, y\)</span> の相関係数</li>
+<li>他の変数の影響を取り除いてから計算する</li>
+</ul>
+<ol class="arabic">
+<li><ul class="first simple">
+<li>説明変数: <span class="math">\(x_1, \dots, x_{j-1}, x_{j+1}, \dots, x_p\)</span></li>
+<li>応答変数: <span class="math">\(x_j, y\)</span></li>
+</ul>
+<p>とする</p>
+</li>
+<li><p class="first">2 つの線型重回帰を考える</p>
+<ul class="simple">
+<li><span class="math">\(x_j = a + b_{1}x_{1} + \dots + b_{j-1}x_{j-1} + b_{j+1}x_{j+1} + b_{p}x_{p}\)</span></li>
+<li><span class="math">\(y =   c + d_{1}x_{1} + \dots + d_{j-1}x_{j-1} + d_{j+1}x_{j+1} + d_{p}x_{p}\)</span></li>
+</ul>
+</li>
+<li><p class="first">最小二乗法で <span class="math">\(\hat{a}, \hat{b_{1}}, \dots, \hat{b_{j-1}}, \hat{b_{j+1}}, \dots, \hat{b_p}\)</span> を求める</p>
+</li>
+<li><p class="first"><span class="math">\(i\)</span> 番目の観測値の説明変数から、予測値 <span class="math">\(\hat{x_{ij}}, \hat{y_{i}}\)</span> を求める</p>
+</li>
+<li><p class="first">残差の組 <span class="math">\((x_{1j} - \hat{x}_{1j}, y_{1} - \hat{y}_1), \dots, (x_{nj} - \hat{x}_{nj}, y_{n} - \hat{y}_n)\)</span>
+から相関係数を計算したものを <span class="math">\(x_j, y\)</span> の偏相関係数という</p>
+</li>
+</ol>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">応答変数の総変動:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_{yy} = \sum_{i=1}^{n}(y_i - \bar{y})^2 = \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2 + \sum_{i=1}^{n}(y_i - \hat{y}_i)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_{yy} = 観測値の個数 - 観測値から計算された値の数 = n - 1\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">回帰による変動の平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_{r} = \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_r = \phi_{yy} - \phi_{e} = p\)</span></li>
+<li>平均変動: <span class="math">\(v_r = \frac{s_r}{\phi_r}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">残差平方和:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(s_{e} = \sum_{i=1}^{n}(y_i - \hat{y}_i)^2\)</span></li>
+<li>自由度: <span class="math">\(\phi_{e} = 観測値の個数 - 観測値から計算された値の数 = n - (p + 1)\)</span></li>
+<li>平均変動: <span class="math">\(v_e = \frac{s_e}{\phi_e}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">寄与率・決定係数:</th><td class="field-body"><ul class="first simple">
+<li>重相関係数の二乗に等しい</li>
+<li><span class="math">\(r^2 = \frac{s_r}{s_{yy}}\)</span></li>
+<li>メモ: 自由度調整済み決定係数というのがあったはず</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">検定統計量 f:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(f = \frac{v_r}{v_e} \sim f(p, n - p - 1)\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>5.3 分割表の解析<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>計数値データに関して、水準間に差があるかを検定する</p>
+<div class="section" id="id13">
+<h4>5.3.1 <span class="math">\(2 {\times} 2\)</span> 分割表<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="math">
+\begin{array}{|c|cc|c|}
+\hline
+水準  &amp; b_1     &amp; b_2     &amp; 合計 t_{i{\cdot}} \\\hline
+a_1   &amp; x_{11}  &amp; x_{12}  &amp; t_{1{\cdot}}      \\
+a_2   &amp; x_{21}  &amp; x_{22}  &amp; t_{2{\cdot}}      \\\hline
+合計  t_{{\cdot}j}  &amp; t_{{\cdot}1} &amp; t_{{\cdot}2} &amp; t \\\hline
+\end{array}</div><ul>
+<li><p class="first">一意性の検定</p>
+<div class="math">
+\[\begin{split}\begin{array}{|c|cc|c|}
+\hline
+水準  &amp; b_1     &amp; b_2     &amp; 合計  \\\hline
+a_1   &amp; p_{11}  &amp; p_{12}  &amp; 1     \\
+a_2   &amp; p_{21}  &amp; p_{22}  &amp; 1     \\\hline
+\end{array}\end{split}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">データのとり方:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(a_1, a_2\)</span> 郡への振り分けが予め行われている</li>
+<li><span class="math">\(b_1\)</span> 郡は効果あり、 <span class="math">\(b_1\)</span> 郡は効果なしというように振り分ける</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">仮説:</th><td class="field-body"><ul class="first last simple">
+<li>水準 <span class="math">\(a_1, a_2\)</span> 間で効果がある確率が等しい</li>
+<li><span class="math">\(p_{11} = p_{21}\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">独立性の検定</p>
+<div class="math">
+\[\begin{split}\begin{array}{|c|cc|c|}
+\hline
+水準  &amp; b_1     &amp; b_2     &amp; 合計 p_{i{\cdot}} \\\hline
+a_1   &amp; p_{11}  &amp; p_{12}  &amp; p_{1{\cdot}}     \\
+a_2   &amp; p_{21}  &amp; p_{22}  &amp; p_{2{\cdot}}     \\\hline
+合計  p_{{\cdot}j}  &amp; p_{{\cdot}1} &amp; p_{{\cdot}2} &amp; 1 \\\hline
+\end{array}\end{split}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">データのとり方:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(a_1, a_2\)</span> 郡への振り分けを予め行うことができない</li>
+<li><span class="math">\(b_1\)</span> 郡は効果あり、 <span class="math">\(b_1\)</span> 郡は効果なしというように振り分ける</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">仮説:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(a_1, a_2\)</span> 郡と <span class="math">\(b_1, b_2\)</span> が無関係</li>
+<li><span class="math">\(p_{ij} = p_{i{\cdot}} \times p_{{\cdot}j}\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">一様性の検定と独立性の検定</p>
+<ul class="simple">
+<li>帰無仮説のもとで <span class="math">\(p_{1{\cdot}}, p_{2{\cdot}}\)</span> がともに比例している</li>
+<li>同じ検定方法が使える</li>
+<li>期待度数と観測値から検定を行う</li>
+</ul>
+</li>
+<li><p class="first">期待度数</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">総数:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(t\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">各セルの期待度数:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(t_{ij} = \frac{t_{i{\cdot}}t_{{\cdot}j}}{t}\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>期待度数の表:</p>
+<div class="math">
+\[\begin{split}\begin{array}{|c|cc|c|}
+\hline
+水準  &amp; b_1     &amp; b_2     &amp; 合計 t_{i{\cdot}} \\\hline
+a_1   &amp; t_{11}  &amp; t_{12}  &amp; t_{1{\cdot}}     \\
+a_2   &amp; t_{21}  &amp; t_{22}  &amp; t_{2{\cdot}}     \\\hline
+合計  t_{{\cdot}j}  &amp; t_{{\cdot}1} &amp; t_{{\cdot}2} &amp; t \\\hline
+\end{array}\end{split}\]</div>
+</li>
+<li><p class="first">フィッシャー検定</p>
+<ul>
+<li><p class="first">頑張って足すパターン</p>
+</li>
+<li><p class="first">ある度数のデータが観測される確率は超幾何分布で表される</p>
+<div class="math">
+\[\frac{{}_{t_{1{\cdot}}}{\mathrm{c}}_{y_{11}} \times {}_{t_{2{\cdot}}}{\mathrm{c}}_{y_{21}}}{{}_{t}{\mathrm{c}}_{t_{{\cdot}1}}}
+= \frac{t_{1{\cdot}}!t_{2{\cdot}}!t_{{\cdot}1}!t_{{\cdot}2}!}{t!y_{11}!y_{12}!y_{21}!y_{22}!}\]</div>
+</li>
+</ul>
+</li>
+<li><p class="first"><span class="math">\(\chi^2\)</span> 検定</p>
+<ul class="simple">
+<li><span class="math">\(\chi^2 = \sum_{i=1}^{2}\sum_{j=1}^{2}\frac{(x_{ij} - t_{ij})^2}{t_{ij}} = \frac{t \times (x_{11}x_{22} - x{12}x_{21})^2}{t_{1{\cdot}}t_{2{\cdot}}t_{{\cdot}1}t_{{\cdot}2}} {\sim} \chi(1)\)</span></li>
+</ul>
+</li>
+<li><p class="first">マクネマー検定</p>
+<div class="math">
+\[\begin{split}\begin{array}{|cc|cc|c|}
+\hline
+        &amp; 1 回目 \\
+        &amp;       &amp; b_1     &amp; b_2     &amp; 合計 t_{i{\cdot}} \\\hline
+2 回目  &amp; a_1   &amp; x_{11}  &amp; x_{12}  &amp; t_{1{\cdot}}     \\
+        &amp; a_2   &amp; x_{21}  &amp; x_{22}  &amp; t_{2{\cdot}}     \\\hline
+        &amp; 合計  t_{{\cdot}j}  &amp; t_{{\cdot}1} &amp; t_{{\cdot}2} &amp; t \\\hline
+\end{array}\end{split}\]</div>
+<ul class="simple">
+<li>同じ観測対象に対して同じことを 2 度調べて、差があるか検定する</li>
+<li>変化 (<span class="math">\(x_{12}, x_{21}\)</span>) に偏りがないか</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">仮説:</th><td class="field-body"><ul class="first last">
+<li><p class="first">変化がない</p>
+</li>
+<li><div class="first math">
+\[\frac{(x_{12} - t_{12})^2}{t_{12}} + \frac{(x_{21} - t_{21})^2}{t_{21}} = \frac{(x_{12} - x_{21})^2}{x_{12} + x_{21}}
+\sim \chi(1)\]</div>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+<div class="section" id="id14">
+<h4>5.3.1 <span class="math">\(a {\times} b\)</span> 分割表<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul>
+<li><p class="first">一様性検定</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">帰無仮説:</th><td class="field-body"><ul class="first last simple">
+<li>列方向の各列でそれぞれ等しい</li>
+<li><span class="math">\(p_{1,1} = \dots = p_{a,1}, \dots, p_{1,b-1} = \dots = b_{a,b-1}\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">独立性検定:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">帰無仮説:</th><td class="field-body"><ul class="first last simple">
+<li>水準 <span class="math">\(a, b\)</span> が独立</li>
+<li><span class="math">\(p_{ij} = p_{i{\cdot}} \times p_{{\cdot}j}\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">期待度数:</p>
+<p><span class="math">\(t_{ij} = \frac{t_{i{\cdot}}t_{{\cdot}j}}{t}\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(\chi^2\)</span> 検定</p>
+<ul class="simple">
+<li><span class="math">\(\chi^2 = \sum_{i=1}^{a}\sum_{j=1}^{b}\frac{(x_{ij} - t_{ij})^2}{t_{ij}} \sim \chi\left((a - 1) \times (b - 1)\right)\)</span></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>5.4 ノンパラメトリック法<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>分散分析や線型回帰では、母集団分布が正規分布で分散が一定であると仮定した</li>
+<li>実際に母集団分布が既知で正規分布であることは稀</li>
+<li>標本サイズが大きくなると検定統計量が正規分布へ近似できることから、
+分散分析や線型回帰で広く正規分布が用いられている</li>
+<li>ただし観測値が少ない場合には妥当性を欠く</li>
+</ul>
+<div class="section" id="id16">
+<h4>5.4.1 符号検定<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>母集団分布の中央値が 0 かを検定する</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">1 変量:</th><td class="field-body"><ul class="first simple">
+<li>観測値: <span class="math">\(z_1, z_2, {\dots}, z_n\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">2 変量:</th><td class="field-body"><ul class="first simple">
+<li>観測値: <span class="math">\((x_1, y_1), (x_2, y_2), {\dots}, (x_n, y_n)\)</span></li>
+<li><span class="math">\(z_i = x_i - y_i\)</span> とおく</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">個数:</th><td class="field-body"><ul class="first simple">
+<li>観測値 <span class="math">\(z_i\)</span> のうち、<ul>
+<li>正の値の個数を <span class="math">\(m_1\)</span></li>
+<li>負の値の個数を <span class="math">\(m_2\)</span></li>
+<li>0 の個数は数えない</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">帰無仮説:</th><td class="field-body"><ul class="first simple">
+<li>中央値は 0</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">確率分布:</th><td class="field-body"><ul class="first simple">
+<li>正の個数の確率分布: <span class="math">\(b\left(m_1 + m_2, \frac{1}{2}\right)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">有意確率 (対立仮説が中央値は正):</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\(P = \sum_{i=0}^{m_2}{}_{(m_1 + m_2)}c_i\left(\frac{1}{2}\right)^{m_1 + m_2}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">有意確率 (対立仮説が中央値が 0 でない):</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\(P = 2\sum_{i=0}^{\min(m_1, m_2)}{}_{(m_1 + m_2)}C_i\left(\frac{1}{2}\right)^{m_1 + m_2}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">正規近似:</th><td class="field-body"><ul class="first simple">
+<li>組み合わせの計算ができない程度に <span class="math">\((m_1 + m_2)\)</span> が大きい</li>
+<li><span class="math">\(N\left(\frac{m_1 + m_2}{2}, \frac{m_1 + m_2}{4},\right)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">有意確率 (正規近似, 対立仮説が中央値は正):</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\(P = \Phi\left(\frac{m_2 - m_1 + 1}{\sqrt{m_1 + m_2}}\right)\)</span></li>
+<li>分母の <span class="math">\(+ 1\)</span> は連続補正</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">有意確率 (正規近似, 対立仮説が中央値が 0 でない):</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(P = \Phi\left(\frac{-|m_2 - m_1| + 1}{\sqrt{m_1 + m_2}}\right)\)</span></li>
+<li>分母の <span class="math">\(+ 1\)</span> は連続補正</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id17">
+<h4>5.4.2 ウィルコクソン順位和検定<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>2 郡の標本を混合して順位付けを行い、検定に用いる</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">母集団:</th><td class="field-body"><span class="math">\(X, Y\)</span></td>
+</tr>
+<tr class="field-even field"><th class="field-name">観測値:</th><td class="field-body"><span class="math">\(x_1, \dots, x_m, y_1, \dots, y_n\)</span></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">対応:</th><td class="field-body">なし</td>
+</tr>
+<tr class="field-even field"><th class="field-name">帰無仮説:</th><td class="field-body">2 変量の分布が等しい</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id18">
+<h5>ウィルコクソン順位和検定<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h5>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">混合:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(m + n\)</span> 個の観測値を小さい順に並び替える</li>
+<li>2 変量の分布が等しいという仮説の下では、
+混合された観測値は、同じ母集団からの無作為標本となる</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">順位:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(R_i\)</span>: <span class="math">\(x_i (i = 1, \dots, m)\)</span> が何番目か</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">組み合わせ:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(m + n\)</span> 個の整数から
+<span class="math">\(m\)</span> 個の整数の組 <span class="math">\(R_1, \dots, R_m\)</span> を選び出す</li>
+<li><span class="math">\({}_{m+n}C_{m}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">ウィルコクソン順位和検定統計量:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(W = \sum_{i=1}^{m}R_i\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="u">
+<h5>マンホイットニー U 検定<a class="headerlink" href="#u" title="このヘッドラインへのパーマリンク">¶</a></h5>
+<p>ウィルコクソン順位和検定では、並べ替えや同率の処理が大変</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">マンホイットニー U 検定統計量:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first">
+<li><div class="first math">
+\[\begin{split}I(x,y) = \begin{cases}
+1 (x &gt; y) \\
+0.5 (x = y) \\
+0 (x &lt; y)
+\end{cases}\end{split}\]</div>
+<p>として</p>
+</li>
+<li><p class="first"><span class="math">\(U = \sum_{i=1}^{m}\sum_{j=1}^{n}I(x_i, y_j)\)</span></p>
+</li>
+<li><p class="first">同じ値の処理と定数を除き <span class="math">\(W\)</span> と一致する</p>
+</li>
+<li><p class="first">2 つ以上の観測値が同じ値を取る場合、
+ある同じ値をとる観測値の個数を <span class="math">\(\tau_i\)</span> とおき、
+これら同じ値の種類数を <span class="math">\(t\)</span> とおく</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">正規近似:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(E(U) = \frac{mn}{2}\)</span></li>
+<li><span class="math">\(V(U) = \frac{mn(m + n + 1)}{12} - \frac{mn}{12(m + n)(m + n - 1)}\sum_{i=1}^{t}\tau_i(\tau_i^2-1)\)</span></li>
+<li>同じ値がなかった場合: <span class="math">\(V(U) = \frac{mn(m + n + 1)}{12}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">有意確率:</th><td class="field-body"><ul class="first last">
+<li><p class="first">片側対立仮説で</p>
+<div class="math">
+\[P = 1 - \Phi\left(\frac{U - E(U) - 0.5}{\sqrt(V(U))}\right)\]</div>
+</li>
+<li><p class="first"><span class="math">\(-0.5\)</span> は連続補正</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="id19">
+<h4>5.4.3 ウィルコクソン符号付き順位和検定<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>対応のある 2 つの標本から、 2 変量の分布が等しいか検定する</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">母集団:</th><td class="field-body"><p class="first"><span class="math">\(X, Y\)</span></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">観測値:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\((x_1, y_1), \dots, (x_n, y_n)\)</span></li>
+<li><span class="math">\(z_i = x_i - y_i\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">順位:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(z_i\)</span> を絶対値の小さい順でならべ、 <span class="math">\(0\)</span> は取り除く</li>
+<li><span class="math">\(R\)</span>: 各 <span class="math">\(|z_i|\)</span> の順位について <span class="math">\(\sgn{z_i}\)</span> をかけ、和を取ったもの</li>
+<li>同率の <span class="math">\(|z_i|\)</span> は、順位の平均を用いる</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">正規近似:</th><td class="field-body"><ul class="first simple">
+<li>同率となる <span class="math">\(|z_i|\)</span> それぞれの個数を <span class="math">\(\tau_j (j = 1, \dots, t)\)</span> とおく</li>
+<li><span class="math">\(E(R) = 0\)</span></li>
+<li><span class="math">\(V(R) = \frac{n'(n' + 1)(2n' + 1)}{6} - \frac{1}{12}\sum_{j=1}^{t}\tau_j(\tau_j^2 - 1)\)</span></li>
+<li>同率がない場合、 <span class="math">\(V(R) = \frac{n'(n' + 1)(2n' + 1)}{6}\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">有意確率 (片側):</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(P = 1 - \Phi\left(\frac{R - E(R) - 0.5}{\sqrt{V(R)}}\right)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">有意確率 (両側):</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\(P = 2\left[1 - \Phi\left(\frac{{\max}(0, |R - E(R)| - 0.5)}{\sqrt{V(R)}}\right)\right]\)</span></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id20">
+<h4>5.4.4 順位相関係数<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="section" id="id21">
+<h5>スピアマンの順位相関係数<a class="headerlink" href="#id21" title="このヘッドラインへのパーマリンク">¶</a></h5>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">観測値:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\((x_1, y_1), \dots, (x_n, y_n)\)</span></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">順位:</th><td class="field-body"><ul class="first simple">
+<li><span class="math">\(R_i\)</span>: 各 <span class="math">\(x_i\)</span> を小さい順で並べた際の順位</li>
+<li><span class="math">\(S_i\)</span>: 各 <span class="math">\(y_i\)</span> を小さい順で並べた際の順位</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">順位相関係数:</th><td class="field-body"><ul class="first last simple">
+<li><span class="math">\((R_1, S_1), \dots, (R_n, S_n)\)</span> について相関係数を計算したもの</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_structured.html" class="btn btn-neutral float-right" title="構造化分析とシステム仕様" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_set_and_topology.html" class="btn btn-neutral" title="集合・位相入門" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

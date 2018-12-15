@@ -1,0 +1,61 @@
+:orphan:
+
+====================================
+Bash で Slack RTM を読めるようにした
+====================================
+
+.. .. content::
+
+RTM に接続する
+==============
+
+RTM API のエンドポイント (``https://slack.com/api/rtm.start?token=${SLACK_ACCESS_TOKEN}`` ) に curl(1) でつなぎに行く。
+
+WebSocket への Handshake に成功すると、そのままデータフレームが送られてくる。
+
+Bash の組み込みコマンドだけでやろうと思ったら ``/dev/tcp`` とかでつなぎに行けば良いが、さすがにめんどくさいのでそこまではしなかった。
+
+また、 curl(1) は WebSocket から継続的に流れてくるパケットを受け取り続けるみたいな使い方をするものではないので、
+コネクションがしばらくすると死んでしまう。
+
+なので、無限ループで curl(1) のプロセスがリスポーンするようにする。
+
+.. code-block:: bash
+
+    #!/bin/bash
+
+    HERE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+    rtm()
+    {
+        while :
+        do
+
+            local wss=$(curl 'https://slack.com/api/rtm.start?token=${SLACK_ACCESS_TOKEN}' | tr -d ' ' | grep -Po '(?<="url":"wss)[^"]+' | tr -d '\')
+            curl -m 0 -i -N \
+                -H 'Sec-WebSocket-Version: 13' \
+                -H "Sec-WebSocket-Key: $(head -c 16 /dev/urandom | base64)" \
+                -H "Connection: Upgrade" \
+                -H "Upgrade: websocket" \
+                https${wss} 2>/dev/null | bash ${HERE}/readbin.bash
+        done
+    }
+
+
+    main()
+    {
+        local command=${1}
+        shift
+
+        case $command in
+            rtm)
+                rtm "$@"
+                ;;
+            *)
+                return 1
+                ;;
+        esac
+        return 0
+    }
+
+    main "$@"

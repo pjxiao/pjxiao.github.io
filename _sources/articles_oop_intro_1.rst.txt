@@ -1,0 +1,252 @@
+:orphan:
+
+============
+クラスの導入
+============
+
+2017-03-08 09:00:00
+
+.. contents::
+   :depth: 1
+
+.. オブジェクト指向プログラミングの構成要素は、
+.. 「オブジェクト」「メソッド」「フィールド」「型」の 4 つであり [#REF_EDP]_ 、
+
+要旨
+====
+
+はじめに
+========
+Python における、クラスの利用方法について説明する。
+
+本稿は、Python のいくつかの組み込み型や関数を利用方法については理解しているが、
+クラスという構文の利用方法がわからないというレベルの読者を想定したメモである。
+
+はじめに、関数とタプルを使ったオブジェクトのエミュレートにより、
+クラスのイメージをつかみ、その後実際にクラスという構文を導入する。
+
+対象外
+======
+本稿は、クラスという構文の利用方法の体得を目的とし、
+オブジェクト指向プログラミングをはじめ、
+オブジェクト指向分析やオブジェクト指向設計については、
+説明を行わない。
+
+初期化関数
+==========
+まず、関数とタプルを使いオブジェクトをエミュレートする。
+
+ここでは、カウンターを実装する。
+
+.. code-block:: python
+
+  def create_counter():
+      return ()
+
+カウンターオブジェクトの生成は、 ``create_counter()`` 関数から行うと約束する。
+
+データ構造の定義
+================
+カウンターであるから、現在のカウントが保持できる必要がある
+
+.. code-block:: python
+
+  def create_counter():
+      return (0,)
+
+カウンターは、タプルの 1 番目の要素をカウントとして使うことにする。
+
+さて、カウンターは自分の名前を持つようにしたいとする
+
+.. code-block:: python
+
+  def create_counter(count, name):
+      return (count, name)
+
+そこで、タプルの 2 番目の要素はカウンターの名前であると約束する。
+
+こうして、タプルの 1 番目にカウント、 2 番目に名前をもつデータ構造が ``create_counter()`` によって作れるようになった。
+
+手続きの追加
+============
+さて、データ構造だけが作られても、カウンターとして使うことはできない。
+
+まずは、カウンターに今のカウントを報告させるようにしたい。
+
+.. code-block:: python
+
+  def report_count_of(counter):
+      return '<counter {n}: {c}>'.format(c=counter[0], n=counter[1])
+
+これでカウンターに現在のカウントを報告させることができるようになった。
+
+.. code-block:: pycon
+
+  >>> cnt = create_counter(0, 'hoge')
+  >>> report_count_of(cnt)
+  '<counter hoge: 0>'
+
+
+しかしこのカウンターは、カウンターでありながら、カウントを変更することができない。
+
+そこで、カウントを 1 つあげる ``countup()`` 関数を定義して、カウントアップができるようにする。
+
+.. code-block:: python
+
+  def countup(counter):
+      return create_counter(
+          counter[0] + 1,
+          counter[1],
+      )
+
+
+この関数は、カウンターのカウントを取得して、 1 足した結果をから、
+あたらしいカウンターのデータ構造を返す。
+
+.. code-block:: pycon
+
+  >>> cnt = create_counter(0, 'hoge')
+  >>> report_count_of(cnt)
+  '<counter hoge: 0>'
+  >>> cnt = countup(cnt)
+  >>> cnt = countup(cnt)
+  >>> cnt = countup(cnt)
+  >>> cnt = countup(cnt)
+  >>> report_count_of(cnt)
+  '<counter hoge: 4>'
+
+こうして、無事にカウントアップができるようになった。
+
+ところで、 ``report_count_of()`` と `countup()`` の両関数は、
+それぞれ、タプルの添字を使っており、タプルの何番目に何が入っているのかを
+知っていなければならない。
+
+そこで、添字ではなく名前を使ってデータ構造内の要素へアクセスできるようにする。
+
+.. code-block:: python
+
+  def create_counter(count, name):
+      return (
+          ('count', count),
+          ('name', name),
+      )
+
+  def get(data, name):
+      for d in data:
+          if d[0] == name:
+              return d[1]
+
+
+  def report_count_of(counter):
+      return '<counter {n}: {c}>'.format(
+          c=get(counter, 'count'),
+          n=get(counter, 'name'),
+      )
+
+  def countup(counter):
+      return create_counter(
+          get(counter, 'count') + 1,
+          get(counter, 'name'),
+      )
+
+クラス
+======
+
+.. code-block:: python
+
+  class Counter:
+      def report_count(self):
+          return '<counter {n}: {c}>'.format(
+              c=self.count,
+              n=self.name,
+          )
+      def countup(self):
+          return create_counter(
+              self.count + 1,
+              self.name,
+          )
+
+  def create_counter(count, name):
+      cnt = Counter()
+      cnt.count = count
+      cnt.name = name
+      return cnt
+
+
+.. code-block:: pycon
+
+  >>> c2 = create_counter(0, 'fuga')
+  >>> c2 = c2.countup()
+  >>> c2 = c2.countup()
+  >>> c2 = c2.countup()
+  >>> c2.report_count()
+  '<counter fuga: 3>'
+
+\_\_init\_\_
+============
+
+.. code-block:: python
+
+  class Counter:
+      def __init__(self, count, name):
+          self.count = count
+          self.name = name
+
+      def report_count(self):
+          return '<counter {n}: {c}>'.format(
+              c=self.count,
+              n=self.name,
+          )
+      def countup(self):
+          return Counter(
+              self.count + 1,
+              self.name,
+          )
+
+
+.. code-block:: pycon
+
+  >>> c3 = Counter(0, 'foo')
+  >>> c3 = c3.countup()
+  >>> c3 = c3.countup()
+  >>> c3 = c3.countup()
+  >>> c3 = c3.countup()
+  >>> c3.report_count()
+  '<counter foo: 4>'
+
+状態
+====
+
+.. code-block:: python
+
+  class Counter:
+      def __init__(self, count, name):
+          self.count = count
+          self.name = name
+      def report_count(self):
+          return '<counter {n}: {c}>'.format(
+              c=self.count,
+              n=self.name,
+          )
+      def countup(self):
+          self.count = self.count + 1
+
+
+.. code-block:: pycon
+
+  >>> c4 = Counter(0, 'bar')
+  >>> c4.countup()
+  >>> c4.countup()
+  >>> c4.countup()
+  >>> c4.countup()
+  >>> c4.countup()
+  >>> c4.countup()
+  >>> c4.countup()
+  >>> c4.countup()
+  >>> c4.report_count()
+  '<counter bar: 8>'
+
+参考文献
+========
+.. .. [#ref_edp] https://www.amazon.com/dp/0321711920
+.. .. [#ref_pl] tbp

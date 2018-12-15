@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>What Is the X Window System &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="詰み" href="notes.html"/>
+        <link rel="next" title="国家" href="notes_the_republic.html"/>
+        <link rel="prev" title="雑メモ: Ten simple rules for scientists: Improving your writing productivity" href="notes_ten_simple_rules_for_scientists.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">What Is the X Window System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">メモ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-x-client-server-model">The X Client/Server Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#working-with-x">Working with X</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-x-window-system">Running the X Window System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-x-server">The X Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-x">Configuring X</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#x-clients">X Clients</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-window-manager">The Window Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#customizing-clients">Customizing Clients</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">関連</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+      <li>What Is the X Window System</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_what_is_the_x_window_system.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="what-is-the-x-window-system">
+<h1><a class="toc-backref" href="#id5">What Is the X Window System</a><a class="headerlink" href="#what-is-the-x-window-system" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last">このページは個人用の読書メモです</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">名称:</th><td class="field-body"><a class="reference external" href="archive.oreilly.com/pub/a/linux/2005/08/25/whatisXwindow.html">What Is the X Window System</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">著者:</th><td class="field-body">Ellen Siever</td>
+</tr>
+</tbody>
+</table>
+<div class="contents topic" id="id2">
+<p class="topic-title first">目次</p>
+<ul class="simple">
+<li><a class="reference internal" href="#what-is-the-x-window-system" id="id5">What Is the X Window System</a><ul>
+<li><a class="reference internal" href="#id3" id="id6">メモ</a><ul>
+<li><a class="reference internal" href="#the-x-client-server-model" id="id7">The X Client/Server Model</a></li>
+<li><a class="reference internal" href="#working-with-x" id="id8">Working with X</a></li>
+<li><a class="reference internal" href="#running-the-x-window-system" id="id9">Running the X Window System</a></li>
+<li><a class="reference internal" href="#the-x-server" id="id10">The X Server</a></li>
+<li><a class="reference internal" href="#configuring-x" id="id11">Configuring X</a></li>
+<li><a class="reference internal" href="#x-clients" id="id12">X Clients</a></li>
+<li><a class="reference internal" href="#the-window-manager" id="id13">The Window Manager</a></li>
+<li><a class="reference internal" href="#customizing-clients" id="id14">Customizing Clients</a></li>
+<li><a class="reference internal" href="#additional-resources" id="id15">Additional Resources</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4" id="id16">関連</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id6">メモ</a><a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="the-x-client-server-model">
+<h3><a class="toc-backref" href="#id7">The X Client/Server Model</a><a class="headerlink" href="#the-x-client-server-model" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>X はクライアント・サーバーモデル</li>
+<li>X のサーバーはローカルマシン上で動く<ul>
+<li>メールサーバーとかファイサーバーのように、ローカルマシンにクライアントがいてリモートマシンにサーバーがいるイメージでいるとイメージしにくい</li>
+</ul>
+</li>
+<li>クライアントプログラムは、ローカルとリモートのいずれで動くことができる</li>
+<li>X のサーバーは、キーボードやマウスなどの入力デバイスや、画面やフォントなどを管理する</li>
+<li>X はネットワーク越しに動くように設計されているという特徴がある</li>
+<li>X のサーバーとクライアントは、ローカル・リモート問わず、 X プロトコルで通信する</li>
+</ul>
+</div>
+<div class="section" id="working-with-x">
+<h3><a class="toc-backref" href="#id8">Working with X</a><a class="headerlink" href="#working-with-x" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>X Window System<ul>
+<li>ウィンドウマネージャのリクエストに基づいて、ディスプレイを管理する</li>
+</ul>
+</li>
+<li>ウィンドウマネージャ<ul>
+<li>自身が X クライアントアプリケーzションである</li>
+<li>ウィンドウの見え方やスクリーン上での位置を管理する</li>
+<li>X 自身は、スクリーンの表示やユーザがウィンドウでできることは管理しない<ul>
+<li>例えば、ウィンドウのタイトルバーをダブルクリックすると引導をロールアップするみたいなこと</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>デスクトップ環境<ul>
+<li>KDE とか Gnome</li>
+<li>ウィンドウマネージャよりもさらに進んだグラフィカルな環境を提供する</li>
+<li>共通の Look and feel など</li>
+<li>セッション管理も行う</li>
+<li>デスクトップ環境が動いていても<ul>
+<li>その下では X Window System が画面を管理し</li>
+<li>ウィンドウマネージャーが X とデスクトップ環境間に存在する</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="running-the-x-window-system">
+<h3><a class="toc-backref" href="#id9">Running the X Window System</a><a class="headerlink" href="#running-the-x-window-system" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>WIP</li>
+</ul>
+</div>
+<div class="section" id="the-x-server">
+<h3><a class="toc-backref" href="#id10">The X Server</a><a class="headerlink" href="#the-x-server" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>WIP</li>
+</ul>
+</div>
+<div class="section" id="configuring-x">
+<h3><a class="toc-backref" href="#id11">Configuring X</a><a class="headerlink" href="#configuring-x" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>WIP</li>
+</ul>
+</div>
+<div class="section" id="x-clients">
+<h3><a class="toc-backref" href="#id12">X Clients</a><a class="headerlink" href="#x-clients" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>WIP</li>
+</ul>
+</div>
+<div class="section" id="the-window-manager">
+<h3><a class="toc-backref" href="#id13">The Window Manager</a><a class="headerlink" href="#the-window-manager" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>WIP</li>
+</ul>
+</div>
+<div class="section" id="customizing-clients">
+<h3><a class="toc-backref" href="#id14">Customizing Clients</a><a class="headerlink" href="#customizing-clients" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>WIP</li>
+</ul>
+</div>
+<div class="section" id="additional-resources">
+<h3><a class="toc-backref" href="#id15">Additional Resources</a><a class="headerlink" href="#additional-resources" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>WIP</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id16">関連</a><a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.lpi.org/our-certifications/exam-102-objectives">LPIC 102</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_the_republic.html" class="btn btn-neutral float-right" title="国家" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_ten_simple_rules_for_scientists.html" class="btn btn-neutral" title="雑メモ: Ten simple rules for scientists: Improving your writing productivity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

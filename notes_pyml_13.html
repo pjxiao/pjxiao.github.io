@@ -1,0 +1,1535 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Python機械学習プログラミング" href="notes_pyml.html"/>
+        <link rel="next" title="ニューラルネットワーク" href="notes_pyml_12.old.html"/>
+        <link rel="prev" title="ニューラルネットワーク - 画像認識トレーニング" href="notes_pyml_12.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_03.html">分類問題 - 機械学習ライブラリ sckit-learn の活用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html">データ前処理 — よりよいトレーニングセットの構築</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html">次元削減でデータを圧縮する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html">モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_07.html">アンサンブル学習 - 異なるモデルの組み合わせ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html">ニューラルネットワーク - 画像認識トレーニング</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#13.1-Theano-を使った式の構築、コンパイル、実行">13.1 Theano を使った式の構築、コンパイル、実行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#13.2-フィードフォワードニューラルネットワークでの活性化関数の選択">13.2 フィードフォワードニューラルネットワークでの活性化関数の選択</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#13.3-Keras-を使ったニューラルネットワークの効率的なトレーニング">13.3 Keras を使ったニューラルネットワークの効率的なトレーニング</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html">ニューラルネットワーク</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id1">機械学習アルゴリズムのトレーニングの構成要素</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id2">2.分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id3">3. 分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id4">6 . モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+          <li><a href="notes_pyml.html">Python機械学習プログラミング</a> &raquo;</li>
+        
+      <li>ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_pyml_13.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="ニューラルネットワーク---数値計算ライブラリT-h-e-a-n-o-によるトレーニングの並列化">
+<h1>ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化<a class="headerlink" href="#ニューラルネットワーク---数値計算ライブラリT-h-e-a-n-o-によるトレーニングの並列化" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="13.1-Theano-を使った式の構築、コンパイル、実行">
+<h2>13.1 Theano を使った式の構築、コンパイル、実行<a class="headerlink" href="#13.1-Theano-を使った式の構築、コンパイル、実行" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>高負荷な計算を行う際の課題</p>
+<ul class="simple">
+<li>Python は GIL があるため、 1 コアしか使えない</li>
+<li><code class="docutils literal"><span class="pre">multiprocessing</span></code> を使っても PC の CPU のコア数は高々 16 個程度</li>
+<li>50 ユニット程度の MLP で 28 * 28 の画像分類の学習をするためにすら
+1,000 個もの重みを計算する必要がある</li>
+</ul>
+<p>解決策</p>
+<ul class="simple">
+<li>GPU を使う</li>
+<li>ただし、 GPU で Python コードを実行することは難しい</li>
+</ul>
+<p>Theano</p>
+<ul class="simple">
+<li>Python
+を使って機械学習のモデルを効率的にトレーニングすることが目的のライブラリ</li>
+<li>CPU または GPU
+を使い、多次元配列（テンソル）を用いた数式の実装・コンパイル・評価を高効率で行うことができる</li>
+<li>NumPy や SymPy をベースにしている</li>
+</ul>
+<div class="section" id="13.1.2-はじめての-Theano">
+<h3>13.1.2 はじめての Theano<a class="headerlink" href="#13.1.2-はじめての-Theano" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>テンソル (tensor) は、スカラ・ベクトル・行列を一般化したもの<ul>
+<li>スカラ: 0 階のテンソル</li>
+<li>ベクトル: 1 階のテンソル</li>
+<li>行列: 2 階のテンソル</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="Theano-での実装">
+<h4>Theano での実装<a class="headerlink" href="#Theano-での実装" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="arabic simple">
+<li>記号 (variable object) を定義</li>
+<li>コード（関数）を定義しコンパイル</li>
+<li>実行</li>
+</ol>
+</div>
+<div class="section" id="スカラ計算の例">
+<h4>スカラ計算の例<a class="headerlink" href="#スカラ計算の例" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<div class="math">
+\[z = x_1 \times w_1 + w_0\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">theano</span>
+<span class="kn">from</span> <span class="nn">theano</span> <span class="k">import</span> <span class="n">tensor</span> <span class="k">as</span> <span class="n">T</span>
+
+<span class="n">x1</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+<span class="n">w1</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+<span class="n">w0</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">w0</span>
+
+<span class="n">net_input</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">w1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">w0</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">z1</span><span class="p">)</span>
+
+<span class="s1">&#39;Net input: </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">net_input</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[38]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Net input: 2.50&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="13.1.3-Theano-を設定する">
+<h3>13.1.3 Theano を設定する<a class="headerlink" href="#13.1.3-Theano-を設定する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>64 ビット整数・ 32 ビット整数・浮動小数点を選択する必要がある</li>
+<li>GPU で数式の評価を高速化する場合は、 32 ビットのアーキテクチャを使う</li>
+<li>開発時は CPU を使い、実行時には GPU を使うようにすると効率が良い</li>
+<li><code class="docutils literal"><span class="pre">THEANO_FLAGS</span></code> 環境変数で浮動小数点型やハードウェアを設定できる<ul>
+<li>開発時には <code class="docutils literal"><span class="pre">THEANO_FLAGS=device=cpu,floatX=float64</span></code></li>
+<li>実行時には <code class="docutils literal"><span class="pre">THEANO_FLAGS=device=gpu,floatX=float32</span></code>
+などとするとよい</li>
+</ul>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 浮動小数点型のデフォルト設定を確認する</span>
+<span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[39]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;float32&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 浮動小数点型の設定を変更する</span>
+<span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span> <span class="o">=</span> <span class="s1">&#39;float32&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 利用するハードウェアの確認</span>
+<span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">device</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[41]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;cpu&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="13.1.4-配列構造を操作する">
+<h3>13.1.4 配列構造を操作する<a class="headerlink" href="#13.1.4-配列構造を操作する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>2 * 3 行列の各列の和を求める例</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fmatrix</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">x_sum</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># コンパイル</span>
+<span class="n">calc_sum</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">x_sum</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 実行 (Python リスト)</span>
+<span class="n">py_ary</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="s1">&#39;Column sum: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">calc_sum</span><span class="p">(</span><span class="n">py_ary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[43]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Column sum: [ 2.  4.  6.]&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 実行 (Numpy 配列)</span>
+<span class="n">np_ary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">py_ary</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
+<span class="s1">&#39;Column sum: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">calc_sum</span><span class="p">(</span><span class="n">np_ary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[44]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Column sum: [ 2.  4.  6.]&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># T.matrix() など variable オブジェクト生成時に ``name`` 引数を指定すると、 print 時に記号名が返される</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[45]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>x
+</pre></div>
+</div>
+</div>
+<div class="section" id="共有変数">
+<h4>共有変数<a class="headerlink" href="#共有変数" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>共有変数 (shared variable)
+を使うと、複数の関数間で変数を使いまわすことができる</li>
+<li>変数を使いまわすことで CPU/GPU 間での通信を削減できる<ul>
+<li>データセットが GPU のメモリに収まる場合に、データセットを GPU
+に残しておくなど</li>
+</ul>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 入力</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fmatrix</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="c1"># 共有変数を定義</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">))</span>
+<span class="c1"># 出力</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="c1"># 共有変数の更新方法</span>
+<span class="n">update</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">]</span>
+
+<span class="c1"># コンパイル</span>
+<span class="n">net_input</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">updates</span><span class="o">=</span><span class="p">[</span><span class="n">update</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+<span class="c1"># 実行</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;z</span><span class="si">%d</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">net_input</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+z0: [[ 0.]]
+z1: [[ 6.]]
+z2: [[ 12.]]
+z3: [[ 18.]]
+z4: [[ 24.]]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; given を使った例 &quot;&quot;&quot;</span>
+<span class="c1"># 初期化</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fmatrix</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">))</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">update</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">]</span>
+
+<span class="c1"># コンパイル</span>
+<span class="n">net_input</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[],</span> <span class="n">updates</span><span class="o">=</span><span class="p">[</span><span class="n">update</span><span class="p">],</span> <span class="n">givens</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">data</span><span class="p">},</span> <span class="n">outputs</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+<span class="c1"># 実行</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;z</span><span class="si">%d</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">net_input</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+z0: [[ 0.]]
+z1: [[ 6.]]
+z2: [[ 12.]]
+z3: [[ 18.]]
+z4: [[ 24.]]
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="13.1.5-線形回帰の例">
+<h3>13.1.5 線形回帰の例<a class="headerlink" href="#13.1.5-線形回帰の例" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>最小二乗法による線形回帰を実装する。</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 教師データ</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">4.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">6.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">8.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.0</span><span class="p">]</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span>
+    <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span>
+    <span class="mf">3.1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.3</span><span class="p">,</span>
+    <span class="mf">6.6</span><span class="p">,</span> <span class="mf">7.4</span><span class="p">,</span>
+    <span class="mf">8.0</span><span class="p">,</span> <span class="mf">9.0</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">theano</span>
+<span class="kn">from</span> <span class="nn">theano</span> <span class="k">import</span> <span class="n">tensor</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">train_linreg</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># 学習率</span>
+    <span class="n">eta0</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fscalar</span><span class="p">(</span><span class="s1">&#39;eta0&#39;</span><span class="p">)</span>
+    <span class="c1"># 従属変数</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fvector</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+    <span class="c1"># 説明変数</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fmatrix</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+    <span class="c1"># 重み</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span>
+        <span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># コストの計算 (誤差平方和)</span>
+    <span class="n">net_input</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">net_input</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="c1"># 重みの更新</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">wrt</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>  <span class="c1"># wrt 引数の変数で自動微分する</span>
+    <span class="n">update</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">eta0</span> <span class="o">*</span> <span class="n">gradient</span><span class="p">)</span>
+
+    <span class="c1"># モデルのコンパイル</span>
+    <span class="n">train</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span>
+        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">eta0</span><span class="p">],</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span>
+        <span class="n">updates</span><span class="o">=</span><span class="p">[</span><span class="n">update</span><span class="p">],</span>
+        <span class="n">givens</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_train</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train</span><span class="p">(</span><span class="n">eta</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">costs</span><span class="p">,</span> <span class="n">w</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span>
+
+<span class="c1"># 学習</span>
+<span class="n">costs</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">train_linreg</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">costs</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Cost&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_13_18_0.png" src="_images/notes_pyml_13_18_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">predict_linreg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 線形回帰関数 &quot;&quot;&quot;</span>
+    <span class="n">Xt</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+    <span class="n">net_input</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">predict</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span>
+        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">Xt</span><span class="p">],</span>
+        <span class="n">givens</span><span class="o">=</span><span class="p">{</span><span class="n">w</span><span class="p">:</span> <span class="n">w</span><span class="p">},</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">net_input</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="p">,</span>
+    <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="nb">range</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+    <span class="n">predict_linreg</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_13_20_0.png" src="_images/notes_pyml_13_20_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="13.2-フィードフォワードニューラルネットワークでの活性化関数の選択">
+<h2>13.2 フィードフォワードニューラルネットワークでの活性化関数の選択<a class="headerlink" href="#13.2-フィードフォワードニューラルネットワークでの活性化関数の選択" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>MLP は、微分可能であればどのような関数を活性化関数として使っても良い</li>
+<li>線形活性化関数を活性化関数としても用いることもできるが、線形関数の和は線形関数になり、非線形な結果を得られないのであまり役に立たない</li>
+<li>ロジスティック関数は入力の負の度合いが多いと出力が 0
+に近づき、学習に時間がかかり極小値に陥る可能性が高くなる</li>
+<li>このため、ロジスティック関数の代わりに、双曲線正接 (hyperbolic
+tangent) 関数を使うことも多い</li>
+</ul>
+<div class="section" id="13.2.1-ロジスティック関数のまとめ">
+<h3>13.2.1 ロジスティック関数のまとめ<a class="headerlink" href="#13.2.1-ロジスティック関数のまとめ" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]])</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">net_input</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">z</span>
+
+
+<span class="k">def</span> <span class="nf">logistic</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">logistic_activation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">net_input</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">logistic</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># このサンプル x が陽性クラスに属する確率</span>
+<span class="s1">&#39;P(y=1|x) = </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">logistic_activation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[55]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;P(y=1|x) = 0.707&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># W: array, shape = [n_output_units, n_hidden_units]</span>
+<span class="c1"># 隠れ層 -&gt; 出力層 (最初の列はバイアスユニット)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">],</span>
+<span class="p">])</span>
+
+<span class="c1"># A: array, shape = [n_hidden_units+1, n_samples]</span>
+<span class="c1"># 隠れ層の活性化 (最初の要素はバイアスユニット)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">]])</span>
+
+<span class="c1"># Z: array, shape = [n_output_units, n_samples]</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">y_probas</span> <span class="o">=</span> <span class="n">logistic</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Probabilitis:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">y_probas</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Probabilitis:
+[[ 0.87653295]
+ [ 0.57688526]
+ [ 0.90114393]]
+</pre></div></div>
+</div>
+<p>出力層が複数のロジスティック活性化ユニットからなる場合、サンプルが各クラスに分類される確率の和が
+100 % とはならず、各クラスへの所属確率としては使えない。</p>
+</div>
+<div class="section" id="13.2.2-ソフトマックス関数を使って多クラス分類の確率を推定する">
+<h3>13.2.2 ソフトマックス関数を使って多クラス分類の確率を推定する<a class="headerlink" href="#13.2.2-ソフトマックス関数を使って多クラス分類の確率を推定する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ソフトマックス関数 (softmax function)</p>
+<ul class="simple">
+<li>ロジスティック関数の一般化</li>
+<li>多クラス分類問題でクラスへの所属確率を計算できる</li>
+<li>正規化項として各クラスの所属確率の和を分母にもっている</li>
+</ul>
+<div class="math">
+\[P(y=i|z) = \phi_{softmax}(z) = \frac{e^z_i}{{\sum_m}e^z_m}\]</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [57]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">softmax_activation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">net_input</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">softmax</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [59]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y_probas</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Probabilities:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">y_probas</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Probabilities:
+ [[ 0.40386493]
+ [ 0.07756222]
+ [ 0.51857284]]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="13.2.3-双曲線正接関数を使って出力範囲を拡大する">
+<h3>13.2.3 双曲線正接関数を使って出力範囲を拡大する<a class="headerlink" href="#13.2.3-双曲線正接関数を使って出力範囲を拡大する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>双曲正接(hyperbolic tangent:tanh)関数</p>
+<ul>
+<li><p class="first">MLP でよく使われているシグモイド関数のひとつ</p>
+</li>
+<li><p class="first">ロジスティック関数の尺度を取りなおした関数</p>
+</li>
+<li><p class="first">出力範囲がロジスティック関数の <span class="math">\((0, 1)\)</span> に対して
+<span class="math">\((-1, 1)\)</span> と広い</p>
+<div class="math">
+\[\phi_{tanh}\left(z\right) = 2 \times \phi_{logistic}\left(2 \times z\right) - 1 = \frac{e^z - e^{-z}}{e^z + e^{-z}}\]</div>
+</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [60]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">tanh</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="n">e_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">e_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">e_p</span> <span class="o">-</span> <span class="n">e_m</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">e_p</span> <span class="o">+</span> <span class="n">e_m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [63]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">)</span>
+<span class="n">log_act</span> <span class="o">=</span> <span class="n">logistic</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">tanh_act</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;net input $z$&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;activation $\phi(z)$&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">tanh_act</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">log_act</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;logistic&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_13_35_0.png" src="_images/notes_pyml_13_35_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="13.3-Keras-を使ったニューラルネットワークの効率的なトレーニング">
+<h2>13.3 Keras を使ったニューラルネットワークの効率的なトレーニング<a class="headerlink" href="#13.3-Keras-を使ったニューラルネットワークの効率的なトレーニング" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Keras</p>
+<ul class="simple">
+<li>ニューラルネットワークのトレーニングを簡単にするためのライブラリ</li>
+<li>Theano をベースとして構築されている</li>
+<li>GPU を使ってニューラルネットワークのトレーニングを高速化できる</li>
+<li>ニューラルネットワークを数行で実装できる</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">load_mnist</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; path から　MNIST データをロードする</span>
+<span class="sd">    詳細は 12 章を参照</span>
+
+<span class="sd">    :param str path: MNIST データの入ったディレクトリへのパス</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">labels_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-labels-idx1-ubyte&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kind</span><span class="p">))</span>
+    <span class="n">images_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">-images-idx3-ubyte&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kind</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">labels_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">lbpath</span><span class="p">:</span>
+        <span class="n">magic</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;&gt;II&#39;</span><span class="p">,</span> <span class="n">lbpath</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">lbpath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">images_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">imgpath</span><span class="p">:</span>
+        <span class="n">magic</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;IIII&quot;</span><span class="p">,</span> <span class="n">imgpath</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">imgpath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="mi">784</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [70]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">(</span><span class="s1">&#39;mnist&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="s1">&#39;Rows: </span><span class="si">%d</span><span class="s1">, columns: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[70]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Rows: 60000, columns: 784&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [71]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">(</span><span class="s1">&#39;mnist&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;t10k&#39;</span><span class="p">)</span>
+<span class="s1">&#39;Rows: </span><span class="si">%d</span><span class="s1">, columns: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[71]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Rows: 10000, columns: 784&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [72]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">theano</span>
+<span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span> <span class="o">=</span> <span class="s1">&#39;float32&#39;</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First 3 labels: &#39;</span><span class="p">,</span> <span class="n">y_train</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">y_train_ohe</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">First 3 labels (one-hot):</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">y_train_ohe</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+Using TensorFlow backend.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+First 3 labels:  [5 0 4]
+
+First 3 labels (one-hot):
+ [[ 0.  0.  0.  0.  0.  1.  0.  0.  0.  0.]
+ [ 1.  0.  0.  0.  0.  0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  1.  0.  0.  0.  0.  0.]]
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [77]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers.core</span> <span class="k">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="k">import</span> <span class="n">SGD</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="c1"># 1 つ目の隠れ層を追加</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span>
+    <span class="n">input_dim</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">output_dim</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">init</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span>
+    <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span>
+<span class="p">))</span>
+
+<span class="c1"># 2 つ目の隠れ層を追加</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span>
+    <span class="n">input_dim</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">output_dim</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">init</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span>
+    <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span>
+<span class="p">))</span>
+
+<span class="c1"># 出力層を追加</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span>
+    <span class="n">input_dim</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">output_dim</span><span class="o">=</span><span class="n">y_train_ohe</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">init</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span>
+    <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="c1"># オプティマイザ</span>
+<span class="n">sgd</span> <span class="o">=</span> <span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">decay</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># モデルをコンパイル</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">sgd</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [79]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train_ohe</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Train on 54000 samples, validate on 6000 samples
+Epoch 1/50
+54000/54000 [==============================] - 0s - loss: 2.2523 - acc: 0.3346 - val_loss: 2.1650 - val_acc: 0.5143
+Epoch 2/50
+54000/54000 [==============================] - 0s - loss: 1.9791 - acc: 0.5454 - val_loss: 1.7040 - val_acc: 0.6065
+Epoch 3/50
+54000/54000 [==============================] - 0s - loss: 1.4551 - acc: 0.6123 - val_loss: 1.1978 - val_acc: 0.6827
+Epoch 4/50
+54000/54000 [==============================] - 0s - loss: 1.0780 - acc: 0.7057 - val_loss: 0.9099 - val_acc: 0.7808
+Epoch 5/50
+54000/54000 [==============================] - 0s - loss: 0.8496 - acc: 0.7889 - val_loss: 0.7120 - val_acc: 0.8513
+Epoch 6/50
+54000/54000 [==============================] - 0s - loss: 0.6934 - acc: 0.8362 - val_loss: 0.5775 - val_acc: 0.8780
+Epoch 7/50
+54000/54000 [==============================] - 0s - loss: 0.5888 - acc: 0.8594 - val_loss: 0.4927 - val_acc: 0.8912
+Epoch 8/50
+54000/54000 [==============================] - 0s - loss: 0.5210 - acc: 0.8683 - val_loss: 0.4411 - val_acc: 0.9012
+Epoch 9/50
+54000/54000 [==============================] - 0s - loss: 0.4795 - acc: 0.8774 - val_loss: 0.4218 - val_acc: 0.8973
+Epoch 10/50
+54000/54000 [==============================] - 0s - loss: 0.4422 - acc: 0.8851 - val_loss: 0.3821 - val_acc: 0.9077
+Epoch 11/50
+54000/54000 [==============================] - 0s - loss: 0.4162 - acc: 0.8908 - val_loss: 0.3585 - val_acc: 0.9112
+Epoch 12/50
+54000/54000 [==============================] - 0s - loss: 0.3960 - acc: 0.8928 - val_loss: 0.3411 - val_acc: 0.9138
+Epoch 13/50
+54000/54000 [==============================] - 0s - loss: 0.3738 - acc: 0.8992 - val_loss: 0.3139 - val_acc: 0.9212
+Epoch 14/50
+54000/54000 [==============================] - 0s - loss: 0.3615 - acc: 0.9019 - val_loss: 0.3061 - val_acc: 0.9223
+Epoch 15/50
+54000/54000 [==============================] - 0s - loss: 0.3513 - acc: 0.9047 - val_loss: 0.2988 - val_acc: 0.9208
+Epoch 16/50
+54000/54000 [==============================] - 0s - loss: 0.3346 - acc: 0.9064 - val_loss: 0.2782 - val_acc: 0.9270
+Epoch 17/50
+54000/54000 [==============================] - 0s - loss: 0.3279 - acc: 0.9090 - val_loss: 0.2865 - val_acc: 0.9243
+Epoch 18/50
+54000/54000 [==============================] - 0s - loss: 0.3248 - acc: 0.9087 - val_loss: 0.2723 - val_acc: 0.9323
+Epoch 19/50
+54000/54000 [==============================] - 0s - loss: 0.3077 - acc: 0.9151 - val_loss: 0.2684 - val_acc: 0.9273
+Epoch 20/50
+54000/54000 [==============================] - 0s - loss: 0.3074 - acc: 0.9143 - val_loss: 0.2640 - val_acc: 0.9257
+Epoch 21/50
+54000/54000 [==============================] - 0s - loss: 0.2975 - acc: 0.9157 - val_loss: 0.2716 - val_acc: 0.9250
+Epoch 22/50
+54000/54000 [==============================] - 0s - loss: 0.2997 - acc: 0.9161 - val_loss: 0.2585 - val_acc: 0.9313
+Epoch 23/50
+54000/54000 [==============================] - 0s - loss: 0.2890 - acc: 0.9191 - val_loss: 0.2420 - val_acc: 0.9338
+Epoch 24/50
+54000/54000 [==============================] - 0s - loss: 0.2771 - acc: 0.9212 - val_loss: 0.2390 - val_acc: 0.9325
+Epoch 25/50
+54000/54000 [==============================] - 0s - loss: 0.2785 - acc: 0.9210 - val_loss: 0.2409 - val_acc: 0.9360
+Epoch 26/50
+54000/54000 [==============================] - 0s - loss: 0.2715 - acc: 0.9225 - val_loss: 0.2277 - val_acc: 0.9362
+Epoch 27/50
+54000/54000 [==============================] - 0s - loss: 0.2689 - acc: 0.9234 - val_loss: 0.2310 - val_acc: 0.9358
+Epoch 28/50
+54000/54000 [==============================] - 0s - loss: 0.2626 - acc: 0.9247 - val_loss: 0.2220 - val_acc: 0.9357
+Epoch 29/50
+54000/54000 [==============================] - 0s - loss: 0.2543 - acc: 0.9271 - val_loss: 0.2199 - val_acc: 0.9385
+Epoch 30/50
+54000/54000 [==============================] - 0s - loss: 0.2561 - acc: 0.9273 - val_loss: 0.2197 - val_acc: 0.9433
+Epoch 31/50
+54000/54000 [==============================] - 0s - loss: 0.2469 - acc: 0.9296 - val_loss: 0.2102 - val_acc: 0.9433
+Epoch 32/50
+54000/54000 [==============================] - 0s - loss: 0.2432 - acc: 0.9295 - val_loss: 0.2080 - val_acc: 0.9423
+Epoch 33/50
+54000/54000 [==============================] - 0s - loss: 0.2498 - acc: 0.9286 - val_loss: 0.2104 - val_acc: 0.9412
+Epoch 34/50
+54000/54000 [==============================] - 0s - loss: 0.2475 - acc: 0.9281 - val_loss: 0.2157 - val_acc: 0.9403
+Epoch 35/50
+54000/54000 [==============================] - 0s - loss: 0.2468 - acc: 0.9295 - val_loss: 0.2115 - val_acc: 0.9402
+Epoch 36/50
+54000/54000 [==============================] - 0s - loss: 0.2400 - acc: 0.9303 - val_loss: 0.2090 - val_acc: 0.9455
+Epoch 37/50
+54000/54000 [==============================] - 0s - loss: 0.2366 - acc: 0.9304 - val_loss: 0.2021 - val_acc: 0.9473
+Epoch 38/50
+54000/54000 [==============================] - 0s - loss: 0.2317 - acc: 0.9325 - val_loss: 0.2023 - val_acc: 0.9428
+Epoch 39/50
+54000/54000 [==============================] - 0s - loss: 0.2263 - acc: 0.9340 - val_loss: 0.1960 - val_acc: 0.9443
+Epoch 40/50
+54000/54000 [==============================] - 0s - loss: 0.2242 - acc: 0.9339 - val_loss: 0.1947 - val_acc: 0.9425
+Epoch 41/50
+54000/54000 [==============================] - 0s - loss: 0.2176 - acc: 0.9370 - val_loss: 0.1848 - val_acc: 0.9458
+Epoch 42/50
+54000/54000 [==============================] - 0s - loss: 0.2176 - acc: 0.9366 - val_loss: 0.1995 - val_acc: 0.9427
+Epoch 43/50
+54000/54000 [==============================] - 0s - loss: 0.2180 - acc: 0.9371 - val_loss: 0.1826 - val_acc: 0.9495
+Epoch 44/50
+54000/54000 [==============================] - 0s - loss: 0.2177 - acc: 0.9369 - val_loss: 0.1840 - val_acc: 0.9483
+Epoch 45/50
+54000/54000 [==============================] - 0s - loss: 0.2096 - acc: 0.9385 - val_loss: 0.1826 - val_acc: 0.9495
+Epoch 46/50
+54000/54000 [==============================] - 0s - loss: 0.2040 - acc: 0.9408 - val_loss: 0.1871 - val_acc: 0.9485
+Epoch 47/50
+54000/54000 [==============================] - 0s - loss: 0.2029 - acc: 0.9403 - val_loss: 0.1857 - val_acc: 0.9500
+Epoch 48/50
+54000/54000 [==============================] - 0s - loss: 0.2053 - acc: 0.9387 - val_loss: 0.1828 - val_acc: 0.9502
+Epoch 49/50
+54000/54000 [==============================] - 0s - loss: 0.2024 - acc: 0.9397 - val_loss: 0.1754 - val_acc: 0.9520
+Epoch 50/50
+54000/54000 [==============================] - 0s - loss: 0.1985 - acc: 0.9417 - val_loss: 0.1858 - val_acc: 0.9473
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[79]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;keras.callbacks.History at 0x7f6fae91ea20&gt;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [80]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_classes</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First 3 predictions: &#39;</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+First 3 predictions:  [5 0 4]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [81]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">train_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="n">y_train_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="s1">&#39;Training accuracy: </span><span class="si">%.2f%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">train_acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[81]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Training accuracy: 94.03%&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [82]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_classes</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">test_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="s1">&#39;Test accuracy: </span><span class="si">%.2f%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">test_acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[82]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;Test accuracy: 93.43%&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_pyml_12.old.html" class="btn btn-neutral float-right" title="ニューラルネットワーク" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_pyml_12.html" class="btn btn-neutral" title="ニューラルネットワーク - 画像認識トレーニング" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

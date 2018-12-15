@@ -1,0 +1,26 @@
+==========
+PowerShell
+==========
+
+Windows のシェル
+
+
+RCファイル
+==========
+
+::
+
+  ~\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
+
+VIキーバインド
+===============
+
+`PSReadlineOption` を設定すると、 bash の `set -o vi` 相当のキーバインドになる。 [#REF_SF_38297]_
+ただし、bash とはことなり Ctrl-R でコマンド履歴を追えない。
+
+::
+
+  Set-PSReadlineOption -EditMode vi
+
+
+.. [#REF_SF_38297] https://serverfault.com/a/38297

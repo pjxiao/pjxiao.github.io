@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>詰み &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="next" title="Distributed computing" href="notes_distcomp.html"/>
+        <link rel="prev" title="hirai.me" href="index.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">詰み</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">参考例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uc-berkeley-statistics-major">UC Berkeley Statistics major</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>詰み</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1>詰み<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>積んだ本のノート</p>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>未整理<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://research.microsoft.com/en-us/um/people/pkohli/papers/mbnlk_icdar2013.pdf">Image binarization for end-to-end text understanding in natural images</a></li>
+<li><a class="reference external" href="https://pdfs.semanticscholar.org/7e11/f7e45be38f715c1fa2c03ac4bdc35376fb34.pdf">Restoration of images scanned from thick bound documents</a></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>参考例<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="uc-berkeley-statistics-major">
+<h3>UC Berkeley Statistics major<a class="headerlink" href="#uc-berkeley-statistics-major" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">prerequires</p>
+<ul class="simple">
+<li>Math 1A<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>極限</li>
+<li>微分</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="https://math.berkeley.edu/courses/choosing/lowerdivcourses/math1A">https://math.berkeley.edu/courses/choosing/lowerdivcourses/math1A</a></li>
+<li><a class="reference external" href="https://www.whitman.edu/mathematics/calculus/calculus.pdf">https://www.whitman.edu/mathematics/calculus/calculus.pdf</a></li>
+<li><a class="reference external" href="https://math.berkeley.edu/~ogus/Math_1A/syllabus.html">https://math.berkeley.edu/~ogus/Math_1A/syllabus.html</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Math 1B<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>積分</li>
+<li>数列</li>
+<li>極座標</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="http://persson.berkeley.edu/1B/">http://persson.berkeley.edu/1B/</a></li>
+<li><a class="reference external" href="https://math.berkeley.edu/~reshetik/intex1b-16.html">https://math.berkeley.edu/~reshetik/intex1b-16.html</a></li>
+<li><a class="reference external" href="https://www.whitman.edu/mathematics/calculus/calculus.pdf">https://www.whitman.edu/mathematics/calculus/calculus.pdf</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Math 53<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>重積分</li>
+<li>ベクトル解析</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="https://math.berkeley.edu/~auroux/53s16/">https://math.berkeley.edu/~auroux/53s16/</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Math 54<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>微分方程式</li>
+<li>線形代数</li>
+<li>高次線形微分方程式</li>
+<li>偏微分方程式</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="https://math.berkeley.edu/courses/choosing/lowerdivcourses/math54">https://math.berkeley.edu/courses/choosing/lowerdivcourses/math54</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li><p class="first">major requirements</p>
+<ul class="simple">
+<li>Stat 133<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>データ処理プログラム入門</li>
+<li>XML</li>
+<li>SQL</li>
+<li>R</li>
+<li>正規表現</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~s133/">http://www.stat.berkeley.edu/~s133/</a></li>
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~nolan/stat133/Fall05/lectures/index.html">http://www.stat.berkeley.edu/~nolan/stat133/Fall05/lectures/index.html</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Stat 134<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>確率論基礎</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first">
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~aldous/134/">http://www.stat.berkeley.edu/~aldous/134/</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">関連資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4130420658">https://www.amazon.co.jp/dp/4130420658</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4563008281">https://www.amazon.co.jp/dp/4563008281</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Stat 135<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>期待値</li>
+<li>中心極限定理</li>
+<li>標本</li>
+<li>パラーメータ推定</li>
+<li>検定</li>
+<li>データ要約（ヒストグラム・ボックスチャート）</li>
+<li>二標本問題</li>
+<li>最小二乗法</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first">
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~rice/Stat135/">http://www.stat.berkeley.edu/~rice/Stat135/</a></li>
+<li><a class="reference external" href="https://sites.google.com/site/pittersh/2016stat135">https://sites.google.com/site/pittersh/2016stat135</a></li>
+<li><a class="reference external" href="https://www.amazon.com/dp/0534399428">https://www.amazon.com/dp/0534399428</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">関連資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4130420658">https://www.amazon.co.jp/dp/4130420658</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4563008281">https://www.amazon.co.jp/dp/4563008281</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Stat 150<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>確率過程</li>
+<li>条件付確率</li>
+<li>マルコフ連鎖</li>
+<li>ポアソン過程</li>
+<li>マルチンゲール</li>
+<li>ブラウン運動</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first">
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~aldous/150/">http://www.stat.berkeley.edu/~aldous/150/</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">関連資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4489006594">https://www.amazon.co.jp/dp/4489006594</a></li>
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/4320085671">https://www.amazon.co.jp/dp/4320085671</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Stat 151A (labs)<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>単回帰分析</li>
+<li>重回帰分析</li>
+<li>仮説検定</li>
+<li>ブートストラップ法</li>
+<li>ダミー変数</li>
+<li>ANOVA</li>
+<li>ロジスティック回帰</li>
+<li>GLM</li>
+<li>ノンパラメトリック回帰</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="https://www.amazon.co.jp/dp/1452205663">https://www.amazon.co.jp/dp/1452205663</a></li>
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~epurdom/Syllabi/Stat151A/Syllabus2014Spring.pdf">http://www.stat.berkeley.edu/~epurdom/Syllabi/Stat151A/Syllabus2014Spring.pdf</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Stat 151B (labs)<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>教師あり学習 (HTF2)</li>
+<li>線形回帰 (HTF3)</li>
+<li>線形分類 (HTF4)</li>
+<li>Basic expansions (HTF5)</li>
+<li>モデル選択 (HTF7)</li>
+<li>分類・回帰木 (HTF9.2)</li>
+<li>ブースティング (HTF10)</li>
+<li>ブートストラップ法 (HTF15)</li>
+<li>カーネル法</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="http://statweb.stanford.edu/~tibs/ElemStatLearn/">http://statweb.stanford.edu/~tibs/ElemStatLearn/</a> (HTF)</li>
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~jon/stat-151b-spring-2012/">http://www.stat.berkeley.edu/~jon/stat-151b-spring-2012/</a></li>
+<li><a class="reference external" href="http://mason.gmu.edu/~jgentle/csi772/13s/">http://mason.gmu.edu/~jgentle/csi772/13s/</a> (What’s HTF)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Stat 155<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first">
+<li>ゲーム理論</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last">
+<li><a class="reference external" href="http://www.stat.berkeley.edu/~sly/Stat155.htm">http://www.stat.berkeley.edu/~sly/Stat155.htm</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>Math 113 (Optional)<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first last">
+<li>抽象代数</li>
+<li>群・環・体</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://abstract.ups.edu/download/aata-20150812.pdf">http://abstract.ups.edu/download/aata-20150812.pdf</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p class="first">MA</p>
+<ul>
+<li><p class="first">Stat 260</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">範囲:</th><td class="field-body"><ul class="first last simple">
+<li>ベイジアンモデリング</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">参考資料:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/">https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_distcomp.html" class="btn btn-neutral float-right" title="Distributed computing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="hirai.me" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

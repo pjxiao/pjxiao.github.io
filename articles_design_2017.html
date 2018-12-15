@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>分析・設計本所感 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Articles" href="feed.html"/>
+        <link rel="next" title="日記 2017-W15" href="weeklyreport_2017w15.html"/>
+        <link rel="prev" title="Articles" href="feed.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="feed.html">Articles</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">分析・設計本所感</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">レガシーコード改善ガイド</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ruby">Ruby によるデザインパターン</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#head-first">Head First オブジェク指向分析設計</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#domain-driven-design-quickly">Domain Driven Design Quickly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">エリックエヴァンスのドメイン駆動設計</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">実践ドメイン駆動設計</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">ユースケース入門</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">ビジネスオブジェクト</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">構造化分析とシステム仕様</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w15.html">日記 2017-W15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w14.html">日記 2017-W14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w13.html">日記 2017-W13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w12.html">日記 2017-W12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_row_level_ac.html">行レベルのアクセス制御</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_missing_values.html">欠測データの統計科学受講ノート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w02.html">日記 2017-W02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w01.html">日記 2017-W01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_setup-debian-8-on-mbp-11-5.html">Debian jessie (8) を Mac Book Pro 11,5 にセットアップする</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_sphinxcontrib-newsfeed.html">sphinxcontrib-newsfeed</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="feed.html">Articles</a> &raquo;</li>
+        
+      <li>分析・設計本所感</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/articles_design_2017.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1>分析・設計本所感<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>2017-07-25 09:00:00</p>
+<div class="contents local topic" id="id2">
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id18">レガシーコード改善ガイド</a></li>
+<li><a class="reference internal" href="#ruby" id="id19">Ruby によるデザインパターン</a></li>
+<li><a class="reference internal" href="#head-first" id="id20">Head First オブジェク指向分析設計</a></li>
+<li><a class="reference internal" href="#domain-driven-design-quickly" id="id21">Domain Driven Design Quickly</a></li>
+<li><a class="reference internal" href="#id8" id="id22">エリックエヴァンスのドメイン駆動設計</a></li>
+<li><a class="reference internal" href="#id10" id="id23">実践ドメイン駆動設計</a></li>
+<li><a class="reference internal" href="#id12" id="id24">ユースケース入門</a></li>
+<li><a class="reference internal" href="#id14" id="id25">ビジネスオブジェクト</a></li>
+<li><a class="reference internal" href="#id16" id="id26">構造化分析とシステム仕様</a></li>
+</ul>
+</div>
+<p>読んだ順で</p>
+<div class="section" id="id3">
+<h2><a class="reference external" href="http://www.shoeisha.co.jp/book/detail/9784798116839">レガシーコード改善ガイド</a><a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>業界 1, 2 年目を過ごした会社で、
+ぐちゃぐちゃだったコードをどうにかしたいと思い手に取った本</li>
+<li>「テストがないコードはレガシーコードだ！」というキャッチコピーでお馴染み</li>
+<li>ただし、レガシーコードへのテストの書き方ではなく、
+難解なコードの解きほぐし方や読み解き方といった、
+コードを「改善」する「ガイド」も豊富に紹介されている</li>
+</ul>
+</div>
+<div class="section" id="ruby">
+<h2><a class="reference external" href="http://ci.nii.ac.jp/ncid/BA89974883">Ruby によるデザインパターン</a><a class="headerlink" href="#ruby" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>デザインパターンというものがあるらしいので、
+当時使っていた PHP と同じスクリプト言語である Ruby で解説した本を選んだ</li>
+<li>Java によるデザインパターン本が多い中、
+スクリプト言語でデザインパターンを紹介している本</li>
+<li>GoF の全パターンを紹介するのではなくて、
+いくつかのパターンのみを Ruby を用いて紹介する</li>
+<li>動的言語の特性を活かしたデザインパターンの実装方法が紹介されている</li>
+</ul>
+</div>
+<div class="section" id="head-first">
+<h2><a class="reference external" href="https://www.oreilly.co.jp/books/9784873113494/">Head First オブジェク指向分析設計</a><a class="headerlink" href="#head-first" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>一番初めに読んでおきたかった本</li>
+<li>早く読んでおきたかった本シリーズその 1</li>
+<li>オブジェクト指向 <strong>分析</strong> という、
+忘れ去られてる感のあるトピックまできちんとカバーしている</li>
+<li>正直、これ一冊でオブジェクト指向分析設計が実践できるかという微妙だが、
+オブジェクト指向分析設計の全容をつかむのにこれ以上の本は今のところ知らない</li>
+</ul>
+</div>
+<div class="section" id="domain-driven-design-quickly">
+<h2><a class="reference external" href="https://www.infoq.com/jp/minibooks/domain-driven-design-quickly">Domain Driven Design Quickly</a><a class="headerlink" href="#domain-driven-design-quickly" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>DDD のエッセンスをまとめた電子書籍</li>
+<li>DDD のパターンの概要をざっくりつかむ、
+もしくは、エヴァンスを読んだ人が簡易リファレンスに使うのによさそうな内容</li>
+<li>これだけで DDD を実践するのは難しいという印象</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2><a class="reference external" href="http://www.shoeisha.co.jp/book/detail/9784798121963">エリックエヴァンスのドメイン駆動設計</a><a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>印象に残った文は「歯を食いしばれ」</li>
+<li>DDD の聖典みたいな本</li>
+<li>界隈の人々がいうには 1, 4, 2, 3 部と読むとよいという話（たしか）</li>
+<li>DDD やるなら読んでおくべきだし、
+やらないにしても読んでおいて損はない内容</li>
+<li>DDD やらないにしても、戦術・戦略の両パターンともに参考になる</li>
+<li>ただし DDD をやるのであれば、
+先にオブジェクト指向分析設計の知識がないとモデリングで詰む</li>
+<li>オブジェクト指向っぽいコードを書きたいと思ってこの本を読むと地雷</li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2><a class="reference external" href="http://www.shoeisha.co.jp/book/detail/9784798131610">実践ドメイン駆動設計</a><a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>略称は IDDD</li>
+<li>ドメインエキスパートを巻き込むには名前の長いコーヒーをおごると良い
+という身も蓋もない Tips が乗っていて最高</li>
+<li>ドメイン駆動設計の実践ガイド</li>
+<li>「ドメイン」「コアドメイン」「境界付けられたコンテキスト」と言った用語について掘り下げて解説されているので、
+エヴァンスを読む際の参考書にもなる</li>
+<li>実装例は Hibernate 知ってる前提で XML が羅列されてつらい</li>
+</ul>
+</div>
+<div class="section" id="id12">
+<h2><a class="reference external" href="http://ci.nii.ac.jp/ncid/BA54457342">ユースケース入門</a><a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>早く読んでおきたかった本シリーズその 2</li>
+<li>オブジェクト指向分析設計とそのプロセス (ICONIX) を簡単に解説した本</li>
+<li>ドメインモデリングやユースケースといったものが紹介される</li>
+<li>この本でようやくオブジェクト指向分析設計の実践方法が見えてきた</li>
+<li>ただし、やはりモデリングというのは難しいので、
+この本を参考にしつつ、慣れるという段階は必要</li>
+</ul>
+</div>
+<div class="section" id="id14">
+<h2><a class="reference external" href="http://ci.nii.ac.jp/ncid/BN14679635">ビジネスオブジェクト</a><a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>ICONIX 以前</li>
+<li>オブジェクトを用いてビジネスをモデリングしようという思想</li>
+<li>詳しく読み込めていないが、ユースケース図を用いた分析例が豊富</li>
+<li>ICONIX でもおなじみの「コントローラ」や「バウンダリ」「エンティティ」も解説されている</li>
+<li>ユースケース入門の参考書として読むのもよさそう</li>
+</ul>
+</div>
+<div class="section" id="id16">
+<h2><a class="reference external" href="http://ci.nii.ac.jp/ncid/BN11461816">構造化分析とシステム仕様</a><a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>早く読んでおきたかった本シリーズその 3</li>
+<li>ここまですべてオブジェクト指向関係だったが、
+この本は構造化手法を紹介・解説している</li>
+<li>この本は、分析手法の本であり、設計についてはあまり触れられていない</li>
+<li>イヴァー・ヤコブソンが <em>Object-Oriented Software Engineering</em> を出版したのが 1992 年だが、
+この本の原著は 1986 年に出版されており、
+オブジェクト指向ソフトウェア工学以前の分析手法である</li>
+<li>オブジェクト指向以前だから終わったコンテツと考えるのは早計</li>
+<li>おどいたことに 1986 年の時点で、
+「論理的検討」と「物理的検討」、「データディクショナリ」といった、
+オブジェクト指向分析設計の下地とも思える要素が導入されている</li>
+<li>特に、時代的に電子データ処理 (EDP) 過渡期であるがゆえに、
+ユーザが「コンピュータ」というものに十分な親しみがないことが想定されている</li>
+<li>このことは、「物理的」詳細に踏み込まず
+「論理的」な仕様をユーザとどう詰めるか、という問題につながる</li>
+<li>この問題は、 DDD が提起している問題にも近しいとも思える</li>
+<li>また、分析に使う「データフローダイアグラム」や「データディクショナリ」、
+「デシジョンテーブル」といったツールを、
+どう導入するとユーザにも理解してもらえるかという話もある</li>
+<li>デシジョンテーブルをバンと出して
+「見方がわからん」と言われた直後にこの本を読んだので、
+先にこの話を知っていれば……という苦い思い出も。</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="weeklyreport_2017w15.html" class="btn btn-neutral float-right" title="日記 2017-W15" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="feed.html" class="btn btn-neutral" title="Articles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

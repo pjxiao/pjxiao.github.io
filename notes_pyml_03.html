@@ -1,0 +1,1326 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>分類問題 - 機械学習ライブラリ sckit-learn の活用 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Python機械学習プログラミング" href="notes_pyml.html"/>
+        <link rel="next" title="データ前処理 — よりよいトレーニングセットの構築" href="notes_pyml_04.html"/>
+        <link rel="prev" title="Python機械学習プログラミング" href="notes_pyml.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">分類問題 - 機械学習ライブラリ sckit-learn の活用</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#3.1-分類アルゴリズムの選択">3.1 分類アルゴリズムの選択</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.2-scikit-learn-活用へのファーストステップ">3.2 scikit-learn 活用へのファーストステップ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.3-ロジスティック回帰を使ったクラスの確率のモデリング">3.3 ロジスティック回帰を使ったクラスの確率のモデリング</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.4-サポートベクトルマシンによる最大マージン分類">3.4 サポートベクトルマシンによる最大マージン分類</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.5　カーネルSVM-を使った非線形問題の求解">3.5　カーネルSVM を使った非線形問題の求解</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.6　決定木学習">3.6　決定木学習</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.7　k-近傍法：怠惰学習アルゴリズム">3.7　k 近傍法：怠惰学習アルゴリズム</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_04.html">データ前処理 — よりよいトレーニングセットの構築</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_05.html">次元削減でデータを圧縮する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_06.html">モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_07.html">アンサンブル学習 - 異なるモデルの組み合わせ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.html">ニューラルネットワーク - 画像認識トレーニング</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_13.html">ニューラルネットワーク - 数値計算ライブラリT h e a n o によるトレーニングの並列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml_12.old.html">ニューラルネットワーク</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id1">機械学習アルゴリズムのトレーニングの構成要素</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id2">2.分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id3">3. 分類問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notes_pyml.html#id4">6 . モデルの評価とハイパーパラメータのチューニングのベストプラクティス</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+          <li><a href="notes_pyml.html">Python機械学習プログラミング</a> &raquo;</li>
+        
+      <li>分類問題 - 機械学習ライブラリ sckit-learn の活用</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_pyml_03.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="分類問題---機械学習ライブラリ-sckit-learn-の活用">
+<h1>分類問題 - 機械学習ライブラリ sckit-learn の活用<a class="headerlink" href="#分類問題---機械学習ライブラリ-sckit-learn-の活用" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="3.1-分類アルゴリズムの選択">
+<h2>3.1 分類アルゴリズムの選択<a class="headerlink" href="#3.1-分類アルゴリズムの選択" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>アルゴリズムトレーニングのステップ</p>
+<ol class="arabic simple">
+<li>特徴量の選択</li>
+<li>指標性能の選択</li>
+<li>分類器と最適化アルゴリズムの選択</li>
+<li>モデル性能の評価</li>
+<li>アルゴリズムの調整</li>
+</ol>
+</div>
+<div class="section" id="3.2-scikit-learn-活用へのファーストステップ">
+<h2>3.2 scikit-learn 活用へのファーストステップ<a class="headerlink" href="#3.2-scikit-learn-活用へのファーストステップ" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="3.2.1-scikit-learn-を使ったパーセプトロンのトレーニング">
+<h3>3.2.1 scikit-learn を使ったパーセプトロンのトレーニング<a class="headerlink" href="#3.2.1-scikit-learn-を使ったパーセプトロンのトレーニング" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Iris データセットを使ってパーセプトロンモデルをトレーニングする</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="c1"># load iris dataset</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="c1"># use features in column 3, 4</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="c1"># get class labels</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Class labels</span>
+<span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([0, 1, 2])
+</pre></div>
+</div>
+</div>
+<p>交差検定を行うために、データセットを分割する</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>特徴量を標準化する</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="c1"># calculate mean and standard deviation</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="c1"># standardization</span>
+<span class="n">X_train_std</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_std</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sc</span><span class="o">.</span><span class="n">mean_</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">scale_</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(array([ 3.82857143,  1.22666667]), array([ 1.79595918,  0.77769705]))
+</pre></div>
+</div>
+</div>
+<p>パーセプトロンを学習させる</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">Perceptron</span>
+<span class="n">ppn</span> <span class="o">=</span> <span class="n">Perceptron</span><span class="p">(</span><span class="n">n_iter</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">eta0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ppn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>Perceptron(alpha=0.0001, class_weight=None, eta0=0.1, fit_intercept=True,
+      n_iter=40, n_jobs=1, penalty=None, random_state=0, shuffle=True,
+      verbose=0, warm_start=False)
+</pre></div>
+</div>
+</div>
+<p>予測を行う</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">ppn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_std</span><span class="p">)</span>
+
+<span class="c1"># Misclassified samples</span>
+<span class="p">(</span><span class="n">y_test</span> <span class="o">!=</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4
+</pre></div>
+</div>
+</div>
+<p>評価を行う</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">accuracy_score</span>
+<span class="c1"># Accuracy</span>
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.91111111111111109
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="k">import</span> <span class="n">ListedColormap</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+
+<span class="k">def</span> <span class="nf">versiontuple</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))))</span>
+
+
+<span class="k">def</span> <span class="nf">plot_decision_regions</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+
+    <span class="c1"># setup marker generator and color map</span>
+    <span class="n">markers</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))])</span>
+
+    <span class="c1"># plot the decision surface</span>
+    <span class="n">x1_min</span><span class="p">,</span> <span class="n">x1_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">x2_min</span><span class="p">,</span> <span class="n">x2_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x1_min</span><span class="p">,</span> <span class="n">x1_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">),</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x2_min</span><span class="p">,</span> <span class="n">x2_max</span><span class="p">,</span> <span class="n">resolution</span><span class="p">))</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xx1</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">xx2</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xx1</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">xx1</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">xx2</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">xx2</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+        <span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">cl</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">cl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+                    <span class="n">c</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span>
+                    <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="n">markers</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                    <span class="n">label</span><span class="o">=</span><span class="n">cl</span><span class="p">)</span>
+
+    <span class="c1"># highlight test samples</span>
+    <span class="k">if</span> <span class="n">test_idx</span><span class="p">:</span>
+        <span class="c1"># plot all samples</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">versiontuple</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">versiontuple</span><span class="p">(</span><span class="s1">&#39;1.9.0&#39;</span><span class="p">):</span>
+            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">test_idx</span><span class="p">),</span> <span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">test_idx</span><span class="p">)]</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Please update to NumPy 1.9.0 or newer&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">test_idx</span><span class="p">,</span> <span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+
+        <span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">X_test</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">c</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                    <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+                    <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+                    <span class="n">s</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;test set&#39;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">X_combined_std</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">X_test_std</span><span class="p">))</span>
+<span class="n">y_combined</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_combined_std</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">ppn</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_18_0.png" src="_images/notes_pyml_03_18_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="3.3-ロジスティック回帰を使ったクラスの確率のモデリング">
+<h2>3.3 ロジスティック回帰を使ったクラスの確率のモデリング<a class="headerlink" href="#3.3-ロジスティック回帰を使ったクラスの確率のモデリング" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>パーセプトロンの学習規則は、線形分離できない問題で収束しない</li>
+<li>ロジスティクス回帰を使う</li>
+</ul>
+<div class="section" id="3.3.1-ロジスティック回帰の直観的知識と条件付き確率">
+<h3>3.3.1 ロジスティック回帰の直観的知識と条件付き確率<a class="headerlink" href="#3.3.1-ロジスティック回帰の直観的知識と条件付き確率" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>線形分離可能な場合、ロジスティクス回帰は高い性能を発揮する</li>
+<li>二値分類モデルだが、多クラス分類モデルへ拡張可能</li>
+<li>オッズ比: <span class="math">\(\frac{p}{1-p}\)</span></li>
+<li>ロジット関数: <span class="math">\(logit(p) = \log\frac{p}{1-p}\)</span></li>
+<li>線形関係: <span class="math">\(logit(p(y=1|x)) = {\textbf w}^T{\textbf x} = z\)</span></li>
+<li>シグモイド関数: <span class="math">\(\phi(z) = \frac{1}{1 + e^{-1}}\)</span></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="c1"># float -&gt; float</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+<span class="c1"># plot</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">phi_z</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">phi_z</span><span class="p">)</span>
+
+<span class="c1"># configure chart</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\phi (z)$&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># show</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_22_0.png" src="_images/notes_pyml_03_22_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li>ロジスティクス回帰では、活性化関数にロジスティクス関数を用いる</li>
+<li>ロジスティクス回帰では、量子化器に単位ステップ関数を用いる</li>
+</ul>
+</div>
+<div class="section" id="3.3.2-ロジスティック関数の重みの学習">
+<h3>3.3.2 ロジスティック関数の重みの学習<a class="headerlink" href="#3.3.2-ロジスティック関数の重みの学習" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>対数尤度:
+<span class="math">\(l(w) = \sum_{i \in n}\left[y^{(i)}\log{\phi(z^{(i)}) + (1 - y^{(i)})\log(1 - \phi(z^{(i)}))}\right]\)</span></li>
+<li>コスト関数:
+<span class="math">\(J(w) = \sum_{i \in n}\left[-y^{(i)}\log{\phi(z^{(i)}) - (1 - y^{(i)})\log(1 - \phi(z^{(i)}))}\right]\)</span></li>
+</ul>
+</div>
+<div class="section" id="3.3.3-scikit-learn-によるロジスティック回帰モデルのトレーニング">
+<h3>3.3.3 scikit-learn によるロジスティック回帰モデルのトレーニング<a class="headerlink" href="#3.3.3-scikit-learn-によるロジスティック回帰モデルのトレーニング" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_combined_std</span><span class="p">,</span> <span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_26_0.png" src="_images/notes_pyml_03_26_0.png" />
+</div>
+</div>
+<p>各クラスに分類される確率</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_std</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[  2.05743774e-11,   6.31620264e-02,   9.36837974e-01]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="3.3.4-正則化による過学習への対処">
+<h3>3.3.4 正則化による過学習への対処<a class="headerlink" href="#3.3.4-正則化による過学習への対処" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>L2 正則化項をコスト関数に追加する</li>
+<li>L2 正則化関数:
+<span class="math">\(\frac{\lambda}{2}||w||^2 = \frac{\lambda}{2}\sum_{j \in {\textbf m}}w_j^2\)</span></li>
+<li>コスト関数:
+<span class="math">\(J(w) = \sum_{i \in {\textbf n}}\left[-y^{(i)}\log{\phi(z^{(i)}) - (1 - y^{(i)})\log(1 - \phi(z^{(i)}))}\right] + \frac{\lambda}{2}||w||^2\)</span></li>
+<li>sckit-learn の LogisticRegression に実装されている逆正則化パラメータ:
+<span class="math">\(C = \frac{1}{\lambda}\)</span></li>
+<li>sckit-learn の LogisticRegression のコスト関数:
+<span class="math">\(J(w) = C\sum_{i \in {\textbf n}}\left[-y^{(i)}\log{\phi(z^{(i)}) - (1 - y^{(i)})\log(1 - \phi(z^{(i)}))}\right] + \frac{1}{2}||w||^2\)</span></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">weights</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">10</span> <span class="o">**</span> <span class="n">c</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">c</span><span class="p">)</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">weights</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;petal length&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">weights</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;petal width&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;weight coefficient&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_30_0.png" src="_images/notes_pyml_03_30_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="3.4-サポートベクトルマシンによる最大マージン分類">
+<h2>3.4 サポートベクトルマシンによる最大マージン分類<a class="headerlink" href="#3.4-サポートベクトルマシンによる最大マージン分類" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>SVM は、パーセプトロンの拡張とみなせる</li>
+<li>SVM は、誤分類率を最小化するのではなく、マージンを最大化する</li>
+<li>サポートベクトルとは、決定境界である超平面と最も近いサンプル</li>
+</ul>
+<div class="section" id="3.4.1-最大マージンを直観的に理解する">
+<h3>3.4.1 最大マージンを直観的に理解する<a class="headerlink" href="#3.4.1-最大マージンを直観的に理解する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>マージンが小さいモデルは、過学習に陥りやすい</li>
+<li>マージンが大きいモデルは、汎化誤差が小さくなる傾向にある</li>
+<li>超平面:<ul>
+<li><span class="math">\(w_0 + w^Tx_{pos} = 1\)</span></li>
+<li><span class="math">\(w_0 + w^Tx_{neg} = -1\)</span></li>
+<li><span class="math">\(\Rightarrow w^T(x_{pos} - x_{neg} = 2)\)</span></li>
+</ul>
+</li>
+<li>標準化:<ul>
+<li><span class="math">\(||w|| = \sqrt{\sum_{j \in m}w_j^2}\)</span></li>
+<li><span class="math">\(\frac{w^T(x_{pos} - x_{neg})}{||w||} = \frac{2}{||w||}\)</span></li>
+</ul>
+</li>
+<li>上式左辺が正負の決定境界の距離であるから、この距離を最大化する</li>
+<li>最小化問題:<ul>
+<li>制約条件:
+<span class="math">\(\forall i \in n, y^{(i)}(w_0 + w^Tx^{(i)}) \geq 1\)</span></li>
+<li>目的関数: <span class="math">\(\frac{2}{||w||}\)</span> より <span class="math">\(\frac{1}{2}||w||^2\)</span></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="3.4.2-スラック変数を使った非線形分離可能なケースへの対処">
+<h3>3.4.2 スラック変数を使った非線形分離可能なケースへの対処<a class="headerlink" href="#3.4.2-スラック変数を使った非線形分離可能なケースへの対処" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>スラック変数 <span class="math">\(\xi\)</span>
+は、線形分離不可能なデータのための線形制約緩和のために導入された</li>
+<li>誤分類を許容して最適化問題を収束させる</li>
+<li>ソフトマージン分類</li>
+<li>制約条件:<ul>
+<li><span class="math">\(w^Tx^{(i)} \geq 1 - \xi^{(i)} (y^{(i)} = 1)\)</span></li>
+<li><span class="math">\(w^Tx^{(i)} \lt -1 + \xi^{(i)} (y^{(i)} = -1)\)</span></li>
+<li><span class="math">\(\Rightarrow \frac{1}{2}||w||^2 + C\sum_i\xi^{(i)}\)</span></li>
+<li>ただし、 <span class="math">\(C\)</span> は誤分類のペナルティを制御するためのパラメータ</li>
+</ul>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVC</span>
+<span class="n">svm</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_combined_std</span><span class="p">,</span> <span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">svm</span><span class="p">,</span><span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_34_0.png" src="_images/notes_pyml_03_34_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="3.4.3-scikit-learn-での代替実装">
+<h3>3.4.3 scikit-learn での代替実装<a class="headerlink" href="#3.4.3-scikit-learn-での代替実装" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">Perceptron</span></code>, <code class="docutils literal"><span class="pre">LogisticRegression</span></code> は LIBLINEAR を使っている</li>
+<li><code class="docutils literal"><span class="pre">SVM</span></code> は、 LIBSVM を使っている</li>
+<li>LIBLINEAR, LIBSVM は、オンメモリで動く</li>
+<li><code class="docutils literal"><span class="pre">SGDClassifier</span></code> は、 <code class="docutils literal"><span class="pre">partial_fit</span></code>
+メソッドによるオンライン学習をサポートしている</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">SGDClassifier</span>
+<span class="n">ppn</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;perceptron&#39;</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">svm</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;hinge&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="3.5　カーネルSVM-を使った非線形問題の求解">
+<h2>3.5　カーネルSVM を使った非線形問題の求解<a class="headerlink" href="#3.5　カーネルSVM-を使った非線形問題の求解" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>線形分離不可能なサンプルデータ生成する</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_xor</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">y_xor</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">logical_xor</span><span class="p">(</span><span class="n">X_xor</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">X_xor</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">y_xor</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_xor</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_xor</span><span class="p">[</span><span class="n">y_xor</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_xor</span><span class="p">[</span><span class="n">y_xor</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+              <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_xor</span><span class="p">[</span><span class="n">y_xor</span><span class="o">==-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_xor</span><span class="p">[</span><span class="n">y_xor</span><span class="o">==-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+              <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;-1&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_39_0.png" src="_images/notes_pyml_03_39_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li>カーネル法は、線形分離不可能なデータを <span class="math">\(\phi(\cdot)\)</span>
+で高次元に写像し、線形分離可能にする</li>
+</ul>
+<div class="section" id="3.5.1　カーネルトリックを使って分離超平面を高次元空間で特定する">
+<h3>3.5.1　カーネルトリックを使って分離超平面を高次元空間で特定する<a class="headerlink" href="#3.5.1　カーネルトリックを使って分離超平面を高次元空間で特定する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">高次元への写像の問題は、計算コストが高いこと</p>
+</li>
+<li><p class="first">カーネルトリックは、カーネル関数 <span class="math">\(k\)</span>
+を用いて、像の内積を計算することを避け、計算コストを抑える</p>
+<p><span class="math">\(k(x^{(i)}, x^{(j)}) = \phi(x^{(i)})^T\phi(x^{(j)})\)</span></p>
+</li>
+<li><p class="first">もっとも広く使われているカーネル関数の一つが RBF カーネル</p>
+<p><span class="math">\(k(x^{(i)}, x^{(j)}) = \exp\left(-\frac{||x^{(i)} - x^{(j)}||^2}{2\sigma^2}\right) = \exp\left(-\gamma||x^{(i)} - x^{(j)}||^2\right)\)</span></p>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">svm</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+<span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_xor</span><span class="p">,</span> <span class="n">y_xor</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_xor</span><span class="p">,</span> <span class="n">y_xor</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">svm</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_42_0.png" src="_images/notes_pyml_03_42_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li><span class="math">\(\gamma\)</span>
+はカットオフパラメータであり、小さくするとトレーニングサンプルの影響力が大きくなり、決定境界がなめらかになる</li>
+<li><span class="math">\(\gamma\)</span> が大きくなると汎化誤差が生じる可能性が高くなる</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">svm</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_combined_std</span><span class="p">,</span> <span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">svm</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_44_0.png" src="_images/notes_pyml_03_44_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">svm</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_combined_std</span><span class="p">,</span> <span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">svm</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_45_0.png" src="_images/notes_pyml_03_45_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="3.6　決定木学習">
+<h2>3.6　決定木学習<a class="headerlink" href="#3.6　決定木学習" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>意味解釈可能性を配慮する場合に魅力的なモデル</li>
+<li>木構造の質問に答えることで分類を行う</li>
+<li>情報利得が最大となる特徴量でデータを分割する</li>
+<li>ノードの情報利得がなくなるまで分割を繰り返す</li>
+</ul>
+<div class="section" id="3.6.1　情報利得の最大化：できるだけ高い効果を得る">
+<h3>3.6.1　情報利得の最大化：できるだけ高い効果を得る<a class="headerlink" href="#3.6.1　情報利得の最大化：できるだけ高い効果を得る" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>目的関数:
+<span class="math">\(IG(D_p, f) = I(D_p) - \sum_{j=1}^{m}\frac{N_j}{N_p}I(D_j)\)</span><ul>
+<li>特徴量: <span class="math">\(f\)</span></li>
+<li>親ノードのデータセット: <span class="math">\(D_p\)</span></li>
+<li>j 番目の子ノードのデータセット: <span class="math">\(D_j\)</span></li>
+<li>親ノードのデータセット: <span class="math">\(N_p\)</span></li>
+<li>j 番目の子ノードのデータセット: <span class="math">\(N_j\)</span></li>
+<li>不純度: <span class="math">\(I\)</span></li>
+</ul>
+</li>
+<li>情報利得は親ノードと子ノードとの不純度の差</li>
+<li>子ノード不純度が小さいほど情報利得が大きくなる</li>
+</ul>
+</div>
+<div class="section" id="3.6.2　決定木の構築">
+<h3>3.6.2　決定木の構築<a class="headerlink" href="#3.6.2　決定木の構築" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>決定木が深くなると決定境界が複雑になり、過学習に陥りやすくなる</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeClassifier</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">X_combined</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">))</span>
+<span class="n">y_combined</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_combined</span><span class="p">,</span> <span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">tree</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [cm]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [cm]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_49_0.png" src="_images/notes_pyml_03_49_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">export_graphviz</span>
+<span class="kn">import</span> <span class="nn">pydotplus</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Image</span>
+
+<span class="c1"># http://scikit-learn.org/stable/modules/tree.html#classification</span>
+<span class="n">dot_data</span> <span class="o">=</span> <span class="n">export_graphviz</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">out_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;petal length&#39;</span><span class="p">,</span> <span class="s1">&#39;petal width&#39;</span><span class="p">])</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">pydotplus</span><span class="o">.</span><span class="n">graph_from_dot_data</span><span class="p">(</span><span class="n">dot_data</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">create_png</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_50_0.png" src="_images/notes_pyml_03_50_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="3.6.3　-ランダムフォレストを使って弱い学習アルゴリズムと強い学習アルゴリズムを結合する">
+<h3>3.6.3　 ランダムフォレストを使って弱い学習アルゴリズムと強い学習アルゴリズムを結合する<a class="headerlink" href="#3.6.3　-ランダムフォレストを使って弱い学習アルゴリズムと強い学習アルゴリズムを結合する" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>分類性能が高い</li>
+<li>スケーラビリティに優れている</li>
+<li>使いやすい</li>
+<li>決定木ほどの意味解釈可能性はない</li>
+<li>ハイパーパラメータの設定にそれほど悩まない</li>
+<li>個々の決定木のノイズに強い</li>
+<li>決定木の「アンサンブル」</li>
+<li>手順<ol class="arabic">
+<li>大きさ n のブートストラップ標本をランダムに復元抽出</li>
+<li>ブートストラップ標本から決定木を成長させる</li>
+<li>ステップ 1, 2 を <span class="math">\(k\)</span> 回くりかえす</li>
+<li>決定木ごとの予測から多数決でラベルを決定する</li>
+</ol>
+</li>
+<li>ハイパーパラメータ<ul>
+<li>ブートストラップ標本の大きさ <span class="math">\(n\)</span>: <span class="math">\(n\)</span>
+を大きくしすぎると過学習に陥る可能性がある</li>
+<li>分割ごとの特徴量個数 <span class="math">\(d\)</span>: 教師データの特徴量の個数 <span class="math">\(m\)</span>
+より小さい必要があり、 scikit-learn でのデフォルト値は
+<span class="math">\(\sqrt{m}\)</span></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">forest</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_combined</span><span class="p">,</span> <span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">forest</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [cm]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [cm]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_52_0.png" src="_images/notes_pyml_03_52_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="3.7　k-近傍法：怠惰学習アルゴリズム">
+<h2>3.7　k 近傍法：怠惰学習アルゴリズム<a class="headerlink" href="#3.7　k-近傍法：怠惰学習アルゴリズム" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>怠惰学習</li>
+<li>メモリベース</li>
+<li>バイアスとバリアンスのバランス<ul>
+<li><span class="math">\(k\)</span> を適切に選択する</li>
+<li>特徴量に適した距離関数を選択する</li>
+</ul>
+</li>
+<li>ステップ<ol class="arabic">
+<li>距離関数を選択する</li>
+<li>分類するサンプルから距離が違い <span class="math">\(k\)</span> 個の教師データを見つける</li>
+<li>多数決でラベルを決定する</li>
+</ol>
+</li>
+<li>利点<ul>
+<li>教師データを集めればすぐに分類器が適応する</li>
+</ul>
+</li>
+<li>欠点<ul>
+<li>教師データのサンプル数に比例して計算量が増大する</li>
+<li>教師データが大きいと必要とする記憶領域が増大する</li>
+</ul>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
+
+<span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;minkowski&#39;</span><span class="p">)</span>
+<span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_std</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X_combined_std</span><span class="p">,</span> <span class="n">y_combined</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="n">knn</span><span class="p">,</span> <span class="n">test_idx</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">105</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;petal length [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;petal width [standardized]&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/notes_pyml_03_54_0.png" src="_images/notes_pyml_03_54_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_pyml_04.html" class="btn btn-neutral float-right" title="データ前処理 — よりよいトレーニングセットの構築" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_pyml.html" class="btn btn-neutral" title="Python機械学習プログラミング" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+=============
+日記 2017-W13
+=============
+
+2017-03-27 09:00:00
+
+室谷隆 (2013) 『共通フレーム2013の概説』 IPA:
+
+  同じ実施内容でも、工程名称が異なる
+
+伊藤計劃 (2007) 『虐殺器官』 早川書房:
+
+  地獄はここにあります
+
+最近のこと
+----------
+
+- node-google-apps-script を試した
+
+  - node-google-apps-script に含まれているもの
+
+    - Google Drive 上に存在している Google App Script のスクリプトをローカルにダウンロードするツール
+    - Google Drive 上へ Google App Script のスクリプトをローカルからアップロードするツール
+
+  - node-google-apps-script に含まれていないもの
+
+    - Google App Script の各種 API のモック
+    - ビルドツール
+
+  - メモ
+
+    - 各種 API のモックまで含まれていると勝手に思っていたが、単なるスクリプトの転送ツールだった
+    - Google App Script 関連のライブラリ・ツールは他にもあるらしい [#REF_MURAKAMI_2016]_
+
+      - gasify
+      - gas-local
+      - gas-test
+
+  - 利用方法
+
+    - インストール
+
+      .. code-block:: console
+
+        $ npm install node-google-app-script
+
+    - Credential の作成
+
+      1. Google App Script [#GAS]_ で編集対象のスタンドアロンスクリプトを開く
+      2. **リソース** -> **Cloud Platform プロジェクト** を選択
+      3. GCP のプロジェクトがなければ作成する
+      4. GCP の API コンソールで **ライブラリ** -> **Google Apps API** -> **Drive API** を選択し、有効化する
+      5. GCP の API コンソールで **認証情報** -> **認証情報を作成** -> **OAuth クライアント ID** を選択する
+      6. **クライアント ID の作成** 画面で、 **その他** を選択し適当な名前を設定の上 **作成** ボタンを押下する
+      7. **OAuth クライアント** というポップアップが表示されるが無視する
+      8. ポップアップを閉じた後、 **OAuth 2.0 クライアント ID** 一覧から作成した ID の JSON をダウンロードする
+
+    - Credential の設定
+
+      .. code-block:: console
+
+        $ npm install node-google-app-script
+        $ /path/to/node_modules/node-google-apps-script/bin/gapps auth /path/to/client_secret_xxxx.apps.googleusercontent.com.json
+
+    - スクリプトの取得
+
+      https://script.google.com/a/macros/d/FILE_ID/edit?splash=yes
+
+      .. code-block:: console
+
+        $ npm pull XXX  # XXX はスクリプトのファイル ID
+
+      これで編集できる
+
+    - スクリプトのアップロード
+
+      .. code-block:: console
+
+        $ npm push
+
+- Paxos に関する疑問
+
+  - 「2 つ以上の Proposer が存在し、ある Proposer が prepare レスポンスを受け取り accept リクエストを送るより前に、
+    異なる任意の Proposer が prepare リクエストを送りレスポンスを受け取る」という現象が発生し続けた場合どうなるのか。
+    この一連の流れが途切れるまで、いつになっても値を認めることはないのだろうか。
+
+    #. Proposer :math:`p_1` がすべての Accepter へ prepare リクエスト :math:`r_1` を送る
+       ただし、 :math:`\forall i,j \in N \left(i < j \Rightarrow r_i < r_j \right)`
+    #. Proposer :math:`p_1` が過半数以上の Accepter が prepare レスポンスを受け取る
+    #. Proposer :math:`p_2` がすべての Accepter へ prepare リクエスト :math:`r_2` を送る。
+    #. Proposer :math:`p_2` が過半数以上の Accepter が prepare レスポンスを受け取る
+    #. Proposer :math:`p_1` がすべての Accepter へ :math:`r_1` に対する accept リクエスト :math:`a_1` を送る
+    #. Accepter は、 :math:`a_1` を無視する
+    #. Proposer :math:`p_3` がすべての Accepter へ prepare リクエスト :math:`r_3` を送る。
+    #. Proposer :math:`p_3` が過半数以上の Accepter が prepare レスポンスを受け取る
+    #. Proposer :math:`p_2` がすべての Accepter へ :math:`r_2` に対する accept リクエスト :math:`a_2` を送る
+    #. Accepter は :math:`a_2` を無視する
+    #. ...
+
+  - 異なる Accepter が causally-related なリクエストを送った時に整合性が担保されなくなるのではないか
+
+    - accept リクエストが accept されてないのに causally-related なリクエスト送るシナリオは意味不明なので、稀有だろう
+
+  - Accepter が Learner に送る value は何か
+
+    - Paxos by Example [#REF_ANGUS_2013]_ の例では、 Highest な proposal number の proposal を accept した時点での、
+      Highest value を Learner に送っている
+    - Proposer へは accept リクエストのレスポンスで accept された value が送られるので、
+      Accepter はなにが accept されたのかを誤認することはない
+    - ただ、これは自身の今までの理解と反しており、 Highest な proposal number の proposal の value が
+      Learner に送られると考えていた
+    - また、 Highest value を accept するならば、 value が全順序である必要があるのではないか
+    - Accepter が accept する value については、再度確認する必要がある
+
+- アーキテクチャについて知らずに、フレームワークだけ振り回しても絶対にろくな事にならない
+
+  - 自戒
+  - どんなに便利なフレームワークを持っても、たくさんのかわいそうなツールを操っても、
+    アーキテクチャから離れては生きられない
+  - Rails や Django を使えば、キレイなコード [#NOTE_READABLE_CODE]_ を生み出せるわけではない
+  - PHP [#NOTE_PHP]_ や jQuery を使わなければ、汚いコードが生まれる前に消し去られるわけではない
+
+- 段ボールで程よい大きさの箱を作ろうと思った
+
+  - 強度のため、複数の板段ボールを貼り合わせたものを組み継ぎ [#REF_YAMANE_2016]_ し、
+    ステーとボルト、ナットで固定する案を考えた
+  - 複数の段ボールからひとつの段ボール箱を作る方法としては 2 面継ぎ [#REF_DANBO-RU.COM]_ という方法があるらしい
+
+- 『論理と計算のしくみ』が岩波オンデマンドブックスから再版されていた [#LINK_IWANAMI_B280281]_ [#LINK_AMAZON_4007305803]_
+- Node.js 6, 7 の Debian 系ディストリビューション向け APT リポジトリが公式に存在する [#LINK_NODEJS_ORG]_ ことを知った
+- 食生活が大変乱れており、以前は完全に管理できていた間食が我慢できなくなってきている
+- ドキュメント作成時の精神的な障害のひとつが It's All Text [#LINK_ITS_ALL_TEXT]_ の導入によって解消されていることを実感しつつある
+- virtualenv を作成し pip を最新版にしたうえで、同一ディレクトリに対して virtualenv を作成すると pip が壊れる
+
+  - 勝手な思い込みで、既存の virtualenv ディレクトリに対しては、 virtualenv コマンドは何もしないと思っていた
+  - 実際には virtualenv コマンドは、再度 virtualenv を作成しようとするため、 virtualenv ディレクトリ下が不整合を起こす
+  - 具体的には、ばらばらのバージョンの pip のモジュールが混在するようになり、 pip コマンドが動作しなくなった
+  - 言葉にすると当たり前であるが、 virtualenv を作成する場合は、事前にディレクトリが存在しているかをチェックすること
+
+- 可能な限り APT で Python パッケージをインストールしないように、
+  開発環境の構成を見直した
+
+  - Debian で提供される pip (python-pip) はバージョンが古い
+  - Debian で提供される pip (python-pip) で pip のバージョンを上げると、
+    元 (``/usr/bin``) とは別のディレクトリ (``/usr/local/bin``) に pip がインストールされ、
+    pip の実行ファイルが 2 箇所に分散するようになる
+  - この時点で、 pip というひとつのコマンドが異なるパッケージマネージャによって管理されるという事態が起きてしまっている
+  - そもそも、わたしのユースケースでは、システムワイドに pip が利用できるという必要もなく、
+    また pip を使う時点でなんらかの virtualenv 内に activate されていると考えて差し支えない
+  - 最終的に、 ``python{,3}``, ``python{,3}-dev``, ``python3-venv``, ``python-virtualenv`` （及びそれらの依存パッケージ）
+    のみを APT で管理することで落ち着いた
+  - ただし、いくつかのコマンドラインツール [#NOTE_REQUIRED_PYTHON_PKG]_ は pip でインストールする必要があったため、
+    ホームディレクトリ下にコマンドラインツール用の virtualenv を作成し、パスを通すようにした
+
+- 装甲騎兵ボトムズを見た
+
+  - シュミッテル兄弟、アホという印象しか受けず、なぜ幹部的な地位まで出世できたのかが最大の謎
+
+- nginx-common の NEWS [#REF_CHRISTOS_2017]_ に、気になる記述があった
+
+  ::
+
+    Since nginx 1.9.14 Debian has gradually switched to dynamic loadable modules
+    for all third party modules and core modules that support it. For each
+    module a new binary package is introduced under the libnginx-mod-* namespace.
+
+- コマンド置換で動的生成した sed スクリプト sed(1) に食わせる
+
+  .. code-block:: console
+
+    $ sed -f <(make-a-sed-script) file
+
+
+調べておきたいこと
+------------------
+- チェビシェフの不等式
+- Paxos Leaner
+- Paxos Leader Lease
+- いくつかの代表的な MV* アーキテクチャについて整理する
+
+最近読んだ文章
+--------------
+脚注を参照
+
+見つけたもの
+------------
+- 確率的勾配降下法について調べていた際に見つけた、東工大で使われているらしい数理計画法のテキスト
+
+  - https://www.amazon.co.jp/dp/4274502732/
+
+- 意識とは何かについての資料を探していてピックアップした文献
+
+  - https://www.amazon.co.jp/dp/4006003501/
+  - https://www.amazon.co.jp/dp/4480097538/
+  - https://www.amazon.co.jp/dp/4062924188/
+
+脚注
+----
+.. [#GAS] https://script.google.com/
+.. [#REF_MURAKAMI_2016] https://speakerdeck.com/fossamagna/more-advanced-development-process-with-apps-script
+.. [#REF_ANGUS_2013] http://blog.aetherstore.com/2013/05/paxos-by-example/
+.. [#NOTE_READABLE_CODE] そもそもキレイなコードとは何であろうか
+.. [#NOTE_PHP] PHP を蔑視する意図はない
+.. [#REF_YAMANE_2016] http://kagu-diy.com/diy/mokkou/setugou
+.. [#REF_DANBO-RU.COM] http://www.danbo-ru.com/dandic/nimentugi.html
+.. [#LINK_IWANAMI_B280281] https://www.iwanami.co.jp/book/b280281.html
+.. [#LINK_AMAZON_4007305803] https://www.amazon.co.jp/dp/4007305803/
+.. [#LINK_NODEJS_ORG] https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+.. [#LINK_ITS_ALL_TEXT] https://addons.mozilla.org/ja/firefox/addon/its-all-text/
+.. [#NOTE_REQUIRED_PYTHON_PKG] 現時点では Ansible, Mercurial, virtualenvwrapper を apt ではなく pip の管理下としている
+.. [#LINK_DEBIAN_NGINX_COMMON] https://packages.debian.org/jessie-backports/nginx-common
+.. [#REF_CHRISTOS_2017] https://anonscm.debian.org/cgit/pkg-nginx/nginx.git/tree/debian/nginx-common.NEWS?id=5c9ff14

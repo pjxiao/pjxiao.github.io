@@ -1,0 +1,32 @@
+========
+hirai.me
+========
+
+About
+=====
+
+* `Contact <https://twitter.com/pjxiao>`_
+* `Github <https://github.com/pjxiao>`_
+* `Weblog <http://hateda.hatenadiary.jp/>`_ （廃止）
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   notes
+   memo
+   reviews
+   glossary
+   ChangeLog
+   feed
+
+..   articles
+
+
+.. Indices and tables
+.. ==================
+.. 
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`

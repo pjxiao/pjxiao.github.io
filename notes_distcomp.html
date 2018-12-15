@@ -1,0 +1,787 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Distributed computing &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="詰み" href="notes.html"/>
+        <link rel="next" title="雑メモ: Flattening curved documents in images" href="notes_flattening_curved_documents_in_images.html"/>
+        <link rel="prev" title="詰み" href="notes.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Distributed computing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#a-model-of-distributed-computing">A model of distributed computing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#a-nomenclature-for-multicast">6.7 A nomenclature for multicast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#propagation-trees-for-multicast">6.8 Propagation trees for multicast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classification-of-application-level-multicast-algorithms">6.9 Classification of application-level multicast algorithms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distributed-multicast-algorithms-at-the-network-layer">6.11 Distributed multicast algorithms at the network layer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#termination-detection">7. Termination detection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">7.1 Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#system-model-of-a-distributed-computation">7.2 System model of a distributed computation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#a-spanning-tree-based-termination-detection-algorithm">7.5 A spanning-tree-based termination detection algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+      <li>Distributed computing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_distcomp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="distributed-computing">
+<h1>Distributed computing<a class="headerlink" href="#distributed-computing" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="a-model-of-distributed-computing">
+<h2>A model of distributed computing<a class="headerlink" href="#a-model-of-distributed-computing" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name"><cite>p_i</cite>:</th><td class="field-body"><p class="first"><span class="math">\(i\)</span> th process.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name"><cite>e_i^x</cite>:</th><td class="field-body"><p class="first"><span class="math">\(x\)</span> th event at <span class="math">\(p_i\)</span></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name"><cite>LS_i^x</cite>:</th><td class="field-body"><p class="first">state of <span class="math">\(p_i\)</span> after <span class="math">\(e_i^x\)</span> and before <span class="math">\(e_i^y\)</span> (<span class="math">\(x &lt; y\)</span>)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name"><cite>SC_{ij}^{x,y}</cite>:</th><td class="field-body"><ul class="first simple">
+<li>state of Channel <span class="math">\(C_{ij}\)</span></li>
+<li><span class="math">\(SC_{ij}^{x,y} = \{m_{ij}|send(m_{ij}) \leq LS_i^x \wedge rec(m_{ij}) \nleq LS_j^y\}\)</span></li>
+<li><span class="math">\(send(m_{ij})\)</span> has been occuered but <span class="math">\(rec(m_{ij})\)</span> has never happend</li>
+<li>the channel states cannot be derived from the local states at a certain point</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name"><cite>GS</cite>:</th><td class="field-body"><ul class="first simple">
+<li>the global state of a Distributed system</li>
+<li><span class="math">\(GS = \left\{\cup_i^{x_i}LS_i^x, \cup_{j,k}SC_{jk}^{y_i,z_k}\right\}\)</span></li>
+<li>the global state is a collection of the local states and the channel states.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">consitent global state:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><span class="math">\({\forall}m_{ij}\left(send(m_{ij}) \nleq LS_i^{x_i} \implies m_{ij} \notin SC_{ij}^{x_i,y_j} \land rec(m_{ij}) \nleq LS_j^{y_j}\right)\)</span></li>
+<li>for all messages, if a message has never been recorded its send, then the message is not in any channels and any other processes have never recorded the recept of the message</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">strongly consitent:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><span class="math">\({\forall}i,{\forall}j\left(1 \leq i,j \leq n :: SC_{ij}^{x,y} = \phi\right)\)</span></li>
+<li>all channels are empty</li>
+<li>all sent messages have been received</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="a-nomenclature-for-multicast">
+<h3>6.7 A nomenclature for multicast<a class="headerlink" href="#a-nomenclature-for-multicast" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>nomenclature: 体系, 用語法</li>
+<li>送信元 (source) と送信先 (destination) の関係に基づく 4 つのクラスに分類される</li>
+<li>SSSG: Single Source, Single destination Group</li>
+<li>MSSG: Multiple Source, Single destination Group</li>
+<li>SSMG: Single Source, Multiple destination Group (グループ間の重複 (overlap) を許す)</li>
+<li>MSMG: Multiple Source, Multiple destination Group (グループ間の重複 (overlap) を許す)</li>
+<li>SSSG, SSMG は FIFO チャンネルがあれば、 total order, causal order が保証される</li>
+<li>MSSG は、 Centralized アルゴリズム (6.4) で total order, causal order が保証できる</li>
+<li>MSMG では propergation tree アプローチと呼ばれる</li>
+</ul>
+</div>
+<div class="section" id="propagation-trees-for-multicast">
+<h3>6.8 Propagation trees for multicast<a class="headerlink" href="#propagation-trees-for-multicast" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>メタグループ (metagroup) の特性:<ol class="lowerroman">
+<li>各プロセスはひとつのメタグループに含まれ、
+同じグループ (group) に属している他のプロセスも同じメタグループに含まれる</li>
+<li>同じグループに属していながら同じメタグループに含まれれないプロセスはない</li>
+</ol>
+</li>
+<li>メタグループを定義することで、 MSMG をマルチキャストがより簡単な MSSG に変換する</li>
+<li>各グループの選ばれたノード (distinguished notde) をマネージャ (manger) とする</li>
+<li>各グループ (ユーザグループ, user group) <span class="math">\(G_i\)</span> について、
+プライマリメタグループ (PM: Primary metagroup) <span class="math">\(PM(G_i)\)</span> を選ぶ</li>
+<li>すべてのメタグループは propergation tree または propergation forest に編成 (organized) される</li>
+<li>Propagation tree 内での特性:<ol class="arabic">
+<li><span class="math">\(PM(G)\)</span> は、 <span class="math">\(G\)</span> のメタグループすべての祖先</li>
+<li><span class="math">\(PM(G)\)</span> は、一意に定まる</li>
+<li><span class="math">\(MG\)</span> への <span class="math">\(MG\)</span> がサブセットとなる <span class="math">\(PM\)</span> からの path は一意</li>
+<li><span class="math">\(PM(G_1), PM(G_1)\)</span> は、同じ木の同じ枝 (branch) 上、
+もしくは、接点の無い (disjoint) 木に存在しなければならない</li>
+</ol>
+</li>
+</ul>
+<p>Key idea:</p>
+<ul class="simple">
+<li><span class="math">\(G_i\)</span> へのマルチキャスト:<ol class="arabic">
+<li><span class="math">\(PM(G_i)\)</span> へ送る</li>
+<li><span class="math">\(PM(G_i)\)</span> から <span class="math">\(PM(G_i)\)</span> をルートとするサブツリーへ propagate する</li>
+</ol>
+</li>
+</ul>
+<p>Correctness:</p>
+<ul class="simple">
+<li>各プロセスは、中央で計算された propergation tree を知っている必要がある</li>
+<li>各メタグループはマネージャとして機能するプロセスを持っている</li>
+<li>Total order: 保証される。すべてのプロセス間に FIFO があれば、同じ順序でメッセージが送れられる</li>
+<li>Causal order: 保証される。 primary metagroups のマネージャが行うチェックで保証される</li>
+</ul>
+<div class="section" id="id1">
+<h4>英語<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">distinguished:</th><td class="field-body">区別された</td>
+</tr>
+<tr class="field-even field"><th class="field-name">subsume:</th><td class="field-body">含む</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">assumption:</th><td class="field-body">仮定</td>
+</tr>
+<tr class="field-even field"><th class="field-name">respectively:</th><td class="field-body">それぞれ</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">of which:</th><td class="field-body">その</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="classification-of-application-level-multicast-algorithms">
+<h3>6.9 Classification of application-level multicast algorithms<a class="headerlink" href="#classification-of-application-level-multicast-algorithms" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first">任意でかつ変化するグループにマルチキャストするシナリオが一般にある</p>
+</li>
+<li><p class="first">実際のシステムではより 「Centralized」 になる</p>
+</li>
+<li><p class="first">各種プロトコルは 5 種類に分類される</p>
+<ul>
+<li><p class="first">Communication history-based algorithms</p>
+<ul class="simple">
+<li>通信履歴 (Communication history) を順序の保証に使う</li>
+<li>アルゴリズム: RST, KS, Lamport’s, The NewTop</li>
+</ul>
+</li>
+<li><p class="first">Privilege-based algorithms</p>
+<ul class="simple">
+<li>送信元プロセス間の円周をトークンが巡る</li>
+<li>トークンはシーケンシャルな番号を持っている</li>
+<li>トークンを持っているプロセスのみがマルチキャストできる</li>
+<li>メッセージを送るとトークンの番号が増える</li>
+<li>送信先のプロセスは、トークンの番号でメッセージを配送 (deliver) する<ul>
+<li>receive ではない</li>
+</ul>
+</li>
+<li>TO: 保証される</li>
+<li>CO: closed group を構成することで保証される</li>
+<li>同時に複数のマルチキャストができないため、スケーラブルではない</li>
+</ul>
+</li>
+<li><p class="first">Moving sequencer algorithms</p>
+<ol class="arabic simple">
+<li>送信元はマルチキャストメッセージをすべての sequencer に送る</li>
+<li>sequencer は間でトークンが巡っていて、
+トークンにはシーケンシャルな番号と
+番号が振られたメッセージがピギーバックされている</li>
+<li><ol class="first lowerroman">
+<li>sequencer がトークンを受け取ると、
+まだ番号の振られていないメッセージに番号を振る</li>
+<li>新たに番号を振ったメッセージをトークンに入れ、
+メッセージを送信する</li>
+<li>トークンを次の sequencer に回す</li>
+</ol>
+</li>
+</ol>
+<p>4. 送信先のプロセスは、番号の順序でメッセージを配送する
+- TO: 保証される</p>
+</li>
+<li><p class="first">Fixed sequencer algorithms</p>
+<ul class="simple">
+<li>Moving sequencer の簡単版</li>
+<li>ひとつの sequencer だけをもつ</li>
+<li>centralize される</li>
+<li>6.8 で見てきたのはこのパターン</li>
+</ul>
+</li>
+<li><p class="first">Destination agreement algorithms</p>
+<ul class="simple">
+<li>送信先プロセスは、メッセージと制限された順序の情報 (limited ordering information) を受け取る</li>
+<li>順序を決めるため、送信先プロセス間で情報を交換する</li>
+<li>2 パターンが存在する<ol class="arabic">
+<li>タイムスタンプを用いる (Lamport’s three-phase algorithm はこれに含まれる)</li>
+<li>合意プロトコルを用いる</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="id2">
+<h4>英語<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">incr:</th><td class="field-body">(障害などを) 受ける</td>
+</tr>
+<tr class="field-even field"><th class="field-name">exhaustive:</th><td class="field-body">網羅的な</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="distributed-multicast-algorithms-at-the-network-layer">
+<h3>6.11 Distributed multicast algorithms at the network layer<a class="headerlink" href="#distributed-multicast-algorithms-at-the-network-layer" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="reverse-path-forwarding-rpf-for-constrained-flooding">
+<h4>6.11.1 Reverse path forwarding (RPF) for constrained flooding<a class="headerlink" href="#reverse-path-forwarding-rpf-for-constrained-flooding" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>flooding を使ってネットワーク <span class="math">\((N, L)\)</span> へ
+データをブロードキャストするには、 <span class="math">\(2|L|\)</span> のメッセージが必要</li>
+<li>Distance Vector Routing (DVR)<ul>
+<li>各ノードは、 <span class="math">\(x\)</span> へのパスでの次のホップを知っていると考える</li>
+<li><span class="math">\(Next_hop(x)\)</span>: 「ベスト」なパスでの次のホップを返す関数</li>
+</ul>
+</li>
+<li>RPF アルゴリズム<ul>
+<li>constrained flooding を実現するため、
+DVR アルゴリズムを point-to-point のルーティングに利用</li>
+<li>メッセージ数は <span class="math">\(|N|\)</span> に近づく</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="steiner-trees">
+<h4>6.11.2 Steiner trees<a class="headerlink" href="#steiner-trees" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>Steiner tree problem<ul>
+<li><span class="math">\((N, L), (N', L')\)</span> ただし <span class="math">\(N' \subseteq N, L' \subseteq L\)</span></li>
+<li><span class="math">\((N', L')\)</span> は、すべてのノード <span class="math">\(N'\)</span> につながっている</li>
+<li><em>minimal Steiner tree</em>: 重みが最小 (minimal-weight) の <span class="math">\((N', L')\)</span></li>
+<li>Minimal steiner tree problem は NP 完全</li>
+<li>重みが変動すると再計算が必要で、
+動的に変化するネットワークではさらに利用が困難</li>
+</ul>
+</li>
+<li>ヒューリスティックな推定方法<ul>
+<li>MST:<ul>
+<li>不要なエッジを削除する</li>
+<li>コストは minimal steiner tree の 2 倍程度</li>
+<li>時間複雑性は <span class="math">\(O(|N'|\cdot|N|^2)\)</span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="multicast-cost-functions">
+<h4>6.11.3 Multicast cost functions<a class="headerlink" href="#multicast-cost-functions" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li><span class="math">\(cost(i)\)</span> マルチキャストの送信元 <span class="math">\(s\)</span> から
+ルーティングスキーム (routing schme) <span class="math">\(R\)</span> で <span class="math">\(i\)</span> へ到達するコスト</li>
+<li><em>destination cost of R</em>: <span class="math">\(\frac{1}{|N'|}\sum_{i \in N'} cost(i)\)</span><ul>
+<li><span class="math">\(N'\)</span> へのマルチキャストの平均コストを表す</li>
+</ul>
+</li>
+<li><em>network cost</em>: <span class="math">\(R\)</span> でのエッジのコストの和</li>
+</ul>
+</div>
+<div class="section" id="delay-bounded-steiner-trees">
+<h4>6.11.4 Delay-bounded Steiner trees<a class="headerlink" href="#delay-bounded-steiner-trees" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>マルチメディアネットワークやインタラクティブなアプリケーションでは、
+Steiner tree は tree のコストだけでなく遅延の最小化が必要</li>
+</ul>
+<div class="section" id="delay-bounded-minimal-steiner-tree-problem">
+<h5>Delay-bounded minimal Steiner tree problem<a class="headerlink" href="#delay-bounded-minimal-steiner-tree-problem" title="このヘッドラインへのパーマリンク">¶</a></h5>
+<ul>
+<li><p class="first"><span class="math">\(l \in L\)</span></p>
+</li>
+<li><p class="first"><span class="math">\({\mathcal{C}}(l)\)</span>: 正の実数のコスト関数</p>
+</li>
+<li><p class="first"><span class="math">\({\mathcal{D}}(l)\)</span>: 正の整数の遅延関数</p>
+</li>
+<li><p class="first"><span class="math">\(\delta\)</span>: 遅延の許容範囲 (delay tolerance)</p>
+</li>
+<li><p class="first"><span class="math">\(s\)</span>: 送信元</p>
+</li>
+<li><p class="first"><span class="math">\(Dest\)</span>: 送信先の集合</p>
+</li>
+<li><p class="first">ただし <span class="math">\({s}{\cup}Dest = N' \subseteq N\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(T\)</span>: <span class="math">\(N'\)</span> をすべてカバーするスパニングツリー</p>
+</li>
+<li><p class="first"><span class="math">\(v in T\)</span></p>
+</li>
+<li><p class="first"><span class="math">\(path(s, v)\)</span>: <span class="math">\(T\)</span> での、
+<span class="math">\(s\)</span> から <span class="math">\(v\)</span>: へのパス</p>
+</li>
+<li><p class="first"><span class="math">\(\sum_{l\inT}{\mathcal{C}}(l)\)</span> を最小化する</p>
+<p>ただし、 <span class="math">\({\forall}v \in N', \sum_{l {\in} path(s,v)}{\mathcal{D}(l)} &lt; \delta\)</span></p>
+</li>
+<li><p class="first">この問題を解くのは、 Steiner tree を見つけるのと同じくらい困難</p>
+</li>
+<li><p class="first"><em>constrained cheapest path</em>: <span class="math">\(\delta\)</span> より小さく <span class="math">\(x, y\)</span> 間で最小のコストのパス</p>
+</li>
+</ul>
+</div>
+<div class="section" id="core-based-trees">
+<h5>6.11.5 Core-based trees<a class="headerlink" href="#core-based-trees" title="このヘッドラインへのパーマリンク">¶</a></h5>
+<ul class="simple">
+<li>各グループが中央 (center) またはコア (core) ノードを持つ</li>
+<li>ツリーへの参加方法:<ol class="arabic">
+<li>コアノードへ 「join」 メッセージをユニキャストする</li>
+<li>join メッセージは、コアノードへ到達するまでのエッジをマークする。
+join メッセージの通ったパスは、 multicast tree へ追加される</li>
+<li>ツリー上のノードは、
+コアツリー上へ floolding を使ってメッセージをマルチキャストする</li>
+<li>ツリー上にないノードからのメッセージは、
+ツリー上のいずれかのノードに到達するとツリー上へ flood される</li>
+</ol>
+</li>
+<li>現在広く実装されているのは Steiner tree ではなく、
+よりシンプルな Core-based tree</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id3">
+<h4>英語<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">tolerance:</th><td class="field-body">許容範囲</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section" id="termination-detection">
+<h2>7. Termination detection<a class="headerlink" href="#termination-detection" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="introduction">
+<h3>7.1 Introduction<a class="headerlink" href="#introduction" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>分散システムには分散処理が停止したかを検出するという、
+根本的 (fundamental) な問題がある</li>
+<li>分散システムにはプロセスが正常に停止したかのグローバルな状態 (state) も、
+グローバルなクロックも存在しないため、
+termination detection は簡単 (trivial) な問題ではない</li>
+<li>分散システムがグローバルに停止したかは、
+各プロセスのローカルな処理が停止し、かつ、
+プロセス間の通信が発生しなくなったかで考えられる</li>
+<li><em>underlying computation</em></li>
+<li><em>termination detection</em> (TD)</li>
+<li><em>basic</em> メッセージ: underlying computation で使われるメッセージ</li>
+<li><em>control</em> メッセージ: termination detection で使われるメッセージ</li>
+<li>TD アルゴリズムは以下を保証する<ol class="arabic">
+<li>TD アルゴリズムは、 underlying computation を無期限に遅らせることはできない。
+したがって、 underlying computation をフリーズさせてはならない</li>
+<li>TD アルゴリズムは、プロセス間に新しい通信チャンネルを必要としてはならない</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="system-model-of-a-distributed-computation">
+<h3>7.2 System model of a distributed computation<a class="headerlink" href="#system-model-of-a-distributed-computation" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>分散処理の特徴<ol class="arabic">
+<li>分散処理の実行中、プロセスは次のいずれかの状態をとる<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">active (bussy):</th><td class="field-body">ローカルで処理が実行中</td>
+</tr>
+<tr class="field-even field"><th class="field-name">idle (passive):</th><td class="field-body">ローカルの処理が一時的にでも完了している</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>プロセスはいつでも active から idle に状態遷移できる</li>
+<li>idle なプロセスは、他のプロセスから
+メッセージを受信するまで active にならず、
+自発的に active にもならない</li>
+<li>active なプロセスのみがメッセージを送信できる。
+(分散処理の初期化問題については考慮しない)</li>
+<li>プロセスは idle, active いずれの場合でも
+メッセージを受信することができ、
+メッセージを受信した idle なプロセスは
+active に状態遷移する</li>
+<li>メッセージの送信と受信はアトミック</li>
+</ol>
+</li>
+<li>プロセスの状態はいずれ idle になるとする</li>
+<li>プロセスの状態が active であり続けると、 TD アルゴリズムは停止しない</li>
+</ul>
+<div class="section" id="id4">
+<h4>Termination detection<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul>
+<li><dl class="first docutils">
+<dt><span class="math">\(p_i(t) \in {idle, active}\)</span>:</dt>
+<dd><p class="first last">時点 <span class="math">\(t\)</span> における <cite>p_i</cite> の状態</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><span class="math">\(c_{i,j}(t)\)</span>:</dt>
+<dd><p class="first last">時点 <span class="math">\(t\)</span> において、
+プロセス <span class="math">\(p_i\)</span> から <span class="math">\(p_j\)</span> へ送られたメッセージ数</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">時点 <span class="math">\(t_0\)</span> で分散処理が停止しているか:</p>
+<p><span class="math">\(({\forall}i :: p_i(t_0) = idle) \wedge ({forall}i,j :: c_{i,j}(t_0) = 0)\)</span></p>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h4>英語<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">cooperation:</th><td class="field-body">協力、協調</td>
+</tr>
+<tr class="field-even field"><th class="field-name">ifer:</th><td class="field-body">推測する</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">spontaneously:</th><td class="field-body">自発的に</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="a-spanning-tree-based-termination-detection-algorithm">
+<h3>7.5 A spanning-tree-based termination detection algorithm<a class="headerlink" href="#a-spanning-tree-based-termination-detection-algorithm" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first"><span class="math">\(N\)</span> 個のプロセス <span class="math">\(P_i ()0 \ge i \ge N)\)</span> を fixed connected な
+無向グラフとしてモデル化する</p>
+</li>
+<li><p class="first">エッジは、コミュニケーションチャンネルを表し、プロセスは隣接するプロセスへ
+チャンネルを通して通信する</p>
+</li>
+<li><p class="first"><span class="math">\(P_0\)</span> をグラフの root として、 termination detection の責務を負う</p>
+</li>
+<li><p class="first">リーフノードは、停止した際に親ノードへ報告する</p>
+</li>
+<li><p class="first">親ノードは、すべてのリーフノードから停止が報告された際に、
+更に親ノードへ報告する。これを繰り返す</p>
+</li>
+<li><p class="first">root ノードは、すべての子ノードから停止が報告されれば、
+（システムが）停止したとする</p>
+</li>
+<li><p class="first">2 つのシグナルの波 (waves of signals):</p>
+<ul class="simple">
+<li>inward: 最初に <em>token</em> と呼ばれるシグナルが、リーフノードから root ノードへ、
+引き寄せる</li>
+<li>outward: <em>token</em> による inward wave が停止することなく root へ到達した場合、
+<em>repeat</em> シグナルをリーフノードへ送る</li>
+</ul>
+<p>これらが、停止が検出されるまで繰り返される</p>
+</li>
+</ul>
+<div class="section" id="definitions">
+<h4>7.5.1 Definitions<a class="headerlink" href="#definitions" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ol class="arabic simple">
+<li>Token: リーフノードからルートノードへの inward なシグナル</li>
+<li>Repeat signal: <em>token</em> が停止を検出できなければ、
+<span class="math">\(P_0\)</span>  が <em>repeat</em> シグナルをリーフノードへ送り出すことで、
+再度 termination detection を開始する</li>
+<li><span class="math">\(S\)</span>: 1 つ以上の <em>token</em> を持つ任意時点のノードの集合</li>
+<li><span class="math">\(j\)</span> が <span class="math">\(S\)</span> に含まれず、 root から <span class="math">\(j\)</span> へのパス上に
+<span class="math">\(S\)</span> の要素を含まない場合、 <span class="math">\(j\)</span> は <span class="math">\(S\)</span> の outside と呼ばれる</li>
+<li><span class="math">\(S\)</span>: の outside なノードは idle 状態である</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_flattening_curved_documents_in_images.html" class="btn btn-neutral float-right" title="雑メモ: Flattening curved documents in images" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes.html" class="btn btn-neutral" title="詰み" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

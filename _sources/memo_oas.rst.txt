@@ -1,0 +1,44 @@
+======================
+Open API Specification
+======================
+
+aka Swagger
+
+Swagger UI
+==========
+
+雑に `docker run` して起動するのが楽。
+リクエストを送る、モックサーバーやモッククライアントを生成するなどができるが、
+壊れていたり、エラーメッセージが不親切だったりで、使い勝手は良くない。
+
+.. code-block:: console
+
+  $ docker run \
+    --rm -v /path/to/dir:/io \
+    -e SWAGGER_JSON=/io/oas-spec.yml \
+    -p 8080:8080 \
+    swaggerapi/swagger-ui:v3.19.2
+
+connexion
+=========
+
+connexion を使ってモックサーバーを起動することができる。 [#REF_CONNEXION_CLI]_
+connexion は 2.0 で OAS 3 に対応している。
+引数はヘルプや公式ドキュメントの通り。
+OpenAPI ドキュメント内で `security`/`securitySchemes` を使っている場合は、
+公式ドキュメントに無い環境変数を指定する必要がある。
+たとえば `securitySchemes.type` が `apiKey` の場合、
+環境変数 `APIKEYINFO_FUNC` で認証を行う関数を指定する。
+
+.. code-block:: console
+
+  $ APIKEYINFO_FUNC=auth.passthrough connexion run -v --port=8000 --mock=all oas-spec.yml
+
+.. code-block:: python
+
+  # auth.py
+  def passthrough(*a, **kw):
+      """ダミーの認証関数"""
+      return {}
+
+.. [#REF_CONNEXION_CLI] https://connexion.readthedocs.io/en/latest/cli.html

@@ -1,0 +1,306 @@
+=============
+日記 2017-W14
+=============
+
+2017-04-03 09:00:00
+
+最近のこと
+----------
+- Janome を試した
+
+  - ``janome.tokenizer.Tokenizer.tokenize`` に文字列を食わせると、
+    ``janome.tokenizer.Token`` が返る
+
+    .. code-block:: pycon
+
+      >>> from janome.tokenizer import Tokenizer
+      >>> # () -> Tokenizer
+      >>> t = Tokenizer()
+      >>> # tokenize :: Tokenizer -> str -> [Token]
+      >>> tokens = t.tokenize('地獄はここにあります。頭のなか、脳みそのなかに。')
+      >>> a_token = tokens[0]
+      >>> # str :: Token -> str
+      >>> str(a_token)
+      '地獄\t名詞,一般,*,*,*,*,地獄,ジゴク,ジゴク'
+      >>> list(map(str, t.tokenize('ぴぴるぴるぴるぴぴるぴ')))
+      ['ぴぴるぴるぴるぴぴるぴ\t名詞,一般,*,*,*,*,*,*,*']
+
+  - ``janome.tokenizer.Token`` 自体は至ってシンプルで、 ``__str__()`` 以外のメソッド持っていない [#LINK_JANOME_TOKENIZER]_
+  - ``janome.tokenizer.Token`` は、いくつかの属性を持っており、実際にはそれらを使うことになりそうだ [#REF_AILABY_COM_2016]_
+  - とりあえず
+
+    - 表層形は、 ``janome.tokenizer.Token.surface`` に
+    - 品詞は、 ``janome.tokenizer.Token.part_of_speech.split(',')[0]`` に
+
+    それぞれ含まれている [#REF_AILABY_COM_2016]_
+
+    .. code-block:: pycon
+
+      >>> from janome.tokenizer import Tokenizer
+      >>> # () -> Tokenizer
+      >>> t = Tokenizer()
+      >>> # tokenize :: Tokenizer -> str -> [Token]
+      >>> tokens = t.tokenize('地獄はここにあります。頭のなか、脳みそのなかに。')
+      >>> a_token = tokens[0]
+      >>> # 表層形 (str)
+      >>> a_token.surface
+      '地獄'
+      >>> # 品詞 (str)
+      >>> a_token.part_of_speech.split(',')[0]
+      '名詞'
+
+- :term:`TF-IDF` 思い出してた
+
+  - scikit-learn に TF-IDF の実装があるらしい [#LINK_SCIKT_LEARN_ORG_TFIDF]_
+
+- Google App Script の User properties について
+
+  - *User properties* と呼ばれる機能が 2 つ存在している
+
+    - ``UserProperties`` クラス [#LINK_USER_PROPERTIES]_
+
+      - **File** -> **Project properties** から設定できる
+      - Deprecated な機能
+
+    - ``PropertiesService.getUserProperties()`` でアクセスできる ``Properties`` オブジェクト [#LINK_PROPERTIES]_
+
+      - **File** -> **Project properties** から設定できない [#LINK_SAVING_DATA]_
+      - Deprecated でない
+
+  - 永続化先が異なるという挙動を見ると、機能として別物であり、 API が異なるだけというわけではなさそう
+  - 一方で Script properties については、**File** -> **Project properties** から設定できるので、大変ややこしい
+  - サンプルコード
+
+    .. code-block:: javascript
+
+      function myFunction() {
+        PropertiesService.getUserProperties().setProperty('bbb', 'bbb');
+        // bbb は出力される
+        Logger.log(PropertiesService.getUserProperties().getKeys());
+        // bbb は出力されない
+        Logger.log(UserProperties.getKeys());
+      }
+
+- Google App Script の Gmail Service と Mail Service の違い
+
+  メール送信以外のことをするかしないかが異なる
+
+  - Gmail Service は、「メールの閲覧、送信、削除、管理」 [#LINK_GMAIL_APP]_
+    (scope: https://mail.google.com/ [#LINK_GMAIL_AUTH_SCOPES]_) が可能
+  - Mail Service は、「ユーザー本人に代わってのメールの送信」 [#LINK_MAIL_SERVICE]_
+    (scope: https://www.googleapis.com/auth/script.send_mail [#LINK_GMAIL_AUTH_SCOPES]_) が可能
+
+- Google App Script でのメール送信の方法
+
+  - テキストメール [#LINK_GMAIL_SENMAIL]_
+
+    .. code-block:: javascript
+
+      // Mail Service
+      MailApp.sendEmail("user@example.com", "subject", "body");
+      // GMail Service
+      GmailApp.sendEmail("user@example.com", "subject", "body");
+
+  - HTML メール [#LINK_GMAIL_SENMAIL]_
+
+    - HTML メール内の画像の埋め込みは、
+      ``options`` 引数で ``inlineImages`` に画像データのキーと Blob (``Object.<String, Blob>``) のオブジェクト渡し、
+      ``htmlBody`` 内の IMG 要素 ``src`` 属性に ``inlineImages`` で指定したキーを ``<img src="cid:imageKey" />`` というように指定する
+
+    .. code-block:: javascript
+
+      // Prepare an embeded image
+      var IMG = "...";
+      var bytes = Utilities.base64Decode(IMG);
+      var blob = Utilities.newBlob(bytes).setContentType('image/png');
+
+      // define options
+      var options = {
+        htmlBody: '<html><body><h1>Title</h1><p>Body<img src="cid:anImage"/></p></body></html>',
+        inlineImages: {
+          anImage: blob,
+        }
+      };
+
+      // Mail Service
+      MailApp.sendEmail("user@example.com", "subject", "body", options);
+      // Gmail Service
+      GmailApp.sendEmail("user@example.com", "subject", "body", options);
+
+- ``systemctl enable`` (v233) のエスケープ処理を追った
+
+  #. ``src/systemctl/systemctl.c#main`` [#LINK_SYTEMD_V233_SYSTEMCTL_L8440]_
+
+     - エントリポイント
+     - systemctl(1) としての手続きは ``systemctl_main`` で行われる
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 8468
+
+           switch (arg_action) {
+
+           case ACTION_SYSTEMCTL:
+                   r = systemctl_main(argc, argv);
+                   break;
+
+  #. ``src/systemctl/systemctl.c#systemctl_main`` [#LINK_SYTEMD_V233_SYSTEMCTL_L8128]_
+
+     - systemctl(1) の各サブコマンドの手続きは ``verbs`` で定義された関数で実行される
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 8128
+
+           static int systemctl_main(int argc, char *argv[]) {
+
+                   static const Verb verbs[] = {
+
+     - *enable* サブコマンドの手続きには ``enable_unit`` が定義されている
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 8178
+
+            { "enable",                2,        VERB_ANY, 0,             enable_unit          },
+
+  #. ``src/systemctl/systemctl.c#enable_unit`` [#LINK_SYTEMD_V233_SYSTEMCTL_L6045]_
+
+     - ``enable_unit`` の中で ``names`` のエスケープ手続きを呼び出す
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 6057
+
+                 r = mangle_names(strv_skip(argv, 1), &names);
+
+  #. ``src/systemctl/systemctl.c#mangle_names`` [#LINK_SYTEMD_V233_SYSTEMCTL_L5945]_
+
+     - ``mangle_names`` は ``names`` 内の各 ``name`` について ``unit_name_mangle`` を適用する
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 5965
+
+                                 r = unit_name_mangle(*name, UNIT_NAME_NOGLOB, i);
+
+  #. ``src/basic/unit-name.h#unit_name_mangle`` [#LINK_SYTEMD_V233_UNITNAME_H_L313]_
+
+     - ``unit_name_mangle`` は ``unit_name_mangle_with_suffix`` の ``suffix`` 引数を部分適用しただけで、
+       mangling は ``unit_name_mangle_with_suffix`` が行う
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 311
+
+           int unit_name_mangle_with_suffix(const char *name, UnitNameMangle allow_globs, const char *suffix, char **ret);
+
+           static inline int unit_name_mangle(const char *name, UnitNameMangle allow_globs, char **ret) {
+                   return unit_name_mangle_with_suffix(name, allow_globs, ".service", ret);
+           }
+
+
+  #. ``src/basic/unit-name.c#unit_name_mangle_with_suffix`` [#LINK_SYTEMD_V233_UNITNAME_C_L672]_
+
+     - ``unit_name_mangle_with_suffix`` は、 ``name`` の文字列長分メモリを確保して、
+       ``do_escape_mangle`` に ``name`` の mangling させる
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 712
+
+                    s = new(char, strlen(name) * 4 + strlen(suffix) + 1);
+                    if (!s)
+                            return -ENOMEM;
+
+                    t = do_escape_mangle(name, allow_globs, s);
+
+     - ``new`` は ``alloc-util.h`` で定義されたマクロ
+
+  #. ``src/basic/unit-name.c#do_escape_mangle`` [#LINK_SYTEMD_V233_UNITNAME_C_L641]_
+
+     - ``do_escape_mangle`` まで、ようやく ``name`` の mangling が行われる
+     - ``/`` は ``-`` へ、 また、 ``VALID_CHARS_WITH_AT`` の通り、英字・数字・ ``:-_.\`` そして ``@`` 以外は ``\xXX`` 形式にエスケープされる
+
+       .. code-block:: c
+         :linenos:
+         :lineno-start: 641
+
+           static char *do_escape_mangle(const char *f, UnitNameMangle allow_globs, char *t) {
+                   const char *valid_chars;
+
+                   assert(f);
+                   assert(IN_SET(allow_globs, UNIT_NAME_GLOB, UNIT_NAME_NOGLOB));
+                   assert(t);
+
+                   /* We'll only escape the obvious characters here, to play
+                    * safe. */
+
+                   valid_chars = allow_globs == UNIT_NAME_GLOB ? VALID_CHARS_GLOB : VALID_CHARS_WITH_AT;
+
+                   for (; *f; f++) {
+                           if (*f == '/')
+                                   *(t++) = '-';
+                           else if (!strchr(valid_chars, *f))
+                                   t = do_escape_char(*f, t);
+                           else
+                                   *(t++) = *f;
+                   }
+
+                   return t;
+           }
+
+
+調べておきたいこと
+------------------
+- チェビシェフの不等式
+- Paxos Leaner
+- Paxos Leader Lease
+- いくつかの代表的な MV* アーキテクチャ
+- C のデバッガ
+
+最近読んだ文章
+--------------
+- 小学生のプログラミング教育熱について [#REF_NAKAGAMI_2017]_
+
+  - 今思い出せば、わたしが IT 業界に入ろうと思ったときも、
+    死んだ魚のような目をしながら日々を過ごすのだろうと考えていた
+  - 今のわたしの目は、どうであろうか
+
+- 時間の非実在性 [#REF_MCTAGGART_1908]_
+
+  - まだ読み始めだが、論旨としては、
+    時間の本質たる :term:`A 系列` が矛盾するため時間は非実在であるという展開となるらしい
+  - まず、 :term:`A 系列` が時間の本質である所以もいまひとつ理解できていないので、
+    何度も読み返す必要がありそう
+
+見つけたもの
+------------
+- http://www.toukei-kentei.jp/koe/koe-1712/
+
+  - とりあえずマセマからやっとけとのこと
+
+脚注
+----
+.. [#REF_NAKAGAMI_2017] http://nakagami.blog.so-net.ne.jp/2017-03-27
+.. [#LINK_JANOME_TOKENIZER] https://github.com/mocobeta/janome/blob/9595b7f/janome/tokenizer.py#L25
+.. [#REF_AILABY_COM_2016] http://ailaby.com/janome/
+.. [#LINK_SCIKT_LEARN_ORG_TFIDF] http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
+.. [#LINK_USER_PROPERTIES] https://developers.google.com/apps-script/reference/properties/user-properties
+.. [#LINK_PROPERTIES] https://developers.google.com/apps-script/guides/properties
+.. [#LINK_SAVING_DATA] https://developers.google.com/apps-script/guides/properties#saving_data
+.. [#LINK_GMAIL_AUTH_SCOPES] https://developers.google.com/gmail/api/auth/scopes
+.. [#LINK_MAIL_SERVICE] https://developers.google.com/apps-script/reference/mail/
+.. [#LINK_GMAIL_APP] https://developers.google.com/apps-script/reference/gmail/
+.. [#LINK_GMAIL_SENMAIL] https://developers.google.com/apps-script/reference/gmail/gmail-app#sendEmail(String,String,String,Object)
+.. [#LINK_BLOB_SETCT] https://developers.google.com/apps-script/reference/base/blob#setcontenttypecontenttype
+.. [#LINK_UTIL_BEWBLOB] https://developers.google.com/apps-script/reference/utilities/utilities#newblob
+.. [#LINK_UTIL_BASE64DC] https://developers.google.com/apps-script/reference/utilities/utilities#base64decodeencoded
+.. [#LINK_SYTEMD_V233_SYSTEMCTL_L8440] https://github.com/systemd/systemd/blob/v233/src/systemctl/systemctl.c#L8440
+.. [#LINK_SYTEMD_V233_SYSTEMCTL_L8128] https://github.com/systemd/systemd/blob/v233/src/systemctl/systemctl.c#L8128
+.. [#LINK_SYTEMD_V233_SYSTEMCTL_L6045] https://github.com/systemd/systemd/blob/v233/src/systemctl/systemctl.c#L6045
+.. [#LINK_SYTEMD_V233_SYSTEMCTL_L5945] https://github.com/systemd/systemd/blob/v233/src/systemctl/systemctl.c#L5945
+.. [#LINK_SYTEMD_V233_UNITNAME_H_L313] https://github.com/systemd/systemd/blob/v233/src/basic/unit-name.h#L313
+.. [#LINK_SYTEMD_V233_UNITNAME_C_L672] https://github.com/systemd/systemd/blob/v233/src/basic/unit-name.c#L672
+.. [#LINK_SYTEMD_V233_UNITNAME_C_L641] https://github.com/systemd/systemd/blob/v233/src/basic/unit-name.c#L641
+.. [#REF_MCTAGGART_1908] マクタガート (1908) *The Unreality of Time* Mind: 永井均 (2017) 『時間の非実在性』 講談社学術文庫

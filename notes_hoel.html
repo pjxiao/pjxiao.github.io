@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>入門数理統計学 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="詰み" href="notes.html"/>
+        <link rel="next" title="10 Minutes to pandas" href="notes_pandas_10min.html"/>
+        <link rel="prev" title="雑メモ: Geometric Rectification of Camera-captured Document Images" href="notes_geometric_rectification_of_camera_captured_document_images.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">入門数理統計学</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3. 特定の確率分布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3. 統計的方法の性質</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">5. 表本論</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">6. 相関と回帰に関する確率分布</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">7. 相関と回帰についての経験的方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">8. 統計的推論の一般原理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">9. 適合度の検定</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">10. 小標本分布</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+      <li>入門数理統計学</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_hoel.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1>入門数理統計学<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>3. 特定の確率分布<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>離散<ul>
+<li>期待値</li>
+<li>原点周りの k 次積率</li>
+<li>平均値周りの k 次積率</li>
+<li>積率問題</li>
+<li>分散</li>
+<li>標準偏差</li>
+<li>積率母関数</li>
+</ul>
+</li>
+<li>二項分布<ul>
+<li>二項展開</li>
+<li>母数</li>
+<li>積率</li>
+<li>問 15</li>
+<li>独立性</li>
+</ul>
+</li>
+<li>ポアソン分布<ul>
+<li>動機</li>
+<li>二項分布の近似</li>
+<li>定理</li>
+<li>分散が平均に等しい</li>
+<li>ポアソン過程</li>
+<li>問 30</li>
+</ul>
+</li>
+<li>超幾何分布<ul>
+<li>動機</li>
+<li>母数</li>
+<li>二項分布との積率の比較</li>
+</ul>
+</li>
+<li>連続<ul>
+<li>積率</li>
+<li>原点周りの k 次積率</li>
+<li>期待値</li>
+<li>積率母関数</li>
+<li>積率母関数の性質</li>
+</ul>
+</li>
+<li>矩形分布<ul>
+<li>四捨五入</li>
+<li>積率</li>
+</ul>
+</li>
+<li>正規分布<ul>
+<li>グラフ</li>
+<li>積率</li>
+<li>標準偏差の幾何学的意味</li>
+<li>変曲点</li>
+<li>規準単位</li>
+<li>二項分布の近似<ul>
+<li>誤差</li>
+</ul>
+</li>
+<li>系</li>
+<li>標本の大きさ</li>
+<li>品質管理図</li>
+</ul>
+</li>
+<li>ガンマ分布<ul>
+<li>積率</li>
+</ul>
+</li>
+<li>指数分布<ul>
+<li>ガンマ分布との関係</li>
+<li>用途</li>
+<li>微分方程式</li>
+</ul>
+</li>
+<li>カイ二乗分布<ul>
+<li>ガンマ分布との関係</li>
+<li>積率</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>3. 統計的方法の性質<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="id4">
+<h2>5. 表本論<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>正規分布からの <span class="math">\(\overline{X}\)</span> の性質</li>
+<li>平均 <span class="math">\(u\)</span> 分散 <span class="math">\(\sigma^2\)</span> 従う確率変数の大きさ <span class="math">\(n\)</span> の標本平均は、平均 <span class="math">\(u\)</span> 分散 <span class="math">\(\sigma^2/n\)</span></li>
+<li>非正規分布からの <span class="math">\(\overline{X}\)</span> の分布</li>
+<li>中心極限定理</li>
+<li>第三章の定理 <span class="math">\(2\)</span> は中心極限定理で証明される</li>
+<li>一次関数の分布</li>
+<li>加重平均</li>
+<li>独立な正規変数の一次結合は正規分布に従う</li>
+<li>標本分散の分布</li>
+<li>正規分布に従う確率変数の X の大きさ <span class="math">\(n\)</span> の無作為標の分散は自由度 <span class="math">\(n\)</span> のカイ二乗分布に従う</li>
+<li>仮説検定への応用</li>
+<li>平均値の検定</li>
+<li>ふたつの平均値の差の検定</li>
+<li>問 29</li>
+<li>問 36</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>6. 相関と回帰に関する確率分布<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>2 変数の分布</li>
+<li>周辺分布</li>
+<li>離散型の場合</li>
+<li>条件付き分布</li>
+<li>幾何学的解釈</li>
+<li>回帰曲線</li>
+<li>条件付き分布の平均が描く軌跡</li>
+<li>積率</li>
+<li>結合積率</li>
+<li>共分散 <span class="math">\(u11\)</span></li>
+<li>相関係数 <span class="math">\(\rho\)</span></li>
+<li>二変数の分布正規分布</li>
+<li>正規分布に従う独立な 2 確率変数の同時密度関数</li>
+<li>相乗積の項</li>
+<li>正規密度関数</li>
+<li>正規密度関数の母数 <span class="math">\(\rho\)</span></li>
+<li>条件付き分布</li>
+<li>同時正規分布の条件付き分布もまた正規分布</li>
+<li>正規曲面</li>
+<li>判別式</li>
+<li>回帰曲線と楕円の交点での楕円の接線は  軸に垂直</li>
+<li>正規回帰</li>
+<li>同時正規分布の回帰曲線は直線</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2>7. 相関と回帰についての経験的方法<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><span class="math">\(\rho\)</span> 推定</li>
+<li>二次元正規密度関数を特徴づけるのに必要な母数</li>
+<li><span class="math">\(\rho\)</span> の求める標本推定値 <span class="math">\(r\)</span></li>
+<li>標本そう関係さ</li>
+<li>標本相関係数</li>
+<li>散布図</li>
+<li>標本相関係数の値域と <span class="math">\(-1/+1\)</span> の時の幾何学的特徴</li>
+<li><span class="math">\(r\)</span> の信頼性</li>
+<li>繰り返し抽出実験における関数 <span class="math">\(r\)</span> の挙動</li>
+<li><span class="math">\(r\)</span> は確率変数</li>
+<li><span class="math">\(r\)</span> の密度関数は <span class="math">\(\rho\)</span> と <span class="math">\(n\)</span> にのみ関係する</li>
+<li><span class="math">\(r\)</span> を近似的に正規分布に変換するような簡単な変数変換</li>
+<li><span class="math">\(r\)</span> の意味</li>
+<li>正規変数 <span class="math">\(X\)</span>, <span class="math">\(Y\)</span> が独立であるための必要十分条件</li>
+<li><span class="math">\(X\)</span> と <span class="math">\(Y\)</span> がたとえ近似的にでも正規分布に従うと仮定できない場合</li>
+<li>見せかけの相関</li>
+<li>線形回帰</li>
+<li>最小二乗法</li>
+<li>密度関数の性質について仮定がない場合、回帰曲線の母数の推定に積率法は使えない</li>
+<li>誤差の二乗和を最小にする</li>
+<li><span class="math">\(y' = a + b(x - \overline{x})\)</span></li>
+<li>回帰直線</li>
+<li>散布図との間の注目すべき重要な違い</li>
+<li>最小二乗法は <span class="math">\(X\)</span> の値が前もって固定されていても、無作為標本から得られたものであっても、どちらの場合にも適用できる</li>
+<li>（密度関数の仮定がなくて積率法が使えないから最小二乗法もちだしたわけですから</li>
+<li>多重線形回帰</li>
+<li>幾何学的には、この問題は <span class="math">\(K + 1\)</span> 次元における <span class="math">\(n\)</span> 個の点の集まりに、最小二乗法の意味で尤もよくあてはまる平面の方程式を求める問題である</li>
+<li>正規方程式</li>
+<li>ドウリットル法</li>
+<li><span class="math">\(X\)</span> の値の選び方を問題にする必要あるのは、信頼度を論ずるときだけ</li>
+<li>曲線回帰</li>
+<li>どんな種類の曲線を使うか</li>
+<li>多項式回帰</li>
+<li>正規方程式を改めて導く必要はない</li>
+<li>直交多項式</li>
+<li>その他の回帰関数</li>
+<li>もとの変数を変換したある新しい変数を導入する</li>
+<li>線形判別関数</li>
+<li>線形判別関数と通常の線形回帰関数の違い</li>
+<li>2 郡内の <span class="math">\(z\)</span> の値の変動の測度</li>
+<li>本質的には <span class="math">\(λ\)</span> を推定する問題</li>
+<li>2 郡が異なるという仮説の検定</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h2>8. 統計的推論の一般原理<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>推定</li>
+<li>点推定値にとって望ましいと考えられる性質</li>
+<li>区間による推定</li>
+<li>不偏推定値</li>
+<li>標本の大きさをしだいに大きくすれば推定値がある意味で母数に近づくこと</li>
+<li>不偏という性質</li>
+<li>統計量</li>
+<li>推定量</li>
+<li>推定値</li>
+<li>不偏推定値の定義</li>
+<li><span class="math">\(S^2\)</span> は <span class="math">\(\sigma^2\)</span> の不偏推定値ではない</li>
+<li>平均値の計算に作用素 E を利用する</li>
+<li>最良不偏推定量</li>
+<li>変動性の測度</li>
+<li>二次の積率は推定値の比較に際して最初に思ったほど明快な役割を果たすものではない</li>
+<li>最尤推定値</li>
+<li>最尤法</li>
+<li>尤度関数</li>
+<li>尤度関数は <span class="math">\(n\)</span> 次元標本空間の標本点 <span class="math">\((x_1, x_2, ..., x_n)\)</span> をにおける確率密度を与えるものである</li>
+<li><span class="math">\(L(\theta)\)</span>  を最大にする <span class="math">\(\theta\)</span>  を求める問題</li>
+<li>微分の手法</li>
+<li>最尤推定値の性質の一般化を試みるべきではない</li>
+<li>解析的な方法が適用できない場合の問題</li>
+<li>最尤推定値がもつ望ましい性質</li>
+<li>不偏でかつ最小の分散</li>
+<li>最尤推定値が良くない推定値である場合</li>
+<li>漸近分布</li>
+<li>漸近的標準偏差</li>
+<li>信頼区間</li>
+<li>区間推定値</li>
+<li>正規曲線法</li>
+<li>信頼限界</li>
+<li>個々の主張が正しいか否かについては単に賭けをしているにすぎないことをよく理解しなければならない</li>
+<li>信頼係数</li>
+<li>仮説検定</li>
+<li>逐次抽出法</li>
+<li>検定の種類</li>
+<li>単純仮設</li>
+<li>複合仮説</li>
+<li>単純仮説に対する最良検定</li>
+<li>異なる検定の相対的価値</li>
+<li>ネイマンピアソンの定理</li>
+<li>離散変数の問題</li>
+<li>無作為化</li>
+<li>尤度比検定</li>
+<li>定理 25</li>
+<li>検定力関数</li>
+<li>第二種の過誤の大きさを <span class="math">\(\theta\)</span> の関数として求める</li>
+<li>検出力曲線</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2>9. 適合度の検定<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>多項分布</li>
+<li>カイ二乗検定</li>
+<li>尤度比検定法が使われる</li>
+<li>カイ二乗分布の右裾</li>
+<li>適合度のカイ二乗検定</li>
+<li>カイ二乗検定の制約</li>
+<li>正確な分布に対するひとつの近似にすぎない</li>
+<li>いくつかのマスと合併</li>
+<li>めもめも</li>
+<li>カイ二乗検定の一般性</li>
+<li>マスの格率が未知母数に依存する場合</li>
+<li>密度曲線のあてはめ</li>
+<li>分割表</li>
+<li>二次元表において観測度数と理論度数の適合性を検定する</li>
+<li>分割表で独立性の検定をするときの自由度</li>
+<li>一様性の検定</li>
+<li>独立性の検定に対するものと全く同じであることが証明できる</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2>10. 小標本分布<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>小標本分布</li>
+<li>大標本という仮定を必要としない方法</li>
+<li>小標本法</li>
+<li><ol class="first arabic">
+<li>1 つの確率変数の関数の分布</li>
+</ol>
+</li>
+<li>変数変換に基づくもの</li>
+<li>変数変換の方法</li>
+<li>直接適用できない問題</li>
+<li><ol class="first arabic" start="2">
+<li>2 つの確率変数の関数の分布</li>
+</ol>
+</li>
+<li>密度関数を求めるときの唯一の実際上の困難</li>
+<li><ol class="first arabic" start="3">
+<li>カイ二乗分布</li>
+</ol>
+</li>
+<li>独立なカイ二乗変数に対する加法的な性質</li>
+<li>3.1 <span class="math">\(S^2\)</span> の分布</li>
+<li>自由度</li>
+<li>3.2 カイ二乗分布の応用</li>
+<li>信頼限界を求める</li>
+<li><span class="math">\(\sigma\)</span> の仮設地を検定する問題</li>
+<li><span class="math">\(\sigma^2\)</span> の信頼限界を求める問題</li>
+<li>問 29, 30, 31</li>
+<li><ol class="first arabic" start="4">
+<li>スチューデントの t 分布</li>
+</ol>
+</li>
+<li>大標本法による問題の解き方の重大な 1 つの難点</li>
+<li>スチューデントの t 分布</li>
+<li>スチューデントの t 変数</li>
+<li>T の密度関数</li>
+<li>この定理が大標本法による解放の欠点をどのように取り除いているか</li>
+<li>大標本法はこの確率をつねに過小に与える</li>
+<li>t 分布の重要な特色</li>
+<li><ol class="first arabic" start="5">
+<li>t 分布の応用</li>
+</ol>
+</li>
+<li>5.1 平均値の信頼限界</li>
+<li>5.2 2 つの平均値の差</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_pandas_10min.html" class="btn btn-neutral float-right" title="10 Minutes to pandas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_geometric_rectification_of_camera_captured_document_images.html" class="btn btn-neutral" title="雑メモ: Geometric Rectification of Camera-captured Document Images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

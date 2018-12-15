@@ -1,0 +1,31 @@
+==================
+画像の二値化二値化
+==================
+
+
+Otsu method
+===========
+
+クラス内分散を最大化する値を閾値とする [#REF_WIKIPEDIA_OTSU]_
+
+Wikipedia にあった MATLAB による実装 [#REF_WIKIPEDIA_OTSU]_ を numpy で実装した例
+
+.. code-block:: python
+
+  import numpy
+
+  hist, _ = numpy.histogram(im_wp_arr, numpy.arange(0, 257))
+  total = hist.sum()
+  sum_1 = numpy.arange(0, 256).dot(hist)
+
+  W_b = numpy.cumsum(hist)
+  W_f = total - W_b
+  S_b = numpy.cumsum(numpy.arange(0, 256) * hist)
+  M_f = numpy.divide((sum_1 - S_b), W_f, where=(W_f != 0))
+  M_f = numpy.nan_to_num(M_f, 0)
+  M_b = S_b / W_b
+  B = W_b * W_f * ((M_b - M_f) ** 2)
+
+  numpy.argmax(B)  # 算出された閾値
+
+.. [#REF_WIKIPEDIA_OTSU] https://en.wikipedia.org/wiki/Otsu%27s_method

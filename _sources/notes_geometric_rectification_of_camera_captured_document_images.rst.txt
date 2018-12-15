@@ -1,0 +1,71 @@
+==================================================================
+雑メモ: Geometric Rectification of Camera-captured Document Images
+==================================================================
+
+カメラで撮ったドキュメントの歪みを、ドキュメントに書かれたテキストの配置から修正する
+
+::
+
+  J. Liang, D. DeMenthon and D. Doermann, "Geometric Rectification of Camera-Captured Document Images," in IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 30, no. 4, pp. 591-605, April 2008.
+  doi: 10.1109/TPAMI.2007.70724
+
+:URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4359339&isnumber=4480721
+
+.. note::
+
+   進捗: まだ P.7 あたり。むずいので "Flattening curved documents in images," を先に読む
+
+Introduction
+============
+
+条件
+----
+
+だいたいのデジカメはこの条件を満たす
+
+1. ドキュメントに十分な量の文章が印刷されていること
+2. ドキュメントが平らか緩やかに曲がっていること（引き裂かれていたり、折り目があったりしないこと）
+3. カメラが一般的なピンホールカメラであり、縦横のサンプリング比が 1:1 であり、主点が画像の中央に位置すること
+
+Approch
+=======
+
+A. Overview
+-----------
+
+1. テキストエリアとテキストの流れ (texture flow fields) を検出する
+2. ページが平面なのか曲がっているのか、テキストの流れの線形性（linearity property）から区別する
+3. 平面もしくはカーブしたページの幾何学的性質を使って、ページの 3D 形状（3D shape）を推測する
+4. 歪みを補正するのに 3D 形状を利用する
+5. スキャンしたような画像が得られる
+
+B. Preprocessing
+----------------
+
+1) 2D Texture Flow Detection in Document Images
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+まず、 binarize された画像からテキストの場所を検出する（テキスト認識、text identification）。
+テキスト検出は gradient-based method [#REF_GRADIENT_BASED_METHOD]_ を用いる。
+
+テキストが見つかったら、テキストの行（major text flow）と文字の縦の方向（minor text flow、vertical character stroke directions）を検出する
+
+major text flow の検出は、local な skew detection problem （傾き検出）と考える。
+スキャナで取り込んだ画像の場合、傾き（skew angle）はページ全体で一定だが、カメラで取り込んだ曲がったテキストの場合はページ内で一定しない。
+projection profile analysis を用いて小さいエリアの skew angle を検出する。エラーの低減とスムーズ化のために  relaxation labeling approach [#REF_RELAXATION_LABELING_APPROACH]_ を用いる。
+
+線形構造（linear structure）の検出のために directilnal filter （エッジ検出手法のひとつ）を用いる。vertical stroke はページ内で共通する。フィルタの角度と文字の角度が一致する場合に、出力が最大化される。
+
+2) Surface Classiﬁcation
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+透視投影は線形性を維持する。紙が平面であれば画像に映るテキストもまっすぐになり、共通の消失点を持つ。一方で紙が曲がっていれば、そうならない。
+このことを利用して、紙が平面か曲がっているかを分類できる。この手法では、 major flow を用いて分類する。
+
+- `\left{\bm{l}_i\right}` を text flow の接線とする
+- 消失点を `\bm{v}` とする
+- 紙が平面ならば `\bm{l}_i^T\bm{v} = 0, {\forall}i`
+
+.. [#REF_GRADIENT_BASED_METHOD] J. Liang, D. DeMenthon, and D. Doermann, “Flattening curved documents in images,” in Proceedings of the Conference on Computer Vision and Pattern Recognition, 2005, pp. 338345
+
+.. [#REF_RELAXATION_LABELING_APPROACH] R. A. Hummel and S. W. Zucker, “On the foundations of relaxation labeling processes,” IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 5, pp. 267287, 1983.

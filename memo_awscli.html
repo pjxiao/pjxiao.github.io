@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>AWS-CLI &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="覚え書き" href="memo.html"/>
+        <link rel="next" title="Open API Specification" href="memo_oas.html"/>
+        <link rel="prev" title="PowerShell" href="memo_powershell.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="memo.html">覚え書き</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="memo_binarization.html">画像の二値化二値化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_imagemagick.html">ImageMagick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_powershell.html">PowerShell</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AWS-CLI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">引数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mfa">MFA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="memo_oas.html">Open API Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_ms_flow.html">Microsoft Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#id3">メモ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#mathjax">MathJax チートシート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#linux-gyazo">Linux 版 gyazo のスクリーンキャプチャコマンドを変更する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#pca">PCA に関する覚え書き</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#nginx-ssh">ファイヤーウォール内のサイトへの接続に Nginx と SSH を組み合わせる</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#systemctl-user">systemctl –user 実行時のエラーへの対処方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#memo-ephemeral-port">一時ポート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#ssh-systemd-user">SSH トンネルを Systemd/User のサービスとして登録する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#systemd">Systemd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#bash">Bash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#vim">Vim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#docker">Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo.html#git">Git</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="memo.html">覚え書き</a> &raquo;</li>
+        
+      <li>AWS-CLI</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/memo_awscli.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="aws-cli">
+<h1>AWS-CLI<a class="headerlink" href="#aws-cli" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>引数<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id2">
+<h3>ファイル<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>file:///path/to/file</cite> でファイルからパラメータを渡すことができる。 <a class="footnote-reference" href="#ref-aws-cli-using-param-file" id="id3">[1]</a>
+引数が JSON 文字列を受けるケースなどで使える</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> aws cloudformation update-stack <span class="se">\</span>
+  --parameters<span class="o">=</span>file://./parameters.json <span class="se">\</span>
+  --stack-name<span class="o">=</span>unk-stack <span class="se">\</span>
+  --template-body<span class="o">=</span>file:///path/to/template.yaml
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mfa">
+<h2>MFA<a class="headerlink" href="#mfa" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>MFA が必須な IAM ユーザーで AWS-CLI を使うには、
+<cite>sts get-session-token</cite> を使って取得したクレデンシャルを利用する。 <a class="footnote-reference" href="#ref-aws-cli-mfa" id="id4">[2]</a></p>
+<p><cite>–serial-number</cite> には MFA の ARN を、
+<cite>–token-code</cite> には MFA から取得したワンタイムトークンを渡す。
+MFA の ARN は IAM のコンソールから取得できる。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> aws <span class="se">\</span>
+  --profile<span class="o">=</span>profile-to-get-token <span class="se">\</span>
+  sts <span class="se">\</span>
+  get-session-token <span class="se">\</span>
+  --serial-number<span class="o">=</span>arn:aws:iam::************:mfa/xxxuser <span class="se">\</span>
+  --token-code<span class="o">=</span><span class="m">12345678</span>
+</pre></div>
+</div>
+<p>雑に下のようなシェルスクリプトを書いて <cite>~/.local/bin/get-token</cite> などに置いておいている。
+<cite>eval $(get-token -p profile-to-get-token -m arn:aws:…/xxuser -t 12345678)</cite> として使う。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash -e</span>
+<span class="c1"># ~/.local/bin/get-token</span>
+
+<span class="k">while</span> <span class="nb">getopts</span> <span class="s1">&#39;p:m:t:&#39;</span> OPTNAME
+<span class="k">do</span>
+    <span class="k">case</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPTNAME</span><span class="si">}</span><span class="s2">&quot;</span> in
+        p<span class="o">)</span>
+            <span class="nv">profile</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">;;</span>
+        m<span class="o">)</span>
+            <span class="nv">mfa_arn</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">;;</span>
+        t<span class="o">)</span>
+            <span class="nv">token</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPTARG</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">;;</span>
+        *<span class="o">)</span>
+            <span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">0</span><span class="si">}</span><span class="s2"> unrecognized option &#39;</span><span class="si">${</span><span class="nv">OPTNAME</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+    <span class="k">esac</span>
+<span class="k">done</span>
+
+<span class="k">if</span> <span class="se">\</span>
+    <span class="o">[[</span> -z <span class="s2">&quot;</span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]]</span> <span class="o">||</span> <span class="se">\</span>
+    <span class="o">[[</span> -z <span class="s2">&quot;</span><span class="si">${</span><span class="nv">mfa_arn</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]]</span> <span class="o">||</span> <span class="se">\</span>
+    <span class="o">[[</span> -z <span class="s2">&quot;</span><span class="si">${</span><span class="nv">token</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]]</span>
+<span class="k">then</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="nv">credential</span><span class="o">=</span><span class="k">$(</span> <span class="se">\</span>
+    aws <span class="se">\</span>
+        --profile<span class="o">=</span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span> <span class="se">\</span>
+        sts <span class="se">\</span>
+        get-session-token <span class="se">\</span>
+        --serial-number<span class="o">=</span><span class="si">${</span><span class="nv">mfa_arn</span><span class="si">}</span> <span class="se">\</span>
+        --token-code<span class="o">=</span><span class="si">${</span><span class="nv">token</span><span class="si">}</span>
+<span class="k">)</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;export AWS_SESSION_TOKEN=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">credential</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=&quot;SessionToken&quot;: &quot;)[^&quot;]+&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">echo</span> <span class="s2">&quot;export AWS_ACCESS_KEY_ID=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">credential</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=&quot;AccessKeyId&quot;: &quot;)[^&quot;]+&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">echo</span> <span class="s2">&quot;export AWS_SECRET_ACCESS_KEY=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">credential</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=&quot;SecretAccessKey&quot;: &quot;)[^&quot;]+&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="ref-aws-cli-using-param-file" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td><a class="reference external" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-file">https://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-file</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ref-aws-cli-mfa" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td><a class="reference external" href="https://aws.amazon.com/jp/premiumsupport/knowledge-center/authenticate-mfa-cli/">https://aws.amazon.com/jp/premiumsupport/knowledge-center/authenticate-mfa-cli/</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="memo_oas.html" class="btn btn-neutral float-right" title="Open API Specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="memo_powershell.html" class="btn btn-neutral" title="PowerShell" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

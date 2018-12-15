@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>クラスの導入 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>クラスの導入</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/articles_oop_intro_1.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1><a class="toc-backref" href="#id12">クラスの導入</a><a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>2017-03-08 09:00:00</p>
+<div class="contents topic" id="id2">
+<p class="topic-title first">目次</p>
+<ul class="simple">
+<li><a class="reference internal" href="#id1" id="id12">クラスの導入</a></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>要旨<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="id4">
+<h2>はじめに<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Python における、クラスの利用方法について説明する。</p>
+<p>本稿は、Python のいくつかの組み込み型や関数を利用方法については理解しているが、
+クラスという構文の利用方法がわからないというレベルの読者を想定したメモである。</p>
+<p>はじめに、関数とタプルを使ったオブジェクトのエミュレートにより、
+クラスのイメージをつかみ、その後実際にクラスという構文を導入する。</p>
+</div>
+<div class="section" id="id5">
+<h2>対象外<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>本稿は、クラスという構文の利用方法の体得を目的とし、
+オブジェクト指向プログラミングをはじめ、
+オブジェクト指向分析やオブジェクト指向設計については、
+説明を行わない。</p>
+</div>
+<div class="section" id="id6">
+<h2>初期化関数<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>まず、関数とタプルを使いオブジェクトをエミュレートする。</p>
+<p>ここでは、カウンターを実装する。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_counter</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">()</span>
+</pre></div>
+</div>
+<p>カウンターオブジェクトの生成は、 <code class="docutils literal"><span class="pre">create_counter()</span></code> 関数から行うと約束する。</p>
+</div>
+<div class="section" id="id7">
+<h2>データ構造の定義<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>カウンターであるから、現在のカウントが保持できる必要がある</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_counter</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
+</pre></div>
+</div>
+<p>カウンターは、タプルの 1 番目の要素をカウントとして使うことにする。</p>
+<p>さて、カウンターは自分の名前を持つようにしたいとする</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_counter</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>そこで、タプルの 2 番目の要素はカウンターの名前であると約束する。</p>
+<p>こうして、タプルの 1 番目にカウント、 2 番目に名前をもつデータ構造が <code class="docutils literal"><span class="pre">create_counter()</span></code> によって作れるようになった。</p>
+</div>
+<div class="section" id="id8">
+<h2>手続きの追加<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>さて、データ構造だけが作られても、カウンターとして使うことはできない。</p>
+<p>まずは、カウンターに今のカウントを報告させるようにしたい。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">report_count_of</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;counter {n}: {c}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">counter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="n">counter</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>これでカウンターに現在のカウントを報告させることができるようになった。</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cnt</span> <span class="o">=</span> <span class="n">create_counter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;hoge&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report_count_of</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+<span class="go">&#39;&lt;counter hoge: 0&gt;&#39;</span>
+</pre></div>
+</div>
+<p>しかしこのカウンターは、カウンターでありながら、カウントを変更することができない。</p>
+<p>そこで、カウントを 1 つあげる <code class="docutils literal"><span class="pre">countup()</span></code> 関数を定義して、カウントアップができるようにする。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">countup</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">create_counter</span><span class="p">(</span>
+        <span class="n">counter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">counter</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>この関数は、カウンターのカウントを取得して、 1 足した結果をから、
+あたらしいカウンターのデータ構造を返す。</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cnt</span> <span class="o">=</span> <span class="n">create_counter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;hoge&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report_count_of</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+<span class="go">&#39;&lt;counter hoge: 0&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cnt</span> <span class="o">=</span> <span class="n">countup</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cnt</span> <span class="o">=</span> <span class="n">countup</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cnt</span> <span class="o">=</span> <span class="n">countup</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cnt</span> <span class="o">=</span> <span class="n">countup</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">report_count_of</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+<span class="go">&#39;&lt;counter hoge: 4&gt;&#39;</span>
+</pre></div>
+</div>
+<p>こうして、無事にカウントアップができるようになった。</p>
+<p>ところで、 <code class="docutils literal"><span class="pre">report_count_of()</span></code> と <cite>countup()`</cite> の両関数は、
+それぞれ、タプルの添字を使っており、タプルの何番目に何が入っているのかを
+知っていなければならない。</p>
+<p>そこで、添字ではなく名前を使ってデータ構造内の要素へアクセスできるようにする。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_counter</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="n">count</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">report_count_of</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;counter {n}: {c}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">c</span><span class="o">=</span><span class="n">get</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">),</span>
+        <span class="n">n</span><span class="o">=</span><span class="n">get</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">countup</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">create_counter</span><span class="p">(</span>
+        <span class="n">get</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">get</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>クラス<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Counter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">report_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;counter {n}: {c}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span>
+            <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">countup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">create_counter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">create_counter</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+    <span class="n">cnt</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+    <span class="n">cnt</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">cnt</span>
+</pre></div>
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">create_counter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;fuga&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">c2</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">c2</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">c2</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span><span class="o">.</span><span class="n">report_count</span><span class="p">()</span>
+<span class="go">&#39;&lt;counter fuga: 3&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="init">
+<h2>__init__<a class="headerlink" href="#init" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Counter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">report_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;counter {n}: {c}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span>
+            <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">countup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="n">c3</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="n">c3</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="n">c3</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="n">c3</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span><span class="o">.</span><span class="n">report_count</span><span class="p">()</span>
+<span class="go">&#39;&lt;counter foo: 4&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>状態<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Counter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">def</span> <span class="nf">report_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;counter {n}: {c}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span>
+            <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">countup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">countup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span><span class="o">.</span><span class="n">report_count</span><span class="p">()</span>
+<span class="go">&#39;&lt;counter bar: 8&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>参考文献<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

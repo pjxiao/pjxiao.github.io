@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bash で Slack RTM を読めるようにした &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Bash で Slack RTM を読めるようにした</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/articles_read_binary_with_bash.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="bash-slack-rtm">
+<h1>Bash で Slack RTM を読めるようにした<a class="headerlink" href="#bash-slack-rtm" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="rtm">
+<h2>RTM に接続する<a class="headerlink" href="#rtm" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>RTM API のエンドポイント (<code class="docutils literal"><span class="pre">https://slack.com/api/rtm.start?token=${SLACK_ACCESS_TOKEN}</span></code> ) に curl(1) でつなぎに行く。</p>
+<p>WebSocket への Handshake に成功すると、そのままデータフレームが送られてくる。</p>
+<p>Bash の組み込みコマンドだけでやろうと思ったら <code class="docutils literal"><span class="pre">/dev/tcp</span></code> とかでつなぎに行けば良いが、さすがにめんどくさいのでそこまではしなかった。</p>
+<p>また、 curl(1) は WebSocket から継続的に流れてくるパケットを受け取り続けるみたいな使い方をするものではないので、
+コネクションがしばらくすると死んでしまう。</p>
+<p>なので、無限ループで curl(1) のプロセスがリスポーンするようにする。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">HERE</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span> <span class="nb">cd</span> <span class="s2">&quot;</span><span class="k">$(</span> dirname <span class="s2">&quot;</span><span class="si">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">)</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">pwd</span> <span class="k">)</span><span class="s2">&quot;</span>
+
+rtm<span class="o">()</span>
+<span class="o">{</span>
+    <span class="k">while</span> :
+    <span class="k">do</span>
+
+        <span class="nb">local</span> <span class="nv">wss</span><span class="o">=</span><span class="k">$(</span>curl <span class="s1">&#39;https://slack.com/api/rtm.start?token=${SLACK_ACCESS_TOKEN}&#39;</span> <span class="p">|</span> tr -d <span class="s1">&#39; &#39;</span> <span class="p">|</span> grep -Po <span class="s1">&#39;(?&lt;=&quot;url&quot;:&quot;wss)[^&quot;]+&#39;</span> <span class="p">|</span> tr -d <span class="s1">&#39;\&#39;</span><span class="k">)</span>
+        curl -m <span class="m">0</span> -i -N <span class="se">\</span>
+            -H <span class="s1">&#39;Sec-WebSocket-Version: 13&#39;</span> <span class="se">\</span>
+            -H <span class="s2">&quot;Sec-WebSocket-Key: </span><span class="k">$(</span>head -c <span class="m">16</span> /dev/urandom <span class="p">|</span> base64<span class="k">)</span><span class="s2">&quot;</span> <span class="se">\</span>
+            -H <span class="s2">&quot;Connection: Upgrade&quot;</span> <span class="se">\</span>
+            -H <span class="s2">&quot;Upgrade: websocket&quot;</span> <span class="se">\</span>
+            https<span class="si">${</span><span class="nv">wss</span><span class="si">}</span> <span class="m">2</span>&gt;/dev/null <span class="p">|</span> bash <span class="si">${</span><span class="nv">HERE</span><span class="si">}</span>/readbin.bash
+    <span class="k">done</span>
+<span class="o">}</span>
+
+
+main<span class="o">()</span>
+<span class="o">{</span>
+    <span class="nb">local</span> <span class="nv">command</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span>
+    <span class="nb">shift</span>
+
+    <span class="k">case</span> <span class="nv">$command</span> in
+        rtm<span class="o">)</span>
+            rtm <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+            <span class="p">;;</span>
+        *<span class="o">)</span>
+            <span class="k">return</span> <span class="m">1</span>
+            <span class="p">;;</span>
+    <span class="k">esac</span>
+    <span class="k">return</span> <span class="m">0</span>
+<span class="o">}</span>
+
+main <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

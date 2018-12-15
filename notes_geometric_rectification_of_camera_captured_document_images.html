@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>雑メモ: Geometric Rectification of Camera-captured Document Images &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="詰み" href="notes.html"/>
+        <link rel="next" title="入門数理統計学" href="notes_hoel.html"/>
+        <link rel="prev" title="雑メモ: Flattening curved documents in images" href="notes_flattening_curved_documents_in_images.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">雑メモ: Geometric Rectification of Camera-captured Document Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">条件</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#approch">Approch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#a-overview">A. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#b-preprocessing">B. Preprocessing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_structured.html">構造化分析とシステム仕様</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+      <li>雑メモ: Geometric Rectification of Camera-captured Document Images</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_geometric_rectification_of_camera_captured_document_images.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="geometric-rectification-of-camera-captured-document-images">
+<h1>雑メモ: Geometric Rectification of Camera-captured Document Images<a class="headerlink" href="#geometric-rectification-of-camera-captured-document-images" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>カメラで撮ったドキュメントの歪みを、ドキュメントに書かれたテキストの配置から修正する</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">J</span><span class="o">.</span> <span class="n">Liang</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span> <span class="n">DeMenthon</span> <span class="ow">and</span> <span class="n">D</span><span class="o">.</span> <span class="n">Doermann</span><span class="p">,</span> <span class="s2">&quot;Geometric Rectification of Camera-Captured Document Images,&quot;</span> <span class="ow">in</span> <span class="n">IEEE</span> <span class="n">Transactions</span> <span class="n">on</span> <span class="n">Pattern</span> <span class="n">Analysis</span> <span class="ow">and</span> <span class="n">Machine</span> <span class="n">Intelligence</span><span class="p">,</span> <span class="n">vol</span><span class="o">.</span> <span class="mi">30</span><span class="p">,</span> <span class="n">no</span><span class="o">.</span> <span class="mi">4</span><span class="p">,</span> <span class="n">pp</span><span class="o">.</span> <span class="mi">591</span><span class="o">-</span><span class="mi">605</span><span class="p">,</span> <span class="n">April</span> <span class="mf">2008.</span>
+<span class="n">doi</span><span class="p">:</span> <span class="mf">10.1109</span><span class="o">/</span><span class="n">TPAMI</span><span class="o">.</span><span class="mf">2007.70724</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">URL:</th><td class="field-body"><a class="reference external" href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=4359339&amp;isnumber=4480721">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=4359339&amp;isnumber=4480721</a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last">進捗: まだ P.7 あたり。むずいので 「Flattening curved documents in images,」 を先に読む</p>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id1">
+<h3>条件<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>だいたいのデジカメはこの条件を満たす</p>
+<ol class="arabic simple">
+<li>ドキュメントに十分な量の文章が印刷されていること</li>
+<li>ドキュメントが平らか緩やかに曲がっていること（引き裂かれていたり、折り目があったりしないこと）</li>
+<li>カメラが一般的なピンホールカメラであり、縦横のサンプリング比が 1:1 であり、主点が画像の中央に位置すること</li>
+</ol>
+</div>
+</div>
+<div class="section" id="approch">
+<h2>Approch<a class="headerlink" href="#approch" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="a-overview">
+<h3>A. Overview<a class="headerlink" href="#a-overview" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="arabic simple">
+<li>テキストエリアとテキストの流れ (texture flow fields) を検出する</li>
+<li>ページが平面なのか曲がっているのか、テキストの流れの線形性（linearity property）から区別する</li>
+<li>平面もしくはカーブしたページの幾何学的性質を使って、ページの 3D 形状（3D shape）を推測する</li>
+<li>歪みを補正するのに 3D 形状を利用する</li>
+<li>スキャンしたような画像が得られる</li>
+</ol>
+</div>
+<div class="section" id="b-preprocessing">
+<h3>B. Preprocessing<a class="headerlink" href="#b-preprocessing" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="d-texture-flow-detection-in-document-images">
+<h4>1) 2D Texture Flow Detection in Document Images<a class="headerlink" href="#d-texture-flow-detection-in-document-images" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>まず、 binarize された画像からテキストの場所を検出する（テキスト認識、text identification）。
+テキスト検出は gradient-based method <a class="footnote-reference" href="#ref-gradient-based-method" id="id2">[1]</a> を用いる。</p>
+<p>テキストが見つかったら、テキストの行（major text flow）と文字の縦の方向（minor text flow、vertical character stroke directions）を検出する</p>
+<p>major text flow の検出は、local な skew detection problem （傾き検出）と考える。
+スキャナで取り込んだ画像の場合、傾き（skew angle）はページ全体で一定だが、カメラで取り込んだ曲がったテキストの場合はページ内で一定しない。
+projection profile analysis を用いて小さいエリアの skew angle を検出する。エラーの低減とスムーズ化のために  relaxation labeling approach <a class="footnote-reference" href="#ref-relaxation-labeling-approach" id="id3">[2]</a> を用いる。</p>
+<p>線形構造（linear structure）の検出のために directilnal filter （エッジ検出手法のひとつ）を用いる。vertical stroke はページ内で共通する。フィルタの角度と文字の角度が一致する場合に、出力が最大化される。</p>
+</div>
+<div class="section" id="surface-classification">
+<h4>2) Surface Classiﬁcation<a class="headerlink" href="#surface-classification" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>透視投影は線形性を維持する。紙が平面であれば画像に映るテキストもまっすぐになり、共通の消失点を持つ。一方で紙が曲がっていれば、そうならない。
+このことを利用して、紙が平面か曲がっているかを分類できる。この手法では、 major flow を用いて分類する。</p>
+<ul class="simple">
+<li><cite>left{bm{l}_iright}</cite> を text flow の接線とする</li>
+<li>消失点を <cite>bm{v}</cite> とする</li>
+<li>紙が平面ならば <cite>bm{l}_i^Tbm{v} = 0, {forall}i</cite></li>
+</ul>
+<table class="docutils footnote" frame="void" id="ref-gradient-based-method" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><ol class="first last upperalpha simple" start="10">
+<li>Liang, D. DeMenthon, and D. Doermann, “Flattening curved documents in images,” in Proceedings of the Conference on Computer Vision and Pattern Recognition, 2005, pp. 338345</li>
+</ol>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ref-relaxation-labeling-approach" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td><ol class="first last upperalpha simple" start="18">
+<li><ol class="first upperalpha">
+<li>Hummel and S. W. Zucker, “On the foundations of relaxation labeling processes,” IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 5, pp. 267287, 1983.</li>
+</ol>
+</li>
+</ol>
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_hoel.html" class="btn btn-neutral float-right" title="入門数理統計学" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_flattening_curved_documents_in_images.html" class="btn btn-neutral" title="雑メモ: Flattening curved documents in images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

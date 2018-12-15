@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>構造化分析とシステム仕様 &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="詰み" href="notes.html"/>
+        <link rel="next" title="雑メモ: Ten simple rules for scientists: Improving your writing productivity" href="notes_ten_simple_rules_for_scientists.html"/>
+        <link rel="prev" title="統計検定1級公式テキスト" href="notes_stat_grade_1.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="notes.html">詰み</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notes_distcomp.html">Distributed computing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_flattening_curved_documents_in_images.html">雑メモ: Flattening curved documents in images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_geometric_rectification_of_camera_captured_document_images.html">雑メモ: Geometric Rectification of Camera-captured Document Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_hoel.html">入門数理統計学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pandas_10min.html">10 Minutes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_pyml.html">Python機械学習プログラミング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_set_and_topology.html">集合・位相入門</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_stat_grade_1.html">統計検定1級公式テキスト</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">構造化分析とシステム仕様</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4. データーフロー・ダイヤグラム</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.1 データーフロー・ダイヤグラムとはなにか</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.2 データーフロー・ダイヤグラムの類似概念</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.3 データーフロー・ダイヤグラムの特徴</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">5. データーフロー・ダイヤグラムの規則</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">5.1 データフロー・ダイヤグラムの要素</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">5.2 データフロー・ダイヤグラムの注釈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">5.3 全体把握の法則</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notes_ten_simple_rules_for_scientists.html">雑メモ: Ten simple rules for scientists: Improving your writing productivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_what_is_the_x_window_system.html">What Is the X Window System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes_the_republic.html">国家</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id2">未整理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html#id3">参考例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="notes.html">詰み</a> &raquo;</li>
+        
+      <li>構造化分析とシステム仕様</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notes_structured.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1>構造化分析とシステム仕様<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>4. データーフロー・ダイヤグラム<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h3>4.1 データーフロー・ダイヤグラムとはなにか<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>データーフロー・ダイヤグラム</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>4.2 データーフロー・ダイヤグラムの類似概念<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>DFD, データフローグラフ, バブルチャート</li>
+<li>ペーパーチャート, ドキュメントフローダイヤグラム, ペトリネットワーク</li>
+<li>順応性</li>
+<li>SADT</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>4.3 データーフロー・ダイヤグラムの特徴<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>データーフロー・ダイヤグラムの特徴</li>
+<li>観点</li>
+<li>古典的分析</li>
+<li>データの観点</li>
+<li>データとの対話</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>5. データーフロー・ダイヤグラムの規則<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id7">
+<h3>5.1 データフロー・ダイヤグラムの要素<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>データフロー</li>
+<li>プロセス</li>
+<li>ファイル</li>
+<li>データ源泉</li>
+<li>データ吸収</li>
+<li>変換</li>
+</ul>
+<div class="section" id="id8">
+<h4>5.1.1 第 1 の要素: データーフロー<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>要素間のインタフェース</li>
+<li>システム内外のファイル</li>
+<li>名前付きの矢印</li>
+<li>既知の情報</li>
+<li>パイプライン</li>
+<li>独立したデーターフロー</li>
+<li>目的</li>
+<li>あいまい</li>
+<li>簡単に名前がつくか</li>
+<li>構成要素</li>
+<li>分割</li>
+<li>表記上の規則</li>
+<li>同じ名前</li>
+<li>追加情報</li>
+<li>単一ファイル</li>
+<li>意識の流れ</li>
+<li>始動因子</li>
+<li>先延ばし</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h4>5.1.2 第 2 の要素: プロセス<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>処理</li>
+<li>変換</li>
+<li>バブル</li>
+<li>名前</li>
+<li>概要</li>
+<li>概観図</li>
+<li>番号</li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h4>5.1.3 第 3 の要素: ファイル<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>一時的なデータの貯蔵庫</li>
+<li>表記法</li>
+<li>物理的性質</li>
+<li>ファイル名</li>
+<li>意味のある名前</li>
+<li>矢印の向き</li>
+<li>最終的なフロー</li>
+</ul>
+</div>
+<div class="section" id="id11">
+<h4>5.1.4 第 4 の要素: データ源泉とデータ吸収<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>システムの入力</li>
+<li>どこから</li>
+<li>システムの出力</li>
+<li>どこに</li>
+<li>データ源泉</li>
+<li>データ吸収</li>
+<li>対象システム外</li>
+<li>システム</li>
+<li>自動処理</li>
+<li>手作業</li>
+<li>自動処理以外</li>
+<li>分析対象</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id12">
+<h3>5.2 データフロー・ダイヤグラムの注釈<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>注釈</li>
+<li>結合</li>
+<li>分離</li>
+<li>基本</li>
+<li>分析段階</li>
+<li>手綱</li>
+<li>分割</li>
+<li>手続き上の関係</li>
+</ul>
+</div>
+<div class="section" id="id13">
+<h3>5.3 全体把握の法則<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>検討すべき事柄</li>
+<li>物理的</li>
+<li>先送り</li>
+<li>全体把握の法則</li>
+<li>後回し</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notes_ten_simple_rules_for_scientists.html" class="btn btn-neutral float-right" title="雑メモ: Ten simple rules for scientists: Improving your writing productivity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_stat_grade_1.html" class="btn btn-neutral" title="統計検定1級公式テキスト" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

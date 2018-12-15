@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sphinxcontrib-newsfeed &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="up" title="Articles" href="feed.html"/>
+        <link rel="prev" title="Debian jessie (8) を Mac Book Pro 11,5 にセットアップする" href="articles_setup-debian-8-on-mbp-11-5.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo.html">覚え書き</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="feed.html">Articles</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="articles_design_2017.html">分析・設計本所感</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w15.html">日記 2017-W15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w14.html">日記 2017-W14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w13.html">日記 2017-W13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w12.html">日記 2017-W12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_row_level_ac.html">行レベルのアクセス制御</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_missing_values.html">欠測データの統計科学受講ノート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w02.html">日記 2017-W02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weeklyreport_2017w01.html">日記 2017-W01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="articles_setup-debian-8-on-mbp-11-5.html">Debian jessie (8) を Mac Book Pro 11,5 にセットアップする</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">sphinxcontrib-newsfeed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">環境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">手順</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">1. sphinxcontrib-newsfeed のインストール</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conf-py">2.conf.py の修正</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feed-rst">3. feed.rst の作成</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rss-rst">4. RSS 配信対象の .rst を作成する</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="feed.html">Articles</a> &raquo;</li>
+        
+      <li>sphinxcontrib-newsfeed</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/articles_sphinxcontrib-newsfeed.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="sphinxcontrib-newsfeed">
+<h1>sphinxcontrib-newsfeed<a class="headerlink" href="#sphinxcontrib-newsfeed" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>2016-11-27</p>
+<p>Sphinx でサイトを生成するようにしたので、 <a class="reference external" href="https://pypi.python.org/pypi/sphinxcontrib-newsfeed">sphinxcontrib-newsfeed</a> で RSS を配信できるようにした。</p>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last">この拡張は Sphinx 1.6 にしたら死んだ</p>
+</div>
+<div class="section" id="id2">
+<h2>環境<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">OS:</th><td class="field-body">Debian 8.5 (AMD64)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Pyhon:</th><td class="field-body">CPython 3.4.2</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">pip:</th><td class="field-body">9.0.1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Sphinx:</th><td class="field-body">1.4.8</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">sphinxcontrib-newsfeed:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">0.1.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id3">
+<h2>手順<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h3>1. sphinxcontrib-newsfeed のインストール<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>pip でインストールすることができる。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> workon myvenv
+<span class="gp">$</span> pip install sphinxcontrib-newsfeed
+</pre></div>
+</div>
+</div>
+<div class="section" id="conf-py">
+<h3>2.conf.py の修正<a class="headerlink" href="#conf-py" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">conf.py</span></code> の <code class="docutils literal"><span class="pre">extensions</span></code> に <code class="docutils literal"><span class="pre">'sphinxcontrib.newsfeed'</span></code> を追加する</p>
+<div class="highlight-diff"><div class="highlight"><pre><span></span><span class="gd">--- conf.py.old</span>
+<span class="gi">+++ conf.py</span>
+<span class="gu">@@ -1,3 +1,4 @@</span>
+ extensions = [
+     # ...
+<span class="gi">+    &quot;sphinxcontrib.newsfeed&quot;,</span>
+ ]
+</pre></div>
+</div>
+</div>
+<div class="section" id="feed-rst">
+<h3>3. feed.rst の作成<a class="headerlink" href="#feed-rst" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>RSS ファイルの生成には、 <code class="docutils literal"><span class="pre">feed</span></code> ディレクティブを呼び出す必要があるが、
+呼び出し箇所にはフィードが出力されてしまい邪魔なので、
+呼び出し用に <code class="docutils literal"><span class="pre">feed.rst</span></code> を作成する</p>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="cp">.. feed.rst</span>
+
+<span class="p">..</span> <span class="ow">feed</span><span class="p">::</span>
+   <span class="nc">:rss:</span> <span class="nf">index.xml</span>
+   <span class="nc">:title:</span> <span class="nf">CHANNEL-TITLE</span>
+   <span class="nc">:link:</span> <span class="nf">http://example.com/</span>
+</pre></div>
+</div>
+<p>この時点で、 <code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code> すれば、 <code class="docutils literal"><span class="pre">index.xml</span></code> に RSS ファイルが出力される。</p>
+</div>
+<div class="section" id="rss-rst">
+<h3>4. RSS 配信対象の .rst を作成する<a class="headerlink" href="#rss-rst" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>RSS 配信対象とするには、まず、
+配信対象としたい rst 内で <code class="docutils literal"><span class="pre">feed-entry</span></code> ディレクティブを呼び出す。</p>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="cp">.. my_article.rst</span>
+
+<span class="p">..</span> <span class="ow">feed-entry</span><span class="p">::</span>
+   <span class="nc">:date:</span> <span class="nf">2016-11-27</span>
+</pre></div>
+</div>
+<p>次に、先ほど作成した <code class="docutils literal"><span class="pre">feed</span></code> ディレクティブ内で
+<code class="docutils literal"><span class="pre">feed-entry</span></code> を呼び出した配信対象の rst 指定する。</p>
+<p><code class="docutils literal"><span class="pre">feed</span></code> ディレクティブでの配信対象の rst の指定方法は、
+<code class="docutils literal"><span class="pre">toctree</span></code> の記述方法と似ている。</p>
+<div class="highlight-rst"><div class="highlight"><pre><span></span><span class="cp">.. feed.rst</span>
+
+<span class="p">..</span> <span class="ow">feed</span><span class="p">::</span>
+   <span class="nc">:rss:</span> <span class="nf">index.xml</span>
+   <span class="nc">:title:</span> <span class="nf">CHANNEL-TITLE</span>
+   <span class="nc">:link:</span> <span class="nf">http://example.com/</span>
+
+   my_article
+</pre></div>
+</div>
+<p>この状態で <code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code> すれば、 <code class="docutils literal"><span class="pre">my_article.rst</span></code> が出力された RSS ファイルに反映される。</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="articles_setup-debian-8-on-mbp-11-5.html" class="btn btn-neutral" title="Debian jessie (8) を Mac Book Pro 11,5 にセットアップする" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

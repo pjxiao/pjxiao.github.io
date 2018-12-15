@@ -1,0 +1,147 @@
+=============
+日記 2017-W15
+=============
+
+2017-04-10 09:00:00
+
+田中芳樹 (1985) 『銀河英雄伝説』 トクマ・ノベルズ:
+
+  戦術レベルでの勝利が戦略レベルでの敗北をつぐなえないというのは軍事上の常識だ
+
+最近のこと
+----------
+- Postmark の Inbound Webhook を試した
+
+  - GAS で ``doPost`` 関数を定義して、適当な *HtmlOutput* を返し、 Web アプリケーションとして導入した
+
+    .. code-block:: javascript
+
+      function doPost(e) {
+        var p = JSON.parse(e.postData.contents);
+        MailApp.sendEmail(
+          'user@example.com',
+          'testing',
+          e.postData.contents
+        );
+        return HtmlService.createHtmlOutput('OK');
+      }
+
+  - Postmark の設定画面で **Servers** -> **example.com** -> **Settings** -> **Inbound** と遷移し、
+    **Webhook** に GAS の場所を設定した
+  - 後から気づいたが、設定フォーム横の **Check** ボタンを押すとサンプルリクエストが Webhook に投げられ、動作を確認できる
+  - *ContentService* を使わず *HtmlService* を使っているのは、 *ContentService* の場合、
+    一度リダイレクトがかかってからレスポンスボディが送信され、 Postmark 側がエラーとして処理するため
+
+- LXC コンテナからインターネットに出たかったので、
+  とりあえず veth ペアと IP マスカレードの設定方法を確認
+
+  veth ペアの作成には irix_jp (2012) の記事 [#REF_IRIX_JP_2012]_ を
+  IP マスカレードの設定には lxc-net [#LINK_LXCNET]_ の実装を参考にした。
+
+  .. code-block:: console
+
+    $ # netns の作成
+    $ sudo ip netns add demons0
+    $ # 作成した netns の確認
+    $ sudo ip netns list
+    demons0
+    $ # 作成した netns 内でシェルを起動
+    $ sudo ip netns exec demons0 su -l xxxx
+    $ # 各デバイスの IP アドレスの表示
+    $ ip a
+    1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    $ # ルートテーブルの表示
+    $ sudo route -n
+    Kernel IP routing table
+    Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+    $ # iptables の表示
+    $ sudo iptables -S
+    -P INPUT ACCEPT
+    -P FORWARD ACCEPT
+    -P OUTPUT ACCEPT
+    $ # 一度抜ける
+    $ exit
+    logout
+    $ # veth ペアの作成
+    $ sudo ip link add name demoveth0-hst type veth peer name demoveth0-clt
+    $ # 片方を netns に所属させる
+    $ sudo ip link set demoveth0-clt netns demons0
+    $ # netns 内のデバイスを確認
+    $ sudo ip netns exec demons0 ip a
+    1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    5: demoveth0-clt: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
+        link/ether a2:97:38:ef:d3:56 brd ff:ff:ff:ff:ff:ff
+    $ # アドレスの設定
+    $ sudo ip netns exec demons0 ip link set demoveth0-clt up
+    $ sudo ip netns exec demons0 ip addr add 172.42.0.2/24 dev demoveth0-clt
+    $ # アドレスの確認
+    $ sudo ip netns exec demons0 ip a
+    1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    5: demoveth0-clt: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+        link/ether a2:97:38:ef:d3:56 brd ff:ff:ff:ff:ff:ff
+        inet 172.42.0.2/24 scope global demoveth0-clt
+           valid_lft forever preferred_lft forever
+    $ # ブリッジの作成
+    $ sudo ip link add demobr0 type bridge
+    $ sudo ip link set dev demobr0 address 00:16:3f:00:00:00
+    $ sudo ip link set dev demobr0 up
+    $ sudo ip addr add 172.42.0.1/24 dev demobr0
+    $ # ブリッジへ veth ペアを接続
+    $ sudo ip link set dev demoveth0-hst master demobr0
+    $ # netns 内にルートテーブルを設定する
+    $ sudo ip netns exec demons0 route add default gw 172.42.0.1
+    $ # NAT の設定
+    $ sudo iptables -A FORWARD -o demobr0 -j ACCEPT
+    $ sudo iptables -A FORWARD -i demobr0 -j ACCEPT
+    $ sudo iptables -t nat -A POSTROUTING -s 172.42.0.0/24 ! -o demobr0 -j MASQUERADE
+    $ # 疎通確認
+    $ sudo ip netns exec demons0 ping -W 1 -c 1 hirai.me
+    PING hirai.me (160.16.235.236) 56(84) bytes of data.
+    64 bytes from tk2-259-39482.vs.sakura.ne.jp (160.16.235.236): icmp_seq=1 ttl=127 time=3.98 ms
+
+    --- hirai.me ping statistics ---
+    1 packets transmitted, 1 received, 0% packet loss, time 0ms
+    rtt min/avg/max/mdev = 3.982/3.982/3.982/0.000 ms
+
+- 近況
+
+  - ポリモーフィズムとは一体何だったのか
+  - 戦術の濫用の先に見える地獄
+
+- 珈琲にブランデーをぶち込むとうまい
+
+  - 薫り付けなのでたくさん入れた方が上手いが体調を崩す
+
+- メール
+
+  メール内の IFRMAE は Gmail も MS メールも認識してくれない
+
+- ``audio/webm`` と ``video/webm`` の結合
+
+  .. code-block:: console
+
+    $ avconv -i video.webm -i audio.webm -c:v copy -c:a copy out.webm
+
+調べておきたいこと
+------------------
+- チェビシェフの不等式
+- Paxos Leaner
+- Paxos Leader Lease
+- いくつかの代表的な MV* アーキテクチャ
+- C のデバッガ
+
+最近読んだ文章
+--------------
+-
+
+見つけたもの
+------------
+- https://baremetal.jp/price/
+
+脚注
+----
+.. [#LINK_LXCNET] https://github.com/lxc/lxc/blob/4f4e714/config/init/common/lxc-net.in
+.. [#REF_IRIX_JP_2012] http://aikotobaha.blogspot.jp/2012/10/linux-network-namespace.html

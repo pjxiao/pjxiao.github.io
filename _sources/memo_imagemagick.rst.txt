@@ -1,0 +1,63 @@
+===========
+ImageMagick
+===========
+
+ImageMagick
+
+Installation
+============
+
+Windows
+-------
+
+::
+
+  > choco.exe install -y imagemagick
+  > # install also ghostscript if you want use PDFs
+  > choco.exe install -y ghostscript
+
+
+Usage
+=====
+
+PDF to PNG
+----------
+
+Convert PDF to PNGs.
+
+::
+
+  > magick.exe convert MYPDF.pdf MYPDF.png
+
+
+-trim
+-----
+
+角のピクセルの色基準で自動切り抜きを行う。 [#CONVERT_TRIM]_
+
+Simple usage::
+
+  > magick.exe conver bordered-image.png trimed-image.png
+
+特定の方向だけ切り抜きたい場合は、小細工が必要。 [#TRIM_ONESIDE]_
+
+1. 切り抜きたい辺と平行な辺（左側を切り抜きたければ右側）に、2 色（例えば黒と白）の 1 ピクセルの線を追加する
+2. 切り抜きを行う
+3. 追加した線を消す
+
+::
+
+  $ magic covnert \
+    # 左側を切り抜きたいケース
+    -gravity East \
+    # 右側に白の線を追加（この線があるので縦方向は切り抜かれない）
+    -background white -splice 1x0 \
+    # 右側に黒の線を追加（この線は -trim で消える）
+    -background white -splice 1x0 \
+    # 切り抜き
+    -trim +repage
+    # 白の線を消す（黒の線は -trim で消えている）
+    -chop 1x0
+
+.. [#CONVERT_TRIM] https://www.imagemagick.org/script/command-line-options.php?#trim
+.. [#TRIM_ONESIDE] http://www.imagemagick.org/Usage/crop/#trim_oneside

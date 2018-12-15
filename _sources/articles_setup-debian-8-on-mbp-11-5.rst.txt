@@ -1,0 +1,103 @@
+=========================================================
+Debian jessie (8) を Mac Book Pro 11,5 にセットアップする
+=========================================================
+
+Setting up Debian jessie (8) on Mac Book Pro 11,5 (Retina mid 2015)
+
+2017-01-04
+
+.. contents::
+   :depth: 3
+
+日本語
+======
+
+状況
+----
+一部の手順が不完全である。
+
+制限
+----
+- シャットダウン時に電源が落ちない
+- デフォルトのカーネル (3.16) では brcmfmac が無線 LAN をサポートしていない
+- より詳細な情報はこの `記事 <https://teamsammut.com/blog/2015/09/apple-macbook-pro-linux-issue-tracking.html>`_ を参照してください
+
+大まかな手順
+------------
+#. jessie-backports の non-free, main, contrib レポジトリを追加
+#. 次のパッケージをインストールする
+
+   .. caution:: この手順でカーネルが 4.7 にアップグレードされること
+
+   - `linux-image-4.7.0-0.bpo.1-amd64 <https://packages.debian.org/jessie-backports/kernel/linux-image-4.7.0-0.bpo.1-amd64>`_
+   - `firmware-brcm80211 <https://packages.debian.org/jessie-backports/firmware-brcm80211>`_
+   - `firmware-linux <https://packages.debian.org/jessie-backports/firmware-linux>`_
+   - `firmware-linux-nonfree <https://packages.debian.org/jessie-backports/firmware-linux-nonfree>`_
+
+#. タッチパッドの設定
+
+   - Debian wiki の通り [#DEBIAN_WIKI_MBP]_ ``~/.Xmodmap`` の設定
+   - Debian wiki の通り [#DEBIAN_WIKI_SYNAPTICS]_ ``/etc/X11/xorg.conf.d/synaptics.conf`` の設定
+
+#. バックライトの輝度を制御するため ``setpci -v -H1 -s 00:01.00 BRIDGE_CONTROL=0`` を ``/etc/rc.local`` に追記する
+#. （任意）ファンクションキーの挙動を変更し、 ``Fn`` キーを押したときに特殊キーが押されるようにする [#UBUNTU_WIKI_APPLE_KEYBOARD]_
+
+   /etc/rc.local::
+
+     echo 2 > /sys/module/hid_apple/parameters/fnmode
+
+参考
+----
+- https://wiki.archlinux.org/index.php/MacBookPro11,x
+- https://wiki.debian.org/MacBookPro
+- https://wiki.debian.org/SynapticsTouchpad
+- https://teamsammut.com/blog/2015/09/apple-macbook-pro-linux-issue-tracking.html
+- https://help.ubuntu.com/community/AppleKeyboard
+
+English
+=======
+
+Status
+------
+There are still uncompleted steps.
+
+Limitations
+-----------
+- Unable to poweroff.
+- brcmfmac in default kernel (3.16) does not support Wi-Fi adapter.
+- Refere this `article <https://teamsammut.com/blog/2015/09/apple-macbook-pro-linux-issue-tracking.html>`_ to know more details.
+
+Rough steps
+-----------
+#. Add a repository non-free, main, contrib of jessie-backports
+#. Install following packages
+
+   .. caution:: kernel will be upgraded to 4.7 in this step.
+
+   - `linux-image-4.7.0-0.bpo.1-amd64 <https://packages.debian.org/jessie-backports/kernel/linux-image-4.7.0-0.bpo.1-amd64>`_
+   - `firmware-brcm80211 <https://packages.debian.org/jessie-backports/firmware-brcm80211>`_
+   - `firmware-linux <https://packages.debian.org/jessie-backports/firmware-linux>`_
+   - `firmware-linux-nonfree <https://packages.debian.org/jessie-backports/firmware-linux-nonfree>`_
+
+#. Configure touchpad
+
+   - Configure ``~/.Xmodmap`` as Debian wiki [#DEBIAN_WIKI_MBP]_
+   - Configure ``/etc/X11/xorg.conf.d/synaptics.conf`` as Debian wiki [#DEBIAN_WIKI_SYNAPTICS]_
+
+#. Add ``setpci -v -H1 -s 00:01.00 BRIDGE_CONTROL=0`` to ``/etc/rc.local`` to control backlight brightness
+#. (Optional) Change function key behaviors [#UBUNTU_WIKI_APPLE_KEYBOARD]_
+
+   /etc/rc.local::
+
+     echo 2 > /sys/module/hid_apple/parameters/fnmode
+
+References
+----------
+- https://wiki.archlinux.org/index.php/MacBookPro11,x
+- https://wiki.debian.org/MacBookPro
+- https://wiki.debian.org/SynapticsTouchpad
+- https://teamsammut.com/blog/2015/09/apple-macbook-pro-linux-issue-tracking.html
+
+.. [#DEBIAN_WIKI_MBP] https://wiki.debian.org/MacBookPro
+.. [#DEBIAN_WIKI_SYNAPTICS] https://wiki.debian.org/SynapticsTouchpad
+.. [#UBUNTU_WIKI_APPLE_KEYBOARD] https://help.ubuntu.com/community/AppleKeyboard

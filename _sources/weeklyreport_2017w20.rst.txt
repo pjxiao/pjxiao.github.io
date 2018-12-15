@@ -1,0 +1,45 @@
+:orphan:
+
+=============
+日記 2017-W20
+=============
+
+2017-05-22 09:00:00
+
+
+最近のこと
+----------
+- Google API の refresh_token をさっくり取得する
+
+  開発中に追加で scope が必要になった時、再認可する際につかう
+
+  OAuth 2.0 Playground を使う [#LINK_OAUTH_20_PLAYGROUND]_
+
+  1. API ダッシュボードから Redierect URI に ``https://developers.google.com/oauthplayground/`` を追加する
+  2. Playground 右上の歯車から **Use your own OAuth credentials** へチェックを入れ、
+     ``OAuth Client ID``, ``OAuth Client secret`` を入力する
+  3. **Step 1 Select & authorize APIs** で必要な scope を半角スペース区切りで入力し、
+     **Authorize APIs** を押下する
+  4. **Step 2 Exchange authorization code for tokens** で Authorization code を
+     Refresh token に変換するため、 **Exchange authorization code for tokens** を押下する
+
+
+調べておきたいこと
+------------------
+- チェビシェフの不等式
+- Paxos Leaner
+- Paxos Leader Lease
+- いくつかの代表的な MV* アーキテクチャ
+- C のデバッガ
+
+最近読んだ文章
+--------------
+-
+
+見つけたもの
+------------
+- 
+
+脚注
+----
+.. [#LINK_OAUTH_20_PLAYGROUND] https://developers.google.com/oauthplayground/

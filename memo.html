@@ -1,0 +1,1102 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>覚え書き &mdash; hirai.me</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    
+        <link rel="index" title="索引"
+              href="genindex.html"/>
+        <link rel="search" title="検索" href="search.html"/>
+    <link rel="top" title="hirai.me" href="index.html"/>
+        <link rel="next" title="画像の二値化二値化" href="memo_binarization.html"/>
+        <link rel="prev" title="国家" href="notes_the_republic.html"/>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/index.xml" />
+    <link rel="stylesheet" href="http://mplus-webfonts.sourceforge.jp/mplus_webfonts.css">
+    <style>
+body {
+    font-family: 'mplus-1c-regular', sans-serif;
+}
+
+.body {
+    overflow-x: hidden;
+}
+    </style> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hirai.me
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="notes.html">詰み</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">覚え書き</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="memo_binarization.html">画像の二値化二値化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_imagemagick.html">ImageMagick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_powershell.html">PowerShell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_awscli.html">AWS-CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_oas.html">Open API Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memo_ms_flow.html">Microsoft Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">メモ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mathjax">MathJax チートシート</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux-gyazo">Linux 版 gyazo のスクリーンキャプチャコマンドを変更する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pca">PCA に関する覚え書き</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nginx-ssh">ファイヤーウォール内のサイトへの接続に Nginx と SSH を組み合わせる</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">対応方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hosts">hosts ファイルの設定</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#openssh">OpenSSH の起動</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nginx">Nginx の設定</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">デバッグ</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#systemctl-user">systemctl –user 実行時のエラーへの対処方法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">エラーの発生方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">原因</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">経緯</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">参考資料</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#memo-ephemeral-port">一時ポート</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">参考資料</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ssh-systemd-user">SSH トンネルを Systemd/User のサービスとして登録する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#systemd">Systemd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">ディレクティブ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install">Install セクション</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#alias">Alias ディレクティブ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wantedby">WantedBy ディレクティブ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">エスケープ</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#bash">Bash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id24">キーボード入力を環境変数に入れてコマンドを実行する</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id25">特殊パラメータの展開</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-lang">read と LANG 環境変数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id27">参考資料</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#yaml-json">YAML を JSON に変換する君</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#vim">Vim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker">Docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mac">コンテナの MAC アドレスを変更する</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#git">Git</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id29">未コミットの変更がないことを確認する</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviews.html">レビュー</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">用語集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feed.html">Articles</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hirai.me</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>覚え書き</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/memo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="id1">
+<h1><a class="toc-backref" href="#id31">覚え書き</a><a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="contents topic" id="id2">
+<p class="topic-title first">目次</p>
+<ul class="simple">
+<li><a class="reference internal" href="#id1" id="id31">覚え書き</a><ul>
+<li><a class="reference internal" href="#id3" id="id32">メモ</a></li>
+<li><a class="reference internal" href="#mathjax" id="id33">MathJax チートシート</a></li>
+<li><a class="reference internal" href="#linux-gyazo" id="id34">Linux 版 gyazo のスクリーンキャプチャコマンドを変更する</a></li>
+<li><a class="reference internal" href="#pca" id="id35">PCA に関する覚え書き</a></li>
+<li><a class="reference internal" href="#nginx-ssh" id="id36">ファイヤーウォール内のサイトへの接続に Nginx と SSH を組み合わせる</a></li>
+<li><a class="reference internal" href="#systemctl-user" id="id37">systemctl –user 実行時のエラーへの対処方法</a></li>
+<li><a class="reference internal" href="#memo-ephemeral-port" id="id38">一時ポート</a></li>
+<li><a class="reference internal" href="#ssh-systemd-user" id="id39">SSH トンネルを Systemd/User のサービスとして登録する</a></li>
+<li><a class="reference internal" href="#systemd" id="id40">Systemd</a></li>
+<li><a class="reference internal" href="#bash" id="id41">Bash</a></li>
+<li><a class="reference internal" href="#vim" id="id42">Vim</a></li>
+<li><a class="reference internal" href="#docker" id="id43">Docker</a></li>
+<li><a class="reference internal" href="#git" id="id44">Git</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="memo_binarization.html">画像の二値化二値化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo_imagemagick.html">ImageMagick</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo_powershell.html">PowerShell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo_awscli.html">AWS-CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo_oas.html">Open API Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memo_ms_flow.html">Microsoft Flow</a></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id32">メモ</a><a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>冪級数展開</li>
+<li><span class="math">\(\lim_{x \to 0} (1 - x)^{-1/x}\)</span></li>
+<li>区分求積法</li>
+<li>変曲点</li>
+<li>ガンマ関数</li>
+</ul>
+</div>
+<div class="section" id="mathjax">
+<h2><a class="toc-backref" href="#id33">MathJax チートシート</a><a class="headerlink" href="#mathjax" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>WIP</p>
+</div>
+<div class="section" id="linux-gyazo">
+<h2><a class="toc-backref" href="#id34">Linux 版 gyazo のスクリーンキャプチャコマンドを変更する</a><a class="headerlink" href="#linux-gyazo" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Linux 版 gyazo は、スクリーンキャプチャに <code class="docutils literal"><span class="pre">import</span></code> コマンドを使っている。</p>
+<p>ところが、手元の環境では <code class="docutils literal"><span class="pre">import</span></code> コマンドは不要な罫線が混入したり最前面のウィンドウをキャプチャできなかったりと誤動作が多く見られる。</p>
+<p>gyazo コマンドは、 <code class="docutils literal"><span class="pre">~/.gyazo.config.yml</span></code> に設定を記載することでスクリーンキャプチャのコマンドを変更したりすることができるので、
+<code class="docutils literal"><span class="pre">import</span></code> の代わりに <code class="docutils literal"><span class="pre">gnome-screenshot</span></code> コマンドを使うように設定する。</p>
+<p>~/.gyazo.config.yml:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">command</span><span class="p">:</span> <span class="n">sleep</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">gnome</span><span class="o">-</span><span class="n">screenshot</span> <span class="o">-</span><span class="n">af</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">command</span></code> というキーでコマンドとオプションを記載する。なお、コマンドへは引数としてファイル名が渡されるため、 <code class="docutils literal"><span class="pre">-f</span></code> 引数を最後に付加している。</p>
+</div>
+<div class="section" id="pca">
+<h2><a class="toc-backref" href="#id35">PCA に関する覚え書き</a><a class="headerlink" href="#pca" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>共分散行列の固有ベクトルが主成分のベクトルになる理屈がさっぱりわからん</li>
+<li>共分散、絶対値が大きくなるほど傾きが大きくなるっぽい</li>
+<li>レイリー商</li>
+<li>なんで <span class="math">\(v^TAv\)</span> を最大化する <span class="math">\(v\)</span> が <span class="math">\(A\)</span> の最大の固有ベクトルに一致するの</li>
+<li>レイリー商を計算するとでるらしい</li>
+<li>この <span class="math">\(v\)</span> はレイリー商で計算できて <span class="math">\(\Sigma\)</span> の最大の固有ベクトル <span class="math">\(v\)</span> に一致する</li>
+<li><span class="math">\(v^T \Sigma v\)</span> を最大化する <span class="math">\(v\)</span> を取りたい</li>
+<li><span class="math">\(v^TD\)</span> 上での分散は <span class="math">\(v^T \Sigma v\)</span> で表される</li>
+<li>データ <span class="math">\(D\)</span> をベクトル <span class="math">\(v\)</span> へ写像するのに <span class="math">\(v^TD\)</span> を使う</li>
+<li>2 番目に大きいベクトルは常に一番大きいベクトルに直交している</li>
+<li>固有ベクトルの大きさは固有値でわかる</li>
+<li>言い換えると、ベクトル上でデータの分散が最大となるベクトルである固有ベクトルを探すことになる</li>
+<li>そういえば固有ベクトルって全部線形独立だった</li>
+<li><a class="reference external" href="http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/">http://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/</a></li>
+<li>共分散、 tan の平均では</li>
+<li>共分散行列、変換行列と回転行列の積らしい</li>
+<li>二次元で、 scaling matrix が <span class="math">\(S\)</span>, 回転行列が <span class="math">\(R\)</span> で <span class="math">\(SR\)</span> が対称行列の場合、何度計算しても <span class="math">\(sx = - sy\)</span> になる</li>
+<li>何度計算しても <span class="math">\(cov(X, X) = -cov(Y, Y)\)</span> になる</li>
+</ul>
+</div>
+<div class="section" id="nginx-ssh">
+<span id="memo-nginx-and-ssh"></span><h2><a class="toc-backref" href="#id36">ファイヤーウォール内のサイトへの接続に Nginx と SSH を組み合わせる</a><a class="headerlink" href="#nginx-ssh" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ファイアウォール内へのサイトへの接続には、
+OpenSSH を SOCKS プロキシ (<code class="docutils literal"><span class="pre">-D</span></code> オプション) として使っていた。</p>
+<p>ただ、この場合、システムワイドなプロキシ設定が必要となり、
+不要なトラフィックまで踏み台サーバを経由することになっていた。</p>
+<p>この問題を回避するために、プロキシの自動構成スクリプト (PAC) を作成したが、
+PAC ファイルは HTTP でホスティングする必要があり、
+一部のアプリケーションが通信に失敗する現象にも遭遇した。</p>
+<p>また、OpenSSH は SOCKS プロキシ (<code class="docutils literal"><span class="pre">-D</span></code>) としてではなく、
+特定のポートを転送する (<code class="docutils literal"><span class="pre">-L</span></code>) こともできるが、
+この場合、サイトが HTTPS の場合や <code class="docutils literal"><span class="pre">Host</span></code> をはじめとする HTTP ヘッダが問題になり、
+単体では解決策として使うことができない。</p>
+<div class="section" id="id4">
+<h3>問題<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>問題を整理すると次のようになる</p>
+<ul class="simple">
+<li>ブラウザからファイアウォール内のサイトへのアクセスにのみ踏み台サーバを経由したい</li>
+<li>PAC ファイルだといくつかの問題があるので、別の手段を使う必要がある</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>対応方法<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>サイトへの接続には次の構成をとった</p>
+<ul class="simple">
+<li>hosts ファイルで、プロキシを通すドメインをプロキシに向ける</li>
+<li>Nginx は、 HTTPS の対応や HTTP ヘッダの処理を行う</li>
+<li>OpenSSH は、踏み台サーバを経由してサイトへのポート転送を行う</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ブラウザ</span> <span class="o">&lt;-</span><span class="p">(</span><span class="n">HTTP</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">Nginx</span> <span class="p">(</span><span class="o">*.</span><span class="n">example</span><span class="o">.</span><span class="n">local</span><span class="p">)</span> <span class="o">&lt;-&gt;</span> <span class="n">OpenSSH</span> <span class="p">(</span><span class="o">-</span><span class="n">L</span><span class="p">)</span> <span class="o">&lt;-&gt;</span> <span class="n">踏み台サーバー</span> <span class="p">(</span><span class="n">gw</span><span class="o">.</span><span class="n">exmaple</span><span class="o">.</span><span class="n">com</span><span class="p">)</span> <span class="o">&lt;-&gt;</span> <span class="n">目的のサイト</span> <span class="p">(</span><span class="o">*.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>今回は、 <code class="docutils literal"><span class="pre">site1.example.com</span></code> というサイトがファイアウォール内に存在するとして、
+<code class="docutils literal"><span class="pre">site1.example.local</span></code> へアクセスすると、プロキシを通じて <code class="docutils literal"><span class="pre">site1.example.com</span></code> へアクセスされるように構成する</p>
+<table border="1" class="docutils" id="id30">
+<caption><span class="caption-text">例</span><a class="headerlink" href="#id30" title="このテーブルへのパーマリンク">¶</a></caption>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">プロキシのドメイン</th>
+<th class="head">ソケットファイル名</th>
+<th class="head">目的のサイトのドメイン</th>
+<th class="head">目的のサイトのスキーム</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>site1.example.local</td>
+<td>site1.example.sock</td>
+<td>site1.example.com</td>
+<td>http</td>
+</tr>
+<tr class="row-odd"><td>site2.example.local</td>
+<td>site2.example.sock</td>
+<td>site2.example.com</td>
+<td>https</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="hosts">
+<h4>hosts ファイルの設定<a class="headerlink" href="#hosts" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>hosts ファイルを変更して、
+目的のサイトのドメインがプロキシのアドレスとして解決されるようにする。</p>
+<p>hosts:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.123</span>   <span class="n">site1</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">local</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="openssh">
+<h4>OpenSSH の起動<a class="headerlink" href="#openssh" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ポート転送用に OpenSSH を起動する。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="c1"># /path/to/site1.example.sock -&gt; site1.example.com:443</span>
+<span class="gp">$</span> ssh -i /pass/to/key.pem -fN  user@gw.example.com -L/path/to/site1.example.sock:site1.example.com:443
+</pre></div>
+</div>
+<p>ローカル側は、 <code class="docutils literal"><span class="pre">/path/to/site1.example.sock</span></code> といったように、
+サブドメインを名前に含んだ UNIX ドメインソケットにバインドさせる。</p>
+<p>サブドメインをファイル名に含めることで、 Nginx 側の設定を変更せずに複数のホストへの接続を行える。</p>
+<p>UNIX ドメインソケットなので、加えて Nginx が利用できるようにパーミッション設定が必要である。
+ディレクトリに対して setgid しておくとよい。</p>
+<p>ファイヤーウォール内へ常時接続可能というのも不用心であるし、
+秘密鍵へパスフレーズを設定していることも考慮して、ポート転送のサービス化はさせなかった。</p>
+</div>
+<div class="section" id="nginx">
+<h4>Nginx の設定<a class="headerlink" href="#nginx" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Nginx の設定は次の通り。</p>
+<p>example_proxy.conf:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>server {
+    server_name ~^(?&lt;subdomain&gt;.+)\.example.local$;
+
+    location / {
+        # Scheme の決定
+        set $socket_scheme &#39;http&#39;;
+        set $socket_path /path/to/$subdomain.example.sock;
+
+        # site2 は HTTPS を使う
+        if ($subdomain = &#39;site2&#39;) {
+            set $socket_scheme &#39;https&#39;;
+        }
+
+        proxy_pass $socket_scheme://unix:$socket_path;
+        proxy_read_timeout 600;
+
+        # Cookie のドメイン設定
+        proxy_cookie_domain $subdomain.example.local $subdomain.example.com;
+
+        # リダイレクトの URL 書き換え
+        proxy_redirect $socket_scheme://$subdomain.example.com $socket_scheme://$subdomain.example.local;
+
+        # HTTP ヘッダの設定: Host
+        proxy_set_header Host $subdomain.example.com;
+
+        # HTTP ヘッダの設定: Referer
+        set $referer $http_referer;
+        if ($http_referer ~ &#39;^https?://(?&lt;subdomain&gt;.+)\.example.local(?&lt;path&gt;/.*)$&#39;) {
+            set $referer $socket_scheme://$subdomain.example.com$path;
+        }
+        proxy_set_header Referer $referer;
+
+        # HTTP ヘッダの設定: Origin
+        set $origin $http_origin;
+        if ($http_origin ~ &#39;^https?://(?&lt;subdomain&gt;.+)\.example.local(?&lt;suffix&gt;.*)$&#39;) {
+            set $origin $socket_scheme://$subdomain.example.com$suffix;
+        }
+        proxy_set_header Origin $origin;
+    }
+}
+</pre></div>
+</div>
+<p>サブドメイン名をもとにポート転送を行う UNIX ドメインソケットへ接続し、
+<code class="docutils literal"><span class="pre">Host</span></code> や <code class="docutils literal"><span class="pre">Referer</span></code> などを書き換えたうえで、転送を行うように設定した。</p>
+<p>目的のサイトが複数あり、 HTTP/HTTPS のサイトが混在している場合に対応するため、
+サブドメインでスキームを切り分けるようにした。</p>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last">ソケットにスキームを入れて、ソケットの存在確認をすることでスキームを切り替えることを考えたが、
+<code class="docutils literal"><span class="pre">if</span> <span class="pre">(-f</span> <span class="pre">/path/to/spam.sock)</span></code>, <code class="docutils literal"><span class="pre">if</span> <span class="pre">(-e</span> <span class="pre">/path/to/spam.sock)</span></code> でソケットの存在を確認できなかったため、
+断念した。</p>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>デバッグ<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">socat</span></code> を使うと書き換えが必要なヘッダを洗い出すのに便利。</p>
+<p>Nginx の <code class="docutils literal"><span class="pre">proxy_pass</span></code> が HTTPS になっていると人間にやさしくないので、一度 HTTP に変更してから行う。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> socat -u tcp4-listen:1080,reuseaddr,fork exec:cat
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="systemctl-user">
+<span id="memo-systemctl-user-cause-errors"></span><h2><a class="toc-backref" href="#id37">systemctl –user 実行時のエラーへの対処方法</a><a class="headerlink" href="#systemctl-user" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="admonition caution">
+<p class="first admonition-title">ご用心</p>
+<p class="last">この現象は、対応方法の公式なソースが未発見である</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">OS:</th><td class="field-body">Debian 8.5</td>
+</tr>
+<tr class="field-even field"><th class="field-name">systemd:</th><td class="field-body">systemd 215</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference external" href="https://packages.debian.org/ja/sid/libpam-systemd">libpam-systemd</a> をインストールし、
+再起動すると問題は解消される。</p>
+<div class="section" id="id7">
+<h3>エラーの発生方法<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">systemd</span> <span class="pre">--user</span></code> サービスが起動していない状態で、 <code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">--user</span></code> コマンドをユーザー権限で実行する</li>
+<li><code class="docutils literal"><span class="pre">XDG_RUNTIME_DIR</span></code> が設定されていない場合、 「Failed to get D-Bus connection: Connection refused」 というエラーが発生する</li>
+<li><code class="docutils literal"><span class="pre">XDG_RUNTIME_DIR</span></code> が設定されている場合、 「Failed to get D-Bus connection: No such file or directory」 というエラーが発生する</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3>原因<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">systemd</span> <span class="pre">--user</span></code> が起動していない場合、
+systemd サービスに接続できないことでエラーが発生する。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">systemd</span> <span class="pre">--user</span></code> 自体は <code class="docutils literal"><span class="pre">/lib/systemd/system/user&#64;.service</span></code> から起動されており、
+<em>libpam-systemd</em> とは直接関係はない</p>
+</li>
+<li><p class="first">ただし、 <em>libpam-systemd</em> がインストールされていない状態では、
+<code class="docutils literal"><span class="pre">systemd</span> <span class="pre">--user</span></code> は、必要なディレクトリや環境変数が足りず起動できない</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> systemctl status user1
+<span class="go">● user1.service</span>
+<span class="go">   Loaded: not-found (Reason: No such file or directory)</span>
+<span class="go">      Active: inactive (dead)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>libpam-systemd</em> でインストールされる <a class="reference external" href="https://www.freedesktop.org/software/systemd/man/pam_systemd.html">pam_systemd</a> モジュールは、
+<code class="docutils literal"><span class="pre">systemd</span> <span class="pre">--user</span></code> の起動に必要な環境変数やディレクトリを設定する</p>
+</li>
+<li><p class="first">結果的に、 <em>libpam-systemd</em> をインストールすると、 <code class="docutils literal"><span class="pre">systemd</span> <span class="pre">--user</span></code> が起動できるようになり、
+<code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">--user</span></code> からユーザーサービスが起動できるようになる</p>
+</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h3>経緯<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">--user</span></code> すると 「Failed to get D-Bus connection: Connection refused」 というエラーが発生した。</li>
+<li>どうも <code class="docutils literal"><span class="pre">XDG_RUNTIME_DIR</span></code> 環境変数が設定されている必要があるらしいので、
+<a class="reference external" href="https://wiki.archlinuxjp.org/index.php/XDG_Base_Directory_%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88">Arch wiki</a> の
+記述に従い、 <code class="docutils literal"><span class="pre">XDG_RUNTIME_DIR</span></code> を <code class="docutils literal"><span class="pre">$HOME/.profile</span></code> に設定しディレクトリを作成した。</li>
+<li>再度 <code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">--user</span></code> すると、次は 「Failed to get D-Bus connection: No such file or directory」 というエラーが発生した。</li>
+<li><a class="reference external" href="https://bbs.archlinux.org/viewtopic.php?id=201543">フォーラム</a> によると再インストールすると
+everything just worked™ らしいので、それらしいパッケージを探したところ、
+<em>libpam-systemd</em> が見つかったのでインストールし、再起動した</li>
+<li><code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">--user</span></code> が動作することが確認できた</li>
+<li><em>libpam-systemd</em> を <code class="docutils literal"><span class="pre">purge</span></code> して再起動したところ、再度エラーが発生するようになったので、どうもこのパッケージが必要らしい</li>
+</ol>
+</div>
+<div class="section" id="id11">
+<h3>参考資料<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="https://bbs.archlinux.org/viewtopic.php?id=201543">https://bbs.archlinux.org/viewtopic.php?id=201543</a> [2016-12-02 閲覧]</li>
+<li><a class="reference external" href="https://bbs.archlinux.org/viewtopic.php?id=180641">https://bbs.archlinux.org/viewtopic.php?id=180641</a> [2016-12-02 閲覧]</li>
+<li><a class="reference external" href="https://www.centos.org/forums/viewtopic.php?t=59484">https://www.centos.org/forums/viewtopic.php?t=59484</a> [2016-12-02 閲覧]</li>
+</ul>
+</div>
+</div>
+<div class="section" id="memo-ephemeral-port">
+<span id="id12"></span><h2><a class="toc-backref" href="#id38">一時ポート</a><a class="headerlink" href="#memo-ephemeral-port" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Ephemeral port. bind(2) を呼び出す際のポート番号に 0 を指定した際に選ばれるポート。</p>
+<p>たとえば、 Python の <code class="docutils literal"><span class="pre">http.server</span></code> で 0 を指定すれば、
+空いているポートが適当に選ばれる。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -mhttp.server <span class="m">0</span>
+<span class="go">Serving HTTP on 0.0.0.0 port 45081 ...</span>
+<span class="go">^C</span>
+<span class="go">Keyboard interrupt received, exiting.</span>
+<span class="gp">$</span> python3 -mhttp.server <span class="m">0</span>
+<span class="go">Serving HTTP on 0.0.0.0 port 46937 ...</span>
+</pre></div>
+</div>
+<div class="section" id="id13">
+<h3>参考資料<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>Man page of ip(7)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="ssh-systemd-user">
+<span id="memo-sshtunnel-service"></span><h2><a class="toc-backref" href="#id39">SSH トンネルを Systemd/User のサービスとして登録する</a><a class="headerlink" href="#ssh-systemd-user" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul>
+<li><p class="first">ssh(1) に <code class="docutils literal"><span class="pre">-N</span></code> を渡しているので、何もしない ssh プロセスがフォアグラウンドで立ち上がる</p>
+</li>
+<li><p class="first">このため、 <code class="docutils literal"><span class="pre">Type=</span></code> には <code class="docutils literal"><span class="pre">simple</span></code> を指定している</p>
+</li>
+<li><p class="first">外部から kill(1) されたり、ネットワークが不安定でプロセスが死んだ際にも復帰するように、 <code class="docutils literal"><span class="pre">Restart=always</span></code> を指定している</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">ExecStart=</span></code> にはフルパスを指定する必要がある</p>
+</li>
+<li><p class="first">フルパス指定しないと <code class="docutils literal"><span class="pre">Invalid</span> <span class="pre">argument</span></code> というエラーになる（わかりにくい）</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ systemctl --user status sshtunnel.service
+● sshtunnel.service - SSH tunnel to somewhere.in.firewall.example.com
+   Loaded: error (Reason: Invalid argument)
+      Active: inactive (dead)
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">SSH</span> <span class="n">tunnel</span> <span class="n">to</span> <span class="n">somewhere</span> <span class="ow">in</span> <span class="n">firewall</span>
+<span class="n">Wants</span><span class="o">=</span><span class="n">network</span><span class="o">-</span><span class="n">online</span><span class="o">.</span><span class="n">target</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">simple</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">ssh</span> <span class="o">-</span><span class="n">i</span> <span class="o">%</span><span class="n">h</span><span class="o">/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">my_key</span><span class="o">.</span><span class="n">pem</span> <span class="o">-</span><span class="n">N</span>  <span class="n">hostname</span> <span class="o">-</span><span class="n">L</span> <span class="mi">1234</span><span class="p">:</span><span class="n">somewhere</span><span class="o">.</span><span class="ow">in</span><span class="o">.</span><span class="n">firewall</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">1234</span>
+<span class="n">Restart</span><span class="o">=</span><span class="n">always</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">default</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="systemd">
+<span id="memo-systemd"></span><h2><a class="toc-backref" href="#id40">Systemd</a><a class="headerlink" href="#systemd" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id14">
+<h3>ディレクティブ<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Systemd には種々のディレクティブが存在しドキュメントも充実しているが、
+充実している反面、索引性があまりよくないように見える。</p>
+<p>そこで SYSTEMD.DIRECTIVES(7) を参照すると、
+ディレクティブの一覧とドキュメントへのポインタが記載されている。</p>
+<p>目的のディレクティブのドキュメントが見つからない場合は、
+SYSTEMD.DIRECTIVES(7) から参照するとよいようだ。</p>
+</div>
+<div class="section" id="install">
+<h3>Install セクション<a class="headerlink" href="#install" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>Install セクションは、 systemd(1) からランタイムには使われない <a class="footnote-reference" href="#ref-man-systemd-unit" id="id15">[2]</a></li>
+<li>Install セクションは、 systemctl(1) の <code class="docutils literal"><span class="pre">enable</span></code>, <code class="docutils literal"><span class="pre">disable</span></code> サブコマンドから利用される <a class="footnote-reference" href="#ref-man-systemd-unit" id="id16">[2]</a></li>
+</ul>
+<div class="section" id="alias">
+<h4>Alias ディレクティブ<a class="headerlink" href="#alias" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">enable</span></code> コマンドを実行すると、
+<em>Alias</em> ディレクティブで指定されたパスにシンボリックリンクを作成する <a class="footnote-reference" href="#ref-man-systemd-unit" id="id17">[2]</a></p>
+<p>demo-alias.service:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=%</span><span class="n">n</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">oneshot</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="nb">bin</span><span class="o">/</span><span class="n">echo</span> <span class="o">%</span><span class="n">n</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">Alias</span><span class="o">=</span><span class="n">demo</span><span class="o">-</span><span class="n">alias</span><span class="o">-</span><span class="n">hoge</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> systemctl --user <span class="nb">enable</span> demo-alias.service
+<span class="go">Created symlink /path/to/.config/systemd/user/demo-alias-hoge.service → //path/to/.config/systemd/user/demo-alias.service.</span>
+<span class="gp">$</span> systemctl --user start demo-alias-hoge
+<span class="gp">$</span> systemctl --user status demo-alias-hoge
+<span class="go">● demo-alias.service</span>
+<span class="go">   Loaded: loaded (/path/to/.config/systemd/user/demo-alias.service; enabled; vendor preset: enabled)</span>
+<span class="go">   Active: inactive (dead)</span>
+</pre></div>
+</div>
+<p>ただし <em>WantedBy</em> ディレクティブからは無視される</p>
+<p>demo-alias.service:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=%</span><span class="n">n</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">oneshot</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="nb">bin</span><span class="o">/</span><span class="n">echo</span> <span class="o">%</span><span class="n">n</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">default</span><span class="o">.</span><span class="n">target</span>
+<span class="n">Alias</span><span class="o">=</span><span class="n">demo</span><span class="o">-</span><span class="n">alias</span><span class="o">-</span><span class="n">hoge</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> systemctl --user disable demo-alias.service
+<span class="go">Removed /path/to/.config/systemd/user/demo-alias-hoge.service.</span>
+<span class="gp">$</span> systemctl --user <span class="nb">enable</span> demo-alias.service
+<span class="go">Created symlink /path/to/.config/systemd/user/demo-alias-hoge.service → /path/to/.config/systemd/user/demo-alias.service.</span>
+<span class="go">Created symlink /path/to/.config/systemd/user/default.target.wants/demo-alias.service → /path/to/.config/systemd/user/demo-alias.service.</span>
+<span class="gp">$</span> systemctl --user disable demo-alias.service
+<span class="go">Removed /path/to/.config/systemd/user/demo-alias-hoge.service.</span>
+<span class="go">Removed /path/to/.config/systemd/user/default.target.wants/demo-alias.service.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="wantedby">
+<h4>WantedBy ディレクティブ<a class="headerlink" href="#wantedby" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p><em>WantedBy</em> ディレクティブで指定されたユニットの <code class="docutils literal"><span class="pre">.wants</span></code> ディレクトリ下へ、
+<em>Alias</em> ディレクティブを指定することにほぼ相当する。 <a class="footnote-reference" href="#ref-man-systemd-unit" id="id18">[2]</a></p>
+<p>具体的には、以下のふたつはほぼ同等</p>
+<p>demo-wantedby.service:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Alias</span><span class="o">=</span><span class="n">default</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">wants</span><span class="o">/</span><span class="n">demo</span><span class="o">-</span><span class="n">wantedby</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>demo-wantedby.service:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">WantedBy</span><span class="o">=</span><span class="n">default</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id19">
+<h3>エスケープ<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>サービス名やインスタンス名などは、適宜エスケープされる。</p>
+<p>systemd 233 時点では、 <code class="docutils literal"><span class="pre">systemctl</span> <span class="pre">enable</span></code> 時にサービス名は、
+<code class="docutils literal"><span class="pre">/</span></code> が <code class="docutils literal"><span class="pre">-</span></code> にエスケープされるほか、
+<code class="docutils literal"><span class="pre">:-_.\&#64;</span></code> と半角英数字以外はすべて <code class="docutils literal"><span class="pre">\xXX</span></code> 形式にエスケープされる。 <a class="footnote-reference" href="#link-0pointer-de-instnces" id="id20">[1]</a> <a class="footnote-reference" href="#ref-man-systemd-unit" id="id21">[2]</a></p>
+<p>このエスケープは、 systemd-escape(1) に <code class="docutils literal"><span class="pre">-m</span></code> オプションを付けると確認できる。 <a class="footnote-reference" href="#ref-man-systemd-escape" id="id22">[3]</a></p>
+<p><code class="docutils literal"><span class="pre">/</span></code> が <code class="docutils literal"><span class="pre">-</span></code> にエスケープされ、 <code class="docutils literal"><span class="pre">-</span></code> がエスケープされないことからも明らかであるが、
+このエスケープ処理は単射ではないため、アンエスケープ時にもとの文字列へ復元されないことがある。 <a class="footnote-reference" href="#link-sytemd-v233-unitname-c-l641" id="id23">[4]</a></p>
+<table class="docutils footnote" frame="void" id="link-0pointer-de-instnces" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id20">[1]</a></td><td><a class="reference external" href="http://0pointer.de/blog/projects/instances.html">http://0pointer.de/blog/projects/instances.html</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ref-man-systemd-unit" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id15">1</a>, <a class="fn-backref" href="#id16">2</a>, <a class="fn-backref" href="#id17">3</a>, <a class="fn-backref" href="#id18">4</a>, <a class="fn-backref" href="#id21">5</a>)</em> man SYSTEMD.UNIT(5)</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="ref-man-systemd-escape" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id22">[3]</a></td><td>man SYSTEMD-ESCAPE(1)</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="link-sytemd-v233-unitname-c-l641" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id23">[4]</a></td><td><a class="reference external" href="https://github.com/systemd/systemd/blob/v233/src/basic/unit-name.c#L641">https://github.com/systemd/systemd/blob/v233/src/basic/unit-name.c#L641</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="bash">
+<span id="memo-onliner"></span><h2><a class="toc-backref" href="#id41">Bash</a><a class="headerlink" href="#bash" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id24">
+<h3>キーボード入力を環境変数に入れてコマンドを実行する<a class="headerlink" href="#id24" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>cat(1), head(1) を組み合わせる。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">ENV_VAR</span><span class="o">=</span><span class="k">$(</span>cat <span class="p">|</span> head -1<span class="k">)</span> /path/to/do_staff
+</pre></div>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">a</span><span class="o">=</span><span class="k">$(</span>cat <span class="p">|</span> head -1<span class="k">)</span> sh -c <span class="s1">&#39;echo $a&#39;</span>
+<span class="go">hoge</span>
+
+<span class="go">hoge</span>
+</pre></div>
+</div>
+<p>プロンプトを表示したい場合は、 Bash の組み込みコマンド read を使う。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">ENV_VAR</span><span class="o">=</span><span class="k">$(</span><span class="nb">read</span> -p <span class="s1">&#39;INPUT: &#39;</span> x<span class="p">;</span> <span class="nb">echo</span> -n <span class="nv">$x</span><span class="k">)</span> /path/to/do_staff
+</pre></div>
+</div>
+<p>キーボード入力を入力完了後に非表示化する場合は、標準エラー出力でカーソル移動を行い出力を除去する。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">ENV_VAR</span><span class="o">=</span><span class="k">$(</span><span class="nb">read</span> -p <span class="s1">&#39;INPUT: &#39;</span> x<span class="p">;</span> <span class="nb">echo</span> -n <span class="nv">$x</span><span class="p">;</span> <span class="nb">echo</span> -e <span class="s1">&#39;\033[1A\033[2K&#39;</span> &gt;<span class="p">&amp;</span><span class="m">2</span><span class="k">)</span> /path/to/do_staff
+</pre></div>
+</div>
+<p>cat(1), head(1) でもできるが、この場合はカーソルを 2 行上に移動させる必要がある。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">ENV_VAR</span><span class="o">=</span><span class="k">$(</span>cat <span class="p">|</span> head -1<span class="p">;</span> <span class="nb">echo</span> -e <span class="s1">&#39;\033[2A\033[2K&#39;</span> &gt;<span class="p">&amp;</span><span class="m">2</span><span class="k">)</span> /path/to/do_staff
+</pre></div>
+</div>
+<p>ユースケース</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">PGPASSWORD</span><span class="o">=</span><span class="k">$(</span><span class="nb">read</span> -p <span class="s1">&#39;PW: &#39;</span> p<span class="p">;</span> <span class="nb">echo</span> -n <span class="nv">$p</span><span class="p">;</span> <span class="nb">echo</span> -e <span class="s1">&#39;\033[1A\033[2K&#39;</span> &gt;<span class="p">&amp;</span><span class="m">2</span><span class="k">)</span> psql mydb
+<span class="go">PW: my-password  # ユーザ入力。入力後に消される。</span>
+<span class="go">mydb=#</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id25">
+<h3>特殊パラメータの展開<a class="headerlink" href="#id25" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">*</span></code>, <code class="docutils literal"><span class="pre">&#64;</span></code> の違いだけでなく、ダブルクオートの有無でも挙動が変化する。</p>
+<p><code class="docutils literal"><span class="pre">bash</span> <span class="pre">-c</span> <span class="pre">'[展開前のコード]'</span> <span class="pre">'a'</span> <span class="pre">'b</span> <span class="pre">1'</span> <span class="pre">'c</span> <span class="pre">2'</span></code> の実行結果</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">特殊パラメータ</th>
+<th class="head">ダブルクオート</th>
+<th class="head">展開前</th>
+<th class="head">展開後</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">*</span></code></td>
+<td>ナシ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">$*</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">b</span> <span class="pre">1</span> <span class="pre">c</span> <span class="pre">2</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">*</span></code></td>
+<td>アリ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">&quot;$*&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">b</span> <span class="pre">1</span> <span class="pre">c</span> <span class="pre">2</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&#64;</span></code></td>
+<td>ナシ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">$&#64;</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">b</span> <span class="pre">1</span> <span class="pre">c</span> <span class="pre">2</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&#64;</span></code></td>
+<td>アリ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">&quot;$&#64;&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">'b</span> <span class="pre">1'</span> <span class="pre">'c</span> <span class="pre">2'</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&#64;</span></code></td>
+<td>アリ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">&quot;x</span> <span class="pre">$&#64;</span> <span class="pre">y&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">'x</span> <span class="pre">b</span> <span class="pre">1'</span> <span class="pre">'c</span> <span class="pre">2</span> <span class="pre">y'</span></code></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal"><span class="pre">bash</span> <span class="pre">-c</span> <span class="pre">'x=1;</span> <span class="pre">[展開前のコード]'</span> <span class="pre">''</span> <span class="pre">'$x'</span></code> の実行結果</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">特殊パラメータ</th>
+<th class="head">ダブルクオート</th>
+<th class="head">展開前</th>
+<th class="head">展開後</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">*</span></code></td>
+<td>ナシ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">$*</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">'$x'</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">*</span></code></td>
+<td>アリ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">&quot;$*&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">'$x'</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&#64;</span></code></td>
+<td>ナシ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">$&#64;</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">'$x'</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&#64;</span></code></td>
+<td>アリ</td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">&quot;$&#64;&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">echo</span> <span class="pre">'$x'</span></code></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal"><span class="pre">bash</span> <span class="pre">-c</span> <span class="pre">'IFS=[IFSの値];</span> <span class="pre">[展開前のコード]'</span> <span class="pre">''</span> <span class="pre">'$x'</span></code> の実行結果</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> bash -vxc <span class="s2">&quot;IFS=</span>$<span class="s2">&#39;\n&#39;; echo --\&quot;\$*\&quot;--&quot;</span> <span class="s1">&#39;&#39;</span> <span class="s1">&#39;a b&#39;</span> <span class="s1">&#39;c d&#39;</span>
+<span class="go">IFS=$&#39;\n&#39;; echo --&quot;$*&quot;--</span>
+<span class="go">+ IFS=&#39;</span>
+<span class="go">&#39;</span>
+<span class="go">+ echo &#39;--a b</span>
+<span class="go">c d--&#39;</span>
+<span class="go">--a b</span>
+<span class="go">c d--</span>
+
+<span class="gp">$</span> bash -vxc <span class="s2">&quot;IFS=</span>$<span class="s2">&#39;x\n&#39;; echo --\&quot;\$*\&quot;--&quot;</span> <span class="s1">&#39;&#39;</span> <span class="s1">&#39;a b&#39;</span> <span class="s1">&#39;c d&#39;</span>
+<span class="go">IFS=$&#39;x\n&#39;; echo --&quot;$*&quot;--</span>
+<span class="go">+ IFS=&#39;x</span>
+<span class="go">&#39;</span>
+<span class="go">+ echo &#39;--a bxc d--&#39;</span>
+<span class="go">--a bxc d--</span>
+
+<span class="gp">$</span> bash -vxc <span class="s2">&quot;IFS=</span>$<span class="s2">&#39;x\n&#39;; echo \$*&quot;</span> <span class="s1">&#39;&#39;</span> <span class="s1">&#39;a b&#39;</span> <span class="s1">&#39;c d&#39;</span>
+<span class="go">IFS=$&#39;x\n&#39;; echo $*</span>
+<span class="go">+ IFS=&#39;x</span>
+<span class="go">&#39;</span>
+<span class="go">+ echo &#39;a b&#39; &#39;c d&#39;</span>
+<span class="go">a b c d</span>
+<span class="gp">$</span> bash -vxc <span class="s2">&quot;IFS=; echo \$*&quot;</span> <span class="s1">&#39;&#39;</span> <span class="s1">&#39;a b&#39;</span> <span class="s1">&#39;c d&#39;</span>
+<span class="go">IFS=; echo $*</span>
+<span class="go">+ IFS=</span>
+<span class="go">+ echo &#39;a b&#39; &#39;c d&#39;</span>
+<span class="go">a b c d</span>
+<span class="gp">$</span> bash -vxc <span class="s2">&quot;unset IFS; echo \$*&quot;</span> <span class="s1">&#39;&#39;</span> <span class="s1">&#39;a b&#39;</span> <span class="s1">&#39;c d&#39;</span>
+<span class="go">unset IFS; echo $*</span>
+<span class="go">+ unset IFS</span>
+<span class="go">+ echo a b c d</span>
+<span class="go">a b c d</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last"><code class="docutils literal"><span class="pre">*</span></code> は <code class="docutils literal"><span class="pre">IFS</span></code> の定義の有無で挙動が変化するのでややこしい</p>
+</div>
+</div>
+<div class="section" id="read-lang">
+<h3>read と LANG 環境変数<a class="headerlink" href="#read-lang" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Bash 限定</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> -n <span class="s1">&#39;あいう&#39;</span> <span class="p">|</span> <span class="k">while</span> <span class="nv">IFS</span><span class="o">=</span> <span class="nv">LANG</span><span class="o">=</span>ja_JP.UTF-8 <span class="nb">read</span> -n <span class="m">1</span> c<span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$c</span><span class="p">;</span> <span class="k">done</span> <span class="p">|</span> wc -l
+<span class="go">3</span>
+<span class="gp">$</span> <span class="nb">echo</span> -n <span class="s1">&#39;あいう&#39;</span> <span class="p">|</span> <span class="k">while</span> <span class="nv">IFS</span><span class="o">=</span> <span class="nv">LANG</span><span class="o">=</span>us_EN.UTF-8 <span class="nb">read</span> -n <span class="m">1</span> c<span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$c</span><span class="p">;</span> <span class="k">done</span> <span class="p">|</span> wc -l
+<span class="go">3</span>
+<span class="gp">$</span> <span class="nb">echo</span> -n <span class="s1">&#39;あいう&#39;</span> <span class="p">|</span> <span class="k">while</span> <span class="nv">IFS</span><span class="o">=</span> <span class="nv">LANG</span><span class="o">=</span>C <span class="nb">read</span> -n <span class="m">1</span> c<span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="nv">$c</span><span class="p">;</span> <span class="k">done</span> <span class="p">|</span> wc -l
+<span class="go">9</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">LANG=C</span> <span class="pre">read</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">-r</span> <span class="pre">-d</span> <span class="pre">''</span> <span class="pre">b</span></code> とかすると標準入力を 1 バイトずつ読める <a class="footnote-reference" href="#ref-so-13890319" id="id26">[5]</a></p>
+<div class="section" id="id27">
+<h4>参考資料<a class="headerlink" href="#id27" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<ul class="simple">
+<li>Man page of BASH(1)</li>
+</ul>
+<table class="docutils footnote" frame="void" id="ref-so-13890319" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id26">[5]</a></td><td><a class="reference external" href="http://stackoverflow.com/a/13890319">http://stackoverflow.com/a/13890319</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="yaml-json">
+<h3>YAML を JSON に変換する君<a class="headerlink" href="#yaml-json" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>JSON を書くのがツライので YAML を JSON に変換する君をワンライナーで書いた。</p>
+<p>YAML と JSON が両方とも標準で使えるということで Ruby (&gt;=1.9) を使った。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ruby -e <span class="s1">&#39;require &quot;yaml&quot;;require &quot;json&quot;;puts JSON.generate(YAML.load(ARGF.read()))&#39;</span>
+</pre></div>
+</div>
+<p>これを <code class="docutils literal"><span class="pre">yaml2json</span></code> とか適当な名前でエイリアスに突っ込んでおけば、次のように使える。</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> <span class="s1">&#39;- a&#39;</span> <span class="p">|</span> yaml2json
+<span class="go">[&quot;a&quot;]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="vim">
+<h2><a class="toc-backref" href="#id42">Vim</a><a class="headerlink" href="#vim" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>新規ファイルを開く際に、起動済み Vim の新しいタブで開くためのラッパースクリプト</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">SERVERNAME</span><span class="o">=</span>VIMWRAPPER
+
+<span class="k">if</span> <span class="o">(</span>vim --serverlist <span class="p">|</span> grep -q <span class="s2">&quot;</span><span class="si">${</span><span class="nv">SERVERNAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">)</span> <span class="p">;</span> <span class="k">then</span>
+   vim --servername <span class="si">${</span><span class="nv">SERVERNAME</span><span class="si">}</span> --remote-send <span class="s2">&quot;&lt;Esc&gt;:tabe&lt;Space&gt;</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span><span class="s2">&lt;CR&gt;&quot;</span>
+   vim --servername <span class="si">${</span><span class="nv">SERVERNAME</span><span class="si">}</span> --remote-send <span class="s1">&#39;&lt;Esc&gt;:!xdotool&lt;Space&gt;windowactivate&lt;Space&gt;$WINDOWID&lt;CR&gt;&#39;</span>
+<span class="k">else</span>
+   vim --servername <span class="si">${</span><span class="nv">SERVERNAME</span><span class="si">}</span> <span class="si">${</span><span class="nv">1</span><span class="si">}</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+<p>tmux やらと組み合わせる</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash -x</span>
+
+<span class="k">if</span> <span class="o">(</span>vim --serverlist <span class="p">|</span> grep -q <span class="s1">&#39;VIMWRAPPER&#39;</span><span class="o">)</span> <span class="p">;</span> <span class="k">then</span>
+    vim --servername VIMWRAPPER --remote-send <span class="s2">&quot;&lt;Esc&gt;:vsplit&lt;Space&gt;</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span><span class="s2">&lt;CR&gt;&quot;</span>
+<span class="k">else</span>
+    <span class="c1"># If tmux is running, then launch vim in in tmux</span>
+    <span class="k">if</span> <span class="o">(</span>ps -Ctmux<span class="o">)</span> <span class="p">;</span> <span class="k">then</span>
+        tmux new-window <span class="s2">&quot;vim --servername VIMWRAPPER </span><span class="si">${</span><span class="nv">1</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+        /usr/bin/gnome-terminal -x vim --servername VIMWRAPPER <span class="si">${</span><span class="nv">1</span><span class="si">}</span>
+    <span class="k">fi</span>
+
+    <span class="k">for</span> _ in <span class="k">$(</span>seq <span class="m">10000</span><span class="k">)</span>  <span class="c1"># wait for launch vim</span>
+    <span class="k">do</span>
+        <span class="o">(</span>vim --serverlist <span class="p">|</span> grep -q <span class="s1">&#39;VIMWRAPPER&#39;</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="nb">break</span>
+        sleep <span class="m">0</span>.05
+    <span class="k">done</span>
+<span class="k">fi</span>
+vim --servername VIMWRAPPER --remote-send <span class="s1">&#39;&lt;Esc&gt;:!xdotool&lt;Space&gt;windowactivate&lt;Space&gt;$WINDOWID&lt;CR&gt;&lt;CR&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="docker">
+<h2><a class="toc-backref" href="#id43">Docker</a><a class="headerlink" href="#docker" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="mac">
+<h3>コンテナの MAC アドレスを変更する<a class="headerlink" href="#mac" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">--mac-address</span></code> オプションを指定することで MAC アドレスを指定できる <a class="footnote-reference" href="#docker-17-networking" id="id28">[6]</a></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run --mac-address<span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>tr -dc <span class="s1">&#39;0-9a-f&#39;</span> &lt;/dev/urandom <span class="p">|</span> head -c <span class="m">12</span> <span class="p">|</span> perl -pe <span class="s1">&#39;s/([0-9a-f]{2})(?=.)/\1:/g&#39;</span><span class="k">)</span><span class="s2">&quot;</span> --rm -it debian sh -c <span class="s1">&#39;ip addr show eth0; ping hirai.me -c 1&#39;</span>
+<span class="go">46: eth0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state DOWN group default</span>
+<span class="go">    link/ether 40:a3:a1:d7:da:c7 brd ff:ff:ff:ff:ff:ff</span>
+<span class="go">    inet 172.17.0.2/16 scope global eth0</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">    inet6 fe80::42a3:a1ff:fed7:dac7/64 scope link tentative</span>
+<span class="go">       valid_lft forever preferred_lft forever</span>
+<span class="go">PING hirai.me (160.16.235.236): 56 data bytes</span>
+<span class="go">64 bytes from 160.16.235.236: icmp_seq=0 ttl=127 time=17.689 ms</span>
+<span class="go">--- hirai.me ping statistics ---</span>
+<span class="go">1 packets transmitted, 1 packets received, 0% packet loss</span>
+<span class="go">round-trip min/avg/max/stddev = 17.689/17.689/17.689/0.000 ms</span>
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="docker-17-networking" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id28">[6]</a></td><td><a class="reference external" href="https://docs.docker.com/v1.7/articles/networking/">https://docs.docker.com/v1.7/articles/networking/</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="git">
+<h2><a class="toc-backref" href="#id44">Git</a><a class="headerlink" href="#git" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id29">
+<h3>未コミットの変更がないことを確認する<a class="headerlink" href="#id29" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git diff-index --quiet HEAD --  <span class="c1"># 変更がなければステータスコードは 0 になる</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://stackoverflow.com/a/3879077">https://stackoverflow.com/a/3879077</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="memo_binarization.html" class="btn btn-neutral float-right" title="画像の二値化二値化" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notes_the_republic.html" class="btn btn-neutral" title="国家" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, hirai.me.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
